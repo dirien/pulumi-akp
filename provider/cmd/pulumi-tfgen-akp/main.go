@@ -16,11 +16,10 @@ package main
 
 import (
 	akp "github.com/dirien/pulumi-akp/provider"
-	"github.com/dirien/pulumi-akp/provider/pkg/version"
-	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfgen"
+	"github.com/pulumi/pulumi-terraform-bridge/pf/tfgen"
 )
 
 func main() {
 	// Modify the path to point to the new provider
-	tfgen.Main("akp", version.Version, akp.Provider())
+	tfgen.Main("akp", akp.Provider())
 }

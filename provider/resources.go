@@ -55,8 +55,9 @@ func Provider() tfbridge.ProviderInfo {
 
 	// Create a Pulumi provider mapping
 	prov := tfbridge.ProviderInfo{
-		P:    pf.ShimProvider(test()),
-		Name: "akp",
+		P:       pf.ShimProvider(test()),
+		Name:    "akp",
+		Version: version.Version,
 		// DisplayName is a way to be able to change the casing of the provider
 		// name when being displayed on the Pulumi registry
 		DisplayName: "Akuity Platform",
