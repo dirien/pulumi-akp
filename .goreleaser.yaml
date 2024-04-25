@@ -22,24 +22,24 @@ builds:
       - -X github.com/dirien/pulumi-akp/provider/pkg/version.Version={{.Tag }}
     main: ./cmd/pulumi-resource-akp/
 
-signs:
-  - cmd: cosign
-    env:
-      - COSIGN_EXPERIMENTAL=1
-    certificate: '${artifact}.pem'
-    args:
-      - sign-blob
-      - '-y'
-      - '--output-certificate=${certificate}'
-      - '--bundle=${signature}'
-      - '${artifact}'
-    artifacts: all
-    output: true
+#signs:
+#  - cmd: cosign
+#    env:
+#      - COSIGN_EXPERIMENTAL=1
+#    certificate: '${artifact}.pem'
+#    args:
+#      - sign-blob
+#      - '-y'
+#      - '--output-certificate=${certificate}'
+#      - '--bundle=${signature}'
+#      - '${artifact}'
+#    artifacts: all
+#    output: true
 
-sboms:
-  - artifacts: archive
-  - id: source
-    artifacts: source
+#sboms:
+#  - artifacts: archive
+#  - id: source
+#    artifacts: source
 
 source:
   enabled: true
