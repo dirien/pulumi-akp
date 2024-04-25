@@ -1,0 +1,2687 @@
+{
+    "name": "akp",
+    "displayName": "Akuity Platform",
+    "description": "A Pulumi package for creating and managing Akuity Platform cloud resources.",
+    "keywords": [
+        "pulumi",
+        "akp",
+        "category/utility"
+    ],
+    "homepage": "https://www.pulumi.com",
+    "license": "Apache-2.0",
+    "attribution": "This Pulumi package is based on the [`akp` Terraform Provider](https://github.com/akuity/terraform-provider-akp).",
+    "repository": "https://github.com/dirien/pulumi-akp",
+    "pluginDownloadURL": "github://api.github.com/dirien/pulumi-akp",
+    "publisher": "dirien",
+    "meta": {
+        "moduleFormat": "(.*)(?:/[^/]*)"
+    },
+    "language": {
+        "csharp": {
+            "packageReferences": {
+                "Pulumi": "3.*"
+            },
+            "compatibility": "tfbridge20",
+            "rootNamespace": "ediri"
+        },
+        "go": {
+            "importBasePath": "github.com/dirien/pulumi-akp/sdk/go/akp",
+            "generateResourceContainerTypes": true,
+            "generateExtraInputTypes": true
+        },
+        "nodejs": {
+            "packageName": "@ediri/akp",
+            "packageDescription": "A Pulumi package for creating and managing Akuity Platform cloud resources.",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/akuity/terraform-provider-akp)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-akp` repo](https://github.com/dirien/pulumi-akp/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-akp` repo](https://github.com/akuity/terraform-provider-akp/issues).",
+            "dependencies": {
+                "@pulumi/pulumi": "^3.0.0"
+            },
+            "devDependencies": {
+                "@types/mime": "^2.0.0",
+                "@types/node": "^10.0.0"
+            },
+            "compatibility": "tfbridge20",
+            "disableUnionOutputTypes": true
+        },
+        "python": {
+            "packageName": "ediri_akp",
+            "requires": {
+                "pulumi": "\u003e=3.0.0,\u003c4.0.0"
+            },
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/akuity/terraform-provider-akp)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-akp` repo](https://github.com/dirien/pulumi-akp/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-akp` repo](https://github.com/akuity/terraform-provider-akp/issues).",
+            "compatibility": "tfbridge20",
+            "pyproject": {}
+        }
+    },
+    "config": {
+        "variables": {
+            "apiKeyId": {
+                "type": "string",
+                "description": "API Key Id. Use environment variable `AKUITY_API_KEY_ID`\n",
+                "defaultInfo": {
+                    "environment": [
+                        "AKUITY_API_KEY_ID"
+                    ]
+                },
+                "secret": true
+            },
+            "apiKeySecret": {
+                "type": "string",
+                "description": "API Key Secret, Use environment variable `AKUITY_API_KEY_SECRET`\n",
+                "defaultInfo": {
+                    "environment": [
+                        "AKUITY_API_KEY_SECRET"
+                    ]
+                },
+                "secret": true
+            },
+            "orgName": {
+                "type": "string",
+                "description": "Organization Name\n"
+            },
+            "serverUrl": {
+                "type": "string",
+                "description": "Akuity Platform API URL, default: `https://akuity.cloud`. You can use environment variable `AKUITY_SERVER_URL` instead\n",
+                "defaultInfo": {
+                    "environment": [
+                        "AKUITY_SERVER_URL"
+                    ]
+                }
+            },
+            "skipTlsVerify": {
+                "type": "boolean",
+                "description": "Skip TLS Verify. Only use for testing self-hosted version\n"
+            }
+        },
+        "defaults": [
+            "orgName"
+        ]
+    },
+    "types": {
+        "akp:index/ClusterKubeConfig:ClusterKubeConfig": {
+            "properties": {
+                "clientCertificate": {
+                    "type": "string",
+                    "description": "PEM-encoded client certificate for TLS authentication.\n"
+                },
+                "clientKey": {
+                    "type": "string",
+                    "description": "PEM-encoded client certificate key for TLS authentication.\n",
+                    "secret": true
+                },
+                "clusterCaCertificate": {
+                    "type": "string",
+                    "description": "PEM-encoded root certificates bundle for TLS authentication.\n"
+                },
+                "configContext": {
+                    "type": "string",
+                    "description": "Context name to load from the kube config file.\n"
+                },
+                "configContextAuthInfo": {
+                    "type": "string"
+                },
+                "configContextCluster": {
+                    "type": "string"
+                },
+                "configPath": {
+                    "type": "string",
+                    "description": "Path to the kube config file.\n"
+                },
+                "configPaths": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "A list of paths to kube config files.\n"
+                },
+                "host": {
+                    "type": "string",
+                    "description": "The hostname (in form of URI) of Kubernetes master.\n"
+                },
+                "insecure": {
+                    "type": "boolean",
+                    "description": "Whether server should be accessed without verifying the TLS certificate.\n"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "The password to use for HTTP basic authentication when accessing the Kubernetes master endpoint.\n",
+                    "secret": true
+                },
+                "proxyUrl": {
+                    "type": "string",
+                    "description": "URL to the proxy to be used for all API requests\n"
+                },
+                "token": {
+                    "type": "string",
+                    "description": "Token to authenticate an service account\n",
+                    "secret": true
+                },
+                "username": {
+                    "type": "string",
+                    "description": "The username to use for HTTP basic authentication when accessing the Kubernetes master endpoint.\n"
+                }
+            },
+            "type": "object"
+        },
+        "akp:index/ClusterSpec:ClusterSpec": {
+            "properties": {
+                "data": {
+                    "$ref": "#/types/akp:index/ClusterSpecData:ClusterSpecData",
+                    "description": "Cluster data\n"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Cluster description\n"
+                },
+                "namespaceScoped": {
+                    "type": "boolean",
+                    "description": "If the agent is namespace scoped\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "data"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "data",
+                        "description",
+                        "namespaceScoped"
+                    ]
+                }
+            }
+        },
+        "akp:index/ClusterSpecData:ClusterSpecData": {
+            "properties": {
+                "appReplication": {
+                    "type": "boolean",
+                    "description": "Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features\n"
+                },
+                "autoUpgradeDisabled": {
+                    "type": "boolean"
+                },
+                "kustomization": {
+                    "type": "string",
+                    "description": "Kustomize configuration that will be applied to generated agent installation manifests\n"
+                },
+                "redisTunneling": {
+                    "type": "boolean",
+                    "description": "Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy\n"
+                },
+                "size": {
+                    "type": "string",
+                    "description": "Cluster Size. One of `small`, `medium` or `large`\n"
+                },
+                "targetVersion": {
+                    "type": "string",
+                    "description": "The version of the agent to install on your cluster\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "size"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "appReplication",
+                        "autoUpgradeDisabled",
+                        "kustomization",
+                        "redisTunneling",
+                        "size",
+                        "targetVersion"
+                    ]
+                }
+            }
+        },
+        "akp:index/InstanceArgocd:InstanceArgocd": {
+            "properties": {
+                "spec": {
+                    "$ref": "#/types/akp:index/InstanceArgocdSpec:InstanceArgocdSpec",
+                    "description": "Argo CD instance spec\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "spec"
+            ]
+        },
+        "akp:index/InstanceArgocdSpec:InstanceArgocdSpec": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "Instance description\n"
+                },
+                "instanceSpec": {
+                    "$ref": "#/types/akp:index/InstanceArgocdSpecInstanceSpec:InstanceArgocdSpecInstanceSpec",
+                    "description": "Argo CD instance spec\n"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Argo CD version. Should be equal to any Akuity [`argocd` image tag](https://quay.io/repository/akuity/argocd?tab=tags).\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "instanceSpec",
+                "version"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "description",
+                        "instanceSpec",
+                        "version"
+                    ]
+                }
+            }
+        },
+        "akp:index/InstanceArgocdSpecInstanceSpec:InstanceArgocdSpecInstanceSpec": {
+            "properties": {
+                "appSetDelegate": {
+                    "$ref": "#/types/akp:index/InstanceArgocdSpecInstanceSpecAppSetDelegate:InstanceArgocdSpecInstanceSpecAppSetDelegate",
+                    "description": "Select cluster in which you want to Install Application Set controller\n"
+                },
+                "appsetPolicy": {
+                    "$ref": "#/types/akp:index/InstanceArgocdSpecInstanceSpecAppsetPolicy:InstanceArgocdSpecInstanceSpecAppsetPolicy",
+                    "description": "Configures Application Set policy settings.\n"
+                },
+                "assistantExtensionEnabled": {
+                    "type": "boolean",
+                    "description": "Enable Powerful AI-powered assistant Extension. It helps analyze Kubernetes resources behavior and provides suggestions about resolving issues.\n"
+                },
+                "auditExtensionEnabled": {
+                    "type": "boolean",
+                    "description": "Enable Audit Extension. Set this to `true` to install Audit Extension to Argo CD instance.\n"
+                },
+                "backendIpAllowListEnabled": {
+                    "type": "boolean",
+                    "description": "Enable ip allow list for cluster agents\n"
+                },
+                "clusterCustomizationDefaults": {
+                    "$ref": "#/types/akp:index/InstanceArgocdSpecInstanceSpecClusterCustomizationDefaults:InstanceArgocdSpecInstanceSpecClusterCustomizationDefaults",
+                    "description": "Default values for cluster agents\n"
+                },
+                "declarativeManagementEnabled": {
+                    "type": "boolean",
+                    "description": "Enable Declarative Management\n"
+                },
+                "extensions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/akp:index/InstanceArgocdSpecInstanceSpecExtension:InstanceArgocdSpecInstanceSpecExtension"
+                    },
+                    "description": "Extensions\n"
+                },
+                "hostAliases": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/akp:index/InstanceArgocdSpecInstanceSpecHostAlias:InstanceArgocdSpecInstanceSpecHostAlias"
+                    },
+                    "description": "Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.\n"
+                },
+                "imageUpdaterDelegate": {
+                    "$ref": "#/types/akp:index/InstanceArgocdSpecInstanceSpecImageUpdaterDelegate:InstanceArgocdSpecInstanceSpecImageUpdaterDelegate",
+                    "description": "Select cluster in which you want to Install Image Updater\n"
+                },
+                "imageUpdaterEnabled": {
+                    "type": "boolean",
+                    "description": "Enable Image Updater\n"
+                },
+                "ipAllowLists": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/akp:index/InstanceArgocdSpecInstanceSpecIpAllowList:InstanceArgocdSpecInstanceSpecIpAllowList"
+                    },
+                    "description": "IP allow list\n"
+                },
+                "repoServerDelegate": {
+                    "$ref": "#/types/akp:index/InstanceArgocdSpecInstanceSpecRepoServerDelegate:InstanceArgocdSpecInstanceSpecRepoServerDelegate",
+                    "description": "In case some clusters don't have network access to your private Git provider you can delegate these operations to one specific cluster.\n"
+                },
+                "subdomain": {
+                    "type": "string",
+                    "description": "Instance subdomain. By default equals to instance id\n"
+                },
+                "syncHistoryExtensionEnabled": {
+                    "type": "boolean",
+                    "description": "Enable Sync History Extension. Sync count and duration graphs as well as event details table on Argo CD application details page.\n"
+                }
+            },
+            "type": "object",
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "appsetPolicy",
+                        "assistantExtensionEnabled",
+                        "auditExtensionEnabled",
+                        "backendIpAllowListEnabled",
+                        "clusterCustomizationDefaults",
+                        "declarativeManagementEnabled",
+                        "imageUpdaterEnabled",
+                        "subdomain",
+                        "syncHistoryExtensionEnabled"
+                    ]
+                }
+            }
+        },
+        "akp:index/InstanceArgocdSpecInstanceSpecAppSetDelegate:InstanceArgocdSpecInstanceSpecAppSetDelegate": {
+            "properties": {
+                "managedCluster": {
+                    "$ref": "#/types/akp:index/InstanceArgocdSpecInstanceSpecAppSetDelegateManagedCluster:InstanceArgocdSpecInstanceSpecAppSetDelegateManagedCluster",
+                    "description": "Use managed cluster\n"
+                }
+            },
+            "type": "object"
+        },
+        "akp:index/InstanceArgocdSpecInstanceSpecAppSetDelegateManagedCluster:InstanceArgocdSpecInstanceSpecAppSetDelegateManagedCluster": {
+            "properties": {
+                "clusterName": {
+                    "type": "string",
+                    "description": "Cluster name\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "clusterName"
+            ]
+        },
+        "akp:index/InstanceArgocdSpecInstanceSpecAppsetPolicy:InstanceArgocdSpecInstanceSpecAppsetPolicy": {
+            "properties": {
+                "overridePolicy": {
+                    "type": "boolean",
+                    "description": "Allows per `ApplicationSet` sync policy.\n"
+                },
+                "policy": {
+                    "type": "string",
+                    "description": "Policy restricts what types of modifications will be made to managed Argo CD `Application` resources.\nAvailable options: `sync`, `create-only`, `create-delete`, and `create-update`.\n  - Policy `sync`(default): Update and delete are allowed.\n  - Policy `create-only`: Prevents ApplicationSet controller from modifying or deleting Applications.\n  - Policy `create-update`: Prevents ApplicationSet controller from deleting Applications. Update is allowed.\n  - Policy `create-delete`: Prevents ApplicationSet controller from modifying Applications, Delete is allowed.\n"
+                }
+            },
+            "type": "object",
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "overridePolicy",
+                        "policy"
+                    ]
+                }
+            }
+        },
+        "akp:index/InstanceArgocdSpecInstanceSpecClusterCustomizationDefaults:InstanceArgocdSpecInstanceSpecClusterCustomizationDefaults": {
+            "properties": {
+                "appReplication": {
+                    "type": "boolean",
+                    "description": "Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features\n"
+                },
+                "autoUpgradeDisabled": {
+                    "type": "boolean"
+                },
+                "kustomization": {
+                    "type": "string",
+                    "description": "Kustomize configuration that will be applied to generated agent installation manifests\n"
+                },
+                "redisTunneling": {
+                    "type": "boolean",
+                    "description": "Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy\n"
+                }
+            },
+            "type": "object",
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "appReplication",
+                        "autoUpgradeDisabled",
+                        "kustomization",
+                        "redisTunneling"
+                    ]
+                }
+            }
+        },
+        "akp:index/InstanceArgocdSpecInstanceSpecExtension:InstanceArgocdSpecInstanceSpecExtension": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Extension ID\n"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Extension version\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "id",
+                "version"
+            ]
+        },
+        "akp:index/InstanceArgocdSpecInstanceSpecHostAlias:InstanceArgocdSpecInstanceSpecHostAlias": {
+            "properties": {
+                "hostnames": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of hostnames\n"
+                },
+                "ip": {
+                    "type": "string",
+                    "description": "IP address\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "ip"
+            ]
+        },
+        "akp:index/InstanceArgocdSpecInstanceSpecImageUpdaterDelegate:InstanceArgocdSpecInstanceSpecImageUpdaterDelegate": {
+            "properties": {
+                "controlPlane": {
+                    "type": "boolean",
+                    "description": "If use control plane or not\n"
+                },
+                "managedCluster": {
+                    "$ref": "#/types/akp:index/InstanceArgocdSpecInstanceSpecImageUpdaterDelegateManagedCluster:InstanceArgocdSpecInstanceSpecImageUpdaterDelegateManagedCluster",
+                    "description": "If use managed cluster or not\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "controlPlane"
+            ]
+        },
+        "akp:index/InstanceArgocdSpecInstanceSpecImageUpdaterDelegateManagedCluster:InstanceArgocdSpecInstanceSpecImageUpdaterDelegateManagedCluster": {
+            "properties": {
+                "clusterName": {
+                    "type": "string",
+                    "description": "Cluster name\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "clusterName"
+            ]
+        },
+        "akp:index/InstanceArgocdSpecInstanceSpecIpAllowList:InstanceArgocdSpecInstanceSpecIpAllowList": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "IP description\n"
+                },
+                "ip": {
+                    "type": "string",
+                    "description": "IP address\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "ip"
+            ]
+        },
+        "akp:index/InstanceArgocdSpecInstanceSpecRepoServerDelegate:InstanceArgocdSpecInstanceSpecRepoServerDelegate": {
+            "properties": {
+                "controlPlane": {
+                    "type": "boolean",
+                    "description": "If use control plane or not\n"
+                },
+                "managedCluster": {
+                    "$ref": "#/types/akp:index/InstanceArgocdSpecInstanceSpecRepoServerDelegateManagedCluster:InstanceArgocdSpecInstanceSpecRepoServerDelegateManagedCluster",
+                    "description": "If use managed cluster or not\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "controlPlane"
+            ]
+        },
+        "akp:index/InstanceArgocdSpecInstanceSpecRepoServerDelegateManagedCluster:InstanceArgocdSpecInstanceSpecRepoServerDelegateManagedCluster": {
+            "properties": {
+                "clusterName": {
+                    "type": "string",
+                    "description": "Cluster name\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "clusterName"
+            ]
+        },
+        "akp:index/InstanceConfigManagementPlugins:InstanceConfigManagementPlugins": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether this plugin is enabled or not. Default to false.\n"
+                },
+                "image": {
+                    "type": "string",
+                    "description": "Image to use for the plugin\n"
+                },
+                "spec": {
+                    "$ref": "#/types/akp:index/InstanceConfigManagementPluginsSpec:InstanceConfigManagementPluginsSpec",
+                    "description": "Plugin spec\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "image",
+                "spec"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "enabled",
+                        "image",
+                        "spec"
+                    ]
+                }
+            }
+        },
+        "akp:index/InstanceConfigManagementPluginsSpec:InstanceConfigManagementPluginsSpec": {
+            "properties": {
+                "discover": {
+                    "$ref": "#/types/akp:index/InstanceConfigManagementPluginsSpecDiscover:InstanceConfigManagementPluginsSpecDiscover",
+                    "description": "The discovery config is applied to a repository. If every configured discovery tool matches, then the plugin may be used to generate manifests for Applications using the repository. If the discovery config is omitted then the plugin will not match any application but can still be invoked explicitly by specifying the plugin name in the app spec. Only one of fileName, find.glob, or find.command should be specified. If multiple are specified then only the first (in that order) is evaluated.\n"
+                },
+                "generate": {
+                    "$ref": "#/types/akp:index/InstanceConfigManagementPluginsSpecGenerate:InstanceConfigManagementPluginsSpecGenerate",
+                    "description": "The generate command runs in the Application source directory each time manifests are generated. Standard output must be ONLY valid Kubernetes Objects in either YAML or JSON. A non-zero exit code will fail manifest generation. Error output will be sent to the UI, so avoid printing sensitive information (such as secrets).\n"
+                },
+                "init": {
+                    "$ref": "#/types/akp:index/InstanceConfigManagementPluginsSpecInit:InstanceConfigManagementPluginsSpecInit",
+                    "description": "The init command runs in the Application source directory at the beginning of each manifest generation. The init command can output anything. A non-zero status code will fail manifest generation. Init always happens immediately before generate, but its output is not treated as manifests. This is a good place to, for example, download chart dependencies.\n"
+                },
+                "parameters": {
+                    "$ref": "#/types/akp:index/InstanceConfigManagementPluginsSpecParameters:InstanceConfigManagementPluginsSpecParameters",
+                    "description": "The parameters config describes what parameters the UI should display for an Application. It is up to the user to actually set parameters in the Application manifest (in spec.source.plugin.parameters). The announcements only inform the \"Parameters\" tab in the App Details page of the UI.\n"
+                },
+                "preserveFileMode": {
+                    "type": "boolean",
+                    "description": "Whether the plugin receives repository files with original file mode. Dangerous since the repository might have executable files. Set to true only if you trust the CMP plugin authors. Set to false by default.\n"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Plugin version\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "generate"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "generate",
+                        "preserveFileMode"
+                    ]
+                }
+            }
+        },
+        "akp:index/InstanceConfigManagementPluginsSpecDiscover:InstanceConfigManagementPluginsSpecDiscover": {
+            "properties": {
+                "fileName": {
+                    "type": "string",
+                    "description": "A glob pattern (https://pkg.go.dev/path/filepath#Glob) that is applied to the Application's source directory. If there is a match, this plugin may be used for the Application.\n"
+                },
+                "find": {
+                    "$ref": "#/types/akp:index/InstanceConfigManagementPluginsSpecDiscoverFind:InstanceConfigManagementPluginsSpecDiscoverFind",
+                    "description": "Find config\n"
+                }
+            },
+            "type": "object"
+        },
+        "akp:index/InstanceConfigManagementPluginsSpecDiscoverFind:InstanceConfigManagementPluginsSpecDiscoverFind": {
+            "properties": {
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Arguments for the find command\n"
+                },
+                "commands": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "The find command runs in the repository's root directory. To match, it must exit with status code 0 and produce non-empty output to standard out.\n"
+                },
+                "glob": {
+                    "type": "string",
+                    "description": "This does the same thing as `file_name`, but it supports double-start (nested directory) glob patterns.\n"
+                }
+            },
+            "type": "object"
+        },
+        "akp:index/InstanceConfigManagementPluginsSpecGenerate:InstanceConfigManagementPluginsSpecGenerate": {
+            "properties": {
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Arguments of the command\n"
+                },
+                "commands": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Command\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "commands"
+            ]
+        },
+        "akp:index/InstanceConfigManagementPluginsSpecInit:InstanceConfigManagementPluginsSpecInit": {
+            "properties": {
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Arguments of the command\n"
+                },
+                "commands": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Command\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "commands"
+            ]
+        },
+        "akp:index/InstanceConfigManagementPluginsSpecParameters:InstanceConfigManagementPluginsSpecParameters": {
+            "properties": {
+                "dynamic": {
+                    "$ref": "#/types/akp:index/InstanceConfigManagementPluginsSpecParametersDynamic:InstanceConfigManagementPluginsSpecParametersDynamic",
+                    "description": "Dynamic parameter announcements are announcements specific to an Application handled by this plugin. For example, the values for a Helm chart's values.yaml file could be sent as parameter announcements.\n"
+                },
+                "statics": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/akp:index/InstanceConfigManagementPluginsSpecParametersStatic:InstanceConfigManagementPluginsSpecParametersStatic"
+                    },
+                    "description": "Static parameter announcements are sent to the UI for all Applications handled by this plugin. Think of the `string`, `array`, and `map` values set here as defaults. It is up to the plugin author to make sure that these default values actually reflect the plugin's behavior if the user doesn't explicitly set different values for those parameters.\n"
+                }
+            },
+            "type": "object"
+        },
+        "akp:index/InstanceConfigManagementPluginsSpecParametersDynamic:InstanceConfigManagementPluginsSpecParametersDynamic": {
+            "properties": {
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Arguments of the command\n"
+                },
+                "commands": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "The command will run in an Application's source directory. Standard output must be JSON matching the schema of the static parameter announcements list.\n"
+                }
+            },
+            "type": "object"
+        },
+        "akp:index/InstanceConfigManagementPluginsSpecParametersStatic:InstanceConfigManagementPluginsSpecParametersStatic": {
+            "properties": {
+                "arrays": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "This field communicates the parameter's default value to the UI if the parameter is an `array`.\n"
+                },
+                "collectionType": {
+                    "type": "string",
+                    "description": "Collection Type describes what type of value this parameter accepts (string, array, or map) and allows the UI to present a form to match that type. Default is `string`. This field must be present for non-string types. It will not be inferred from the presence of an `array` or `map` field.\n"
+                },
+                "itemType": {
+                    "type": "string",
+                    "description": "Item type tells the UI how to present the parameter's value (or, for arrays and maps, values). Default is `string`. Examples of other types which may be supported in the future are `boolean` or `number`. Even if the itemType is not `string`, the parameter value from the Application spec will be sent to the plugin as a string. It's up to the plugin to do the appropriate conversion.\n"
+                },
+                "map": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "This field communicates the parameter's default value to the UI if the parameter is a `map`.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Parameter name\n"
+                },
+                "required": {
+                    "type": "boolean",
+                    "description": "Whether the Parameter is required or not. If this field is set to true, the UI will indicate to the user that they must set the value. Default to false.\n"
+                },
+                "string": {
+                    "type": "string",
+                    "description": "This field communicates the parameter's default value to the UI if the parameter is a `string`.\n"
+                },
+                "title": {
+                    "type": "string",
+                    "description": "Title and description of the parameter\n"
+                },
+                "tooltip": {
+                    "type": "string",
+                    "description": "Tooltip of the Parameter, will be shown when hovering over the title\n"
+                }
+            },
+            "type": "object",
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "required"
+                    ]
+                }
+            }
+        },
+        "akp:index/getClusterKubeConfig:getClusterKubeConfig": {
+            "properties": {
+                "clientCertificate": {
+                    "type": "string",
+                    "description": "PEM-encoded client certificate for TLS authentication.\n"
+                },
+                "clientKey": {
+                    "type": "string",
+                    "description": "PEM-encoded client certificate key for TLS authentication.\n",
+                    "secret": true
+                },
+                "clusterCaCertificate": {
+                    "type": "string",
+                    "description": "PEM-encoded root certificates bundle for TLS authentication.\n"
+                },
+                "configContext": {
+                    "type": "string",
+                    "description": "Context name to load from the kube config file.\n"
+                },
+                "configContextAuthInfo": {
+                    "type": "string"
+                },
+                "configContextCluster": {
+                    "type": "string"
+                },
+                "configPath": {
+                    "type": "string",
+                    "description": "Path to the kube config file.\n"
+                },
+                "configPaths": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "A list of paths to kube config files.\n"
+                },
+                "host": {
+                    "type": "string",
+                    "description": "The hostname (in form of URI) of Kubernetes master.\n"
+                },
+                "insecure": {
+                    "type": "boolean",
+                    "description": "Whether server should be accessed without verifying the TLS certificate.\n"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "The password to use for HTTP basic authentication when accessing the Kubernetes master endpoint.\n",
+                    "secret": true
+                },
+                "proxyUrl": {
+                    "type": "string",
+                    "description": "URL to the proxy to be used for all API requests\n"
+                },
+                "token": {
+                    "type": "string",
+                    "description": "Token to authenticate an service account\n",
+                    "secret": true
+                },
+                "username": {
+                    "type": "string",
+                    "description": "The username to use for HTTP basic authentication when accessing the Kubernetes master endpoint.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "clientCertificate",
+                "clientKey",
+                "clusterCaCertificate",
+                "configContext",
+                "configContextAuthInfo",
+                "configContextCluster",
+                "configPath",
+                "configPaths",
+                "host",
+                "insecure",
+                "password",
+                "proxyUrl",
+                "token",
+                "username"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getClusterSpec:getClusterSpec": {
+            "properties": {
+                "data": {
+                    "$ref": "#/types/akp:index/getClusterSpecData:getClusterSpecData",
+                    "description": "Cluster data\n"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Cluster description\n"
+                },
+                "namespaceScoped": {
+                    "type": "boolean",
+                    "description": "If the agent is namespace scoped\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "data",
+                "description",
+                "namespaceScoped"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getClusterSpecData:getClusterSpecData": {
+            "properties": {
+                "appReplication": {
+                    "type": "boolean",
+                    "description": "Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features\n"
+                },
+                "autoUpgradeDisabled": {
+                    "type": "boolean"
+                },
+                "kustomization": {
+                    "type": "string",
+                    "description": "Kustomize configuration that will be applied to generated agent installation manifests\n"
+                },
+                "redisTunneling": {
+                    "type": "boolean",
+                    "description": "Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy\n"
+                },
+                "size": {
+                    "type": "string",
+                    "description": "Cluster Size. One of `small`, `medium` or `large`\n"
+                },
+                "targetVersion": {
+                    "type": "string",
+                    "description": "The version of the agent to install on your cluster\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "appReplication",
+                "autoUpgradeDisabled",
+                "kustomization",
+                "redisTunneling",
+                "size",
+                "targetVersion"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getClustersCluster:getClustersCluster": {
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Annotations\n"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Cluster ID\n"
+                },
+                "instanceId": {
+                    "type": "string",
+                    "description": "Argo CD instance ID\n"
+                },
+                "kubeConfig": {
+                    "$ref": "#/types/akp:index/getClustersClusterKubeConfig:getClustersClusterKubeConfig"
+                },
+                "labels": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Labels\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Cluster name\n"
+                },
+                "namespace": {
+                    "type": "string",
+                    "description": "Agent installation namespace\n"
+                },
+                "removeAgentResourcesOnDestroy": {
+                    "type": "boolean",
+                    "description": "Remove agent Kubernetes resources from the managed cluster when destroying cluster\n"
+                },
+                "spec": {
+                    "$ref": "#/types/akp:index/getClustersClusterSpec:getClustersClusterSpec",
+                    "description": "Cluster spec\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "annotations",
+                "id",
+                "instanceId",
+                "kubeConfig",
+                "labels",
+                "name",
+                "namespace",
+                "removeAgentResourcesOnDestroy",
+                "spec"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getClustersClusterKubeConfig:getClustersClusterKubeConfig": {
+            "properties": {
+                "clientCertificate": {
+                    "type": "string",
+                    "description": "PEM-encoded client certificate for TLS authentication.\n"
+                },
+                "clientKey": {
+                    "type": "string",
+                    "description": "PEM-encoded client certificate key for TLS authentication.\n",
+                    "secret": true
+                },
+                "clusterCaCertificate": {
+                    "type": "string",
+                    "description": "PEM-encoded root certificates bundle for TLS authentication.\n"
+                },
+                "configContext": {
+                    "type": "string",
+                    "description": "Context name to load from the kube config file.\n"
+                },
+                "configContextAuthInfo": {
+                    "type": "string"
+                },
+                "configContextCluster": {
+                    "type": "string"
+                },
+                "configPath": {
+                    "type": "string",
+                    "description": "Path to the kube config file.\n"
+                },
+                "configPaths": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "A list of paths to kube config files.\n"
+                },
+                "host": {
+                    "type": "string",
+                    "description": "The hostname (in form of URI) of Kubernetes master.\n"
+                },
+                "insecure": {
+                    "type": "boolean",
+                    "description": "Whether server should be accessed without verifying the TLS certificate.\n"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "The password to use for HTTP basic authentication when accessing the Kubernetes master endpoint.\n",
+                    "secret": true
+                },
+                "proxyUrl": {
+                    "type": "string",
+                    "description": "URL to the proxy to be used for all API requests\n"
+                },
+                "token": {
+                    "type": "string",
+                    "description": "Token to authenticate an service account\n",
+                    "secret": true
+                },
+                "username": {
+                    "type": "string",
+                    "description": "The username to use for HTTP basic authentication when accessing the Kubernetes master endpoint.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "clientCertificate",
+                "clientKey",
+                "clusterCaCertificate",
+                "configContext",
+                "configContextAuthInfo",
+                "configContextCluster",
+                "configPath",
+                "configPaths",
+                "host",
+                "insecure",
+                "password",
+                "proxyUrl",
+                "token",
+                "username"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getClustersClusterSpec:getClustersClusterSpec": {
+            "properties": {
+                "data": {
+                    "$ref": "#/types/akp:index/getClustersClusterSpecData:getClustersClusterSpecData",
+                    "description": "Cluster data\n"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Cluster description\n"
+                },
+                "namespaceScoped": {
+                    "type": "boolean",
+                    "description": "If the agent is namespace scoped\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "data",
+                "description",
+                "namespaceScoped"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getClustersClusterSpecData:getClustersClusterSpecData": {
+            "properties": {
+                "appReplication": {
+                    "type": "boolean",
+                    "description": "Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features\n"
+                },
+                "autoUpgradeDisabled": {
+                    "type": "boolean"
+                },
+                "kustomization": {
+                    "type": "string",
+                    "description": "Kustomize configuration that will be applied to generated agent installation manifests\n"
+                },
+                "redisTunneling": {
+                    "type": "boolean",
+                    "description": "Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy\n"
+                },
+                "size": {
+                    "type": "string",
+                    "description": "Cluster Size. One of `small`, `medium` or `large`\n"
+                },
+                "targetVersion": {
+                    "type": "string",
+                    "description": "The version of the agent to install on your cluster\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "appReplication",
+                "autoUpgradeDisabled",
+                "kustomization",
+                "redisTunneling",
+                "size",
+                "targetVersion"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceArgocd:getInstanceArgocd": {
+            "properties": {
+                "spec": {
+                    "$ref": "#/types/akp:index/getInstanceArgocdSpec:getInstanceArgocdSpec",
+                    "description": "Argo CD instance spec\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "spec"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceArgocdSpec:getInstanceArgocdSpec": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "Instance description\n"
+                },
+                "instanceSpec": {
+                    "$ref": "#/types/akp:index/getInstanceArgocdSpecInstanceSpec:getInstanceArgocdSpecInstanceSpec",
+                    "description": "Argo CD instance spec\n"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Argo CD version. Should be equal to any Akuity [`argocd` image tag](https://quay.io/repository/akuity/argocd?tab=tags).\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "description",
+                "instanceSpec",
+                "version"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceArgocdSpecInstanceSpec:getInstanceArgocdSpecInstanceSpec": {
+            "properties": {
+                "appSetDelegate": {
+                    "$ref": "#/types/akp:index/getInstanceArgocdSpecInstanceSpecAppSetDelegate:getInstanceArgocdSpecInstanceSpecAppSetDelegate",
+                    "description": "Select cluster in which you want to Install Application Set controller\n"
+                },
+                "appsetPolicy": {
+                    "$ref": "#/types/akp:index/getInstanceArgocdSpecInstanceSpecAppsetPolicy:getInstanceArgocdSpecInstanceSpecAppsetPolicy",
+                    "description": "Configures Application Set policy settings.\n"
+                },
+                "assistantExtensionEnabled": {
+                    "type": "boolean",
+                    "description": "Enable Powerful AI-powered assistant Extension. It helps analyze Kubernetes resources behavior and provides suggestions about resolving issues.\n"
+                },
+                "auditExtensionEnabled": {
+                    "type": "boolean",
+                    "description": "Enable Audit Extension. Set this to `true` to install Audit Extension to Argo CD instance.\n"
+                },
+                "backendIpAllowListEnabled": {
+                    "type": "boolean",
+                    "description": "Enable ip allow list for cluster agents\n"
+                },
+                "clusterCustomizationDefaults": {
+                    "$ref": "#/types/akp:index/getInstanceArgocdSpecInstanceSpecClusterCustomizationDefaults:getInstanceArgocdSpecInstanceSpecClusterCustomizationDefaults",
+                    "description": "Default values for cluster agents\n"
+                },
+                "declarativeManagementEnabled": {
+                    "type": "boolean",
+                    "description": "Enable Declarative Management\n"
+                },
+                "extensions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/akp:index/getInstanceArgocdSpecInstanceSpecExtension:getInstanceArgocdSpecInstanceSpecExtension"
+                    },
+                    "description": "Extensions\n"
+                },
+                "hostAliases": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/akp:index/getInstanceArgocdSpecInstanceSpecHostAlias:getInstanceArgocdSpecInstanceSpecHostAlias"
+                    },
+                    "description": "Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.\n"
+                },
+                "imageUpdaterDelegate": {
+                    "$ref": "#/types/akp:index/getInstanceArgocdSpecInstanceSpecImageUpdaterDelegate:getInstanceArgocdSpecInstanceSpecImageUpdaterDelegate",
+                    "description": "Select cluster in which you want to Install Image Updater\n"
+                },
+                "imageUpdaterEnabled": {
+                    "type": "boolean",
+                    "description": "Enable Image Updater\n"
+                },
+                "ipAllowLists": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/akp:index/getInstanceArgocdSpecInstanceSpecIpAllowList:getInstanceArgocdSpecInstanceSpecIpAllowList"
+                    },
+                    "description": "IP allow list\n"
+                },
+                "repoServerDelegate": {
+                    "$ref": "#/types/akp:index/getInstanceArgocdSpecInstanceSpecRepoServerDelegate:getInstanceArgocdSpecInstanceSpecRepoServerDelegate",
+                    "description": "In case some clusters don't have network access to your private Git provider you can delegate these operations to one specific cluster.\n"
+                },
+                "subdomain": {
+                    "type": "string",
+                    "description": "Instance subdomain. By default equals to instance id\n"
+                },
+                "syncHistoryExtensionEnabled": {
+                    "type": "boolean",
+                    "description": "Enable Sync History Extension. Sync count and duration graphs as well as event details table on Argo CD application details page.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "appSetDelegate",
+                "appsetPolicy",
+                "assistantExtensionEnabled",
+                "auditExtensionEnabled",
+                "backendIpAllowListEnabled",
+                "clusterCustomizationDefaults",
+                "declarativeManagementEnabled",
+                "extensions",
+                "hostAliases",
+                "imageUpdaterDelegate",
+                "imageUpdaterEnabled",
+                "ipAllowLists",
+                "repoServerDelegate",
+                "subdomain",
+                "syncHistoryExtensionEnabled"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceArgocdSpecInstanceSpecAppSetDelegate:getInstanceArgocdSpecInstanceSpecAppSetDelegate": {
+            "properties": {
+                "managedCluster": {
+                    "$ref": "#/types/akp:index/getInstanceArgocdSpecInstanceSpecAppSetDelegateManagedCluster:getInstanceArgocdSpecInstanceSpecAppSetDelegateManagedCluster",
+                    "description": "Use managed cluster\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "managedCluster"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceArgocdSpecInstanceSpecAppSetDelegateManagedCluster:getInstanceArgocdSpecInstanceSpecAppSetDelegateManagedCluster": {
+            "properties": {
+                "clusterName": {
+                    "type": "string",
+                    "description": "Cluster name\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "clusterName"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceArgocdSpecInstanceSpecAppsetPolicy:getInstanceArgocdSpecInstanceSpecAppsetPolicy": {
+            "properties": {
+                "overridePolicy": {
+                    "type": "boolean",
+                    "description": "Allows per `ApplicationSet` sync policy.\n"
+                },
+                "policy": {
+                    "type": "string",
+                    "description": "Policy restricts what types of modifications will be made to managed Argo CD `Application` resources.\nAvailable options: `sync`, `create-only`, `create-delete`, and `create-update`.\n  - Policy `sync`(default): Update and delete are allowed.\n  - Policy `create-only`: Prevents ApplicationSet controller from modifying or deleting Applications.\n  - Policy `create-update`: Prevents ApplicationSet controller from deleting Applications. Update is allowed.\n  - Policy `create-delete`: Prevents ApplicationSet controller from modifying Applications, Delete is allowed.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "overridePolicy",
+                "policy"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceArgocdSpecInstanceSpecClusterCustomizationDefaults:getInstanceArgocdSpecInstanceSpecClusterCustomizationDefaults": {
+            "properties": {
+                "appReplication": {
+                    "type": "boolean",
+                    "description": "Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features\n"
+                },
+                "autoUpgradeDisabled": {
+                    "type": "boolean"
+                },
+                "kustomization": {
+                    "type": "string",
+                    "description": "Kustomize configuration that will be applied to generated agent installation manifests\n"
+                },
+                "redisTunneling": {
+                    "type": "boolean",
+                    "description": "Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "appReplication",
+                "autoUpgradeDisabled",
+                "kustomization",
+                "redisTunneling"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceArgocdSpecInstanceSpecExtension:getInstanceArgocdSpecInstanceSpecExtension": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Extension ID\n"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Extension version\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "id",
+                "version"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceArgocdSpecInstanceSpecHostAlias:getInstanceArgocdSpecInstanceSpecHostAlias": {
+            "properties": {
+                "hostnames": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Hostnames\n"
+                },
+                "ip": {
+                    "type": "string",
+                    "description": "IP address\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "hostnames",
+                "ip"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceArgocdSpecInstanceSpecImageUpdaterDelegate:getInstanceArgocdSpecInstanceSpecImageUpdaterDelegate": {
+            "properties": {
+                "controlPlane": {
+                    "type": "boolean",
+                    "description": "If use control plane or not\n"
+                },
+                "managedCluster": {
+                    "$ref": "#/types/akp:index/getInstanceArgocdSpecInstanceSpecImageUpdaterDelegateManagedCluster:getInstanceArgocdSpecInstanceSpecImageUpdaterDelegateManagedCluster",
+                    "description": "If use managed cluster or not\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "controlPlane",
+                "managedCluster"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceArgocdSpecInstanceSpecImageUpdaterDelegateManagedCluster:getInstanceArgocdSpecInstanceSpecImageUpdaterDelegateManagedCluster": {
+            "properties": {
+                "clusterName": {
+                    "type": "string",
+                    "description": "Cluster name\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "clusterName"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceArgocdSpecInstanceSpecIpAllowList:getInstanceArgocdSpecInstanceSpecIpAllowList": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "IP description\n"
+                },
+                "ip": {
+                    "type": "string",
+                    "description": "IP address\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "description",
+                "ip"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceArgocdSpecInstanceSpecRepoServerDelegate:getInstanceArgocdSpecInstanceSpecRepoServerDelegate": {
+            "properties": {
+                "controlPlane": {
+                    "type": "boolean",
+                    "description": "If use control plane or not\n"
+                },
+                "managedCluster": {
+                    "$ref": "#/types/akp:index/getInstanceArgocdSpecInstanceSpecRepoServerDelegateManagedCluster:getInstanceArgocdSpecInstanceSpecRepoServerDelegateManagedCluster",
+                    "description": "If use managed cluster or not\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "controlPlane",
+                "managedCluster"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceArgocdSpecInstanceSpecRepoServerDelegateManagedCluster:getInstanceArgocdSpecInstanceSpecRepoServerDelegateManagedCluster": {
+            "properties": {
+                "clusterName": {
+                    "type": "string",
+                    "description": "Cluster name\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "clusterName"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceConfigManagementPlugins:getInstanceConfigManagementPlugins": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether this plugin is enabled or not. Default to false.\n"
+                },
+                "image": {
+                    "type": "string",
+                    "description": "Image to use for the plugin\n"
+                },
+                "spec": {
+                    "$ref": "#/types/akp:index/getInstanceConfigManagementPluginsSpec:getInstanceConfigManagementPluginsSpec",
+                    "description": "Plugin spec\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "enabled",
+                "image",
+                "spec"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceConfigManagementPluginsSpec:getInstanceConfigManagementPluginsSpec": {
+            "properties": {
+                "discover": {
+                    "$ref": "#/types/akp:index/getInstanceConfigManagementPluginsSpecDiscover:getInstanceConfigManagementPluginsSpecDiscover",
+                    "description": "The discovery config is applied to a repository. If every configured discovery tool matches, then the plugin may be used to generate manifests for Applications using the repository. If the discovery config is omitted then the plugin will not match any application but can still be invoked explicitly by specifying the plugin name in the app spec. Only one of fileName, find.glob, or find.command should be specified. If multiple are specified then only the first (in that order) is evaluated.\n"
+                },
+                "generate": {
+                    "$ref": "#/types/akp:index/getInstanceConfigManagementPluginsSpecGenerate:getInstanceConfigManagementPluginsSpecGenerate",
+                    "description": "The generate command runs in the Application source directory each time manifests are generated. Standard output must be ONLY valid Kubernetes Objects in either YAML or JSON. A non-zero exit code will fail manifest generation. Error output will be sent to the UI, so avoid printing sensitive information (such as secrets).\n"
+                },
+                "init": {
+                    "$ref": "#/types/akp:index/getInstanceConfigManagementPluginsSpecInit:getInstanceConfigManagementPluginsSpecInit",
+                    "description": "The init command runs in the Application source directory at the beginning of each manifest generation. The init command can output anything. A non-zero status code will fail manifest generation. Init always happens immediately before generate, but its output is not treated as manifests. This is a good place to, for example, download chart dependencies.\n"
+                },
+                "parameters": {
+                    "$ref": "#/types/akp:index/getInstanceConfigManagementPluginsSpecParameters:getInstanceConfigManagementPluginsSpecParameters",
+                    "description": "The parameters config describes what parameters the UI should display for an Application. It is up to the user to actually set parameters in the Application manifest (in spec.source.plugin.parameters). The announcements only inform the \"Parameters\" tab in the App Details page of the UI.\n"
+                },
+                "preserveFileMode": {
+                    "type": "boolean",
+                    "description": "Whether the plugin receives repository files with original file mode. Dangerous since the repository might have executable files. Set to true only if you trust the CMP plugin authors. Set to false by default.\n"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Plugin version\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "discover",
+                "generate",
+                "init",
+                "parameters",
+                "preserveFileMode",
+                "version"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceConfigManagementPluginsSpecDiscover:getInstanceConfigManagementPluginsSpecDiscover": {
+            "properties": {
+                "fileName": {
+                    "type": "string",
+                    "description": "A glob pattern (https://pkg.go.dev/path/filepath#Glob) that is applied to the Application's source directory. If there is a match, this plugin may be used for the Application.\n"
+                },
+                "find": {
+                    "$ref": "#/types/akp:index/getInstanceConfigManagementPluginsSpecDiscoverFind:getInstanceConfigManagementPluginsSpecDiscoverFind",
+                    "description": "Find config\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "fileName",
+                "find"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceConfigManagementPluginsSpecDiscoverFind:getInstanceConfigManagementPluginsSpecDiscoverFind": {
+            "properties": {
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Arguments for the find command\n"
+                },
+                "commands": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "The find command runs in the repository's root directory. To match, it must exit with status code 0 and produce non-empty output to standard out.\n"
+                },
+                "glob": {
+                    "type": "string",
+                    "description": "This does the same thing as `file_name`, but it supports double-start (nested directory) glob patterns.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "args",
+                "commands",
+                "glob"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceConfigManagementPluginsSpecGenerate:getInstanceConfigManagementPluginsSpecGenerate": {
+            "properties": {
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Arguments of the command\n"
+                },
+                "commands": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Command\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "args",
+                "commands"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceConfigManagementPluginsSpecInit:getInstanceConfigManagementPluginsSpecInit": {
+            "properties": {
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Arguments of the command\n"
+                },
+                "commands": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Command\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "args",
+                "commands"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceConfigManagementPluginsSpecParameters:getInstanceConfigManagementPluginsSpecParameters": {
+            "properties": {
+                "dynamic": {
+                    "$ref": "#/types/akp:index/getInstanceConfigManagementPluginsSpecParametersDynamic:getInstanceConfigManagementPluginsSpecParametersDynamic",
+                    "description": "Dynamic parameter announcements are announcements specific to an Application handled by this plugin. For example, the values for a Helm chart's values.yaml file could be sent as parameter announcements.\n"
+                },
+                "statics": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/akp:index/getInstanceConfigManagementPluginsSpecParametersStatic:getInstanceConfigManagementPluginsSpecParametersStatic"
+                    },
+                    "description": "Static parameter announcements are sent to the UI for all Applications handled by this plugin. Think of the `string`, `array`, and `map` values set here as defaults. It is up to the plugin author to make sure that these default values actually reflect the plugin's behavior if the user doesn't explicitly set different values for those parameters.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "dynamic",
+                "statics"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceConfigManagementPluginsSpecParametersDynamic:getInstanceConfigManagementPluginsSpecParametersDynamic": {
+            "properties": {
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Arguments of the command\n"
+                },
+                "commands": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "The command will run in an Application's source directory. Standard output must be JSON matching the schema of the static parameter announcements list.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "args",
+                "commands"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "akp:index/getInstanceConfigManagementPluginsSpecParametersStatic:getInstanceConfigManagementPluginsSpecParametersStatic": {
+            "properties": {
+                "arrays": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "This field communicates the parameter's default value to the UI if the parameter is an `array`.\n"
+                },
+                "collectionType": {
+                    "type": "string",
+                    "description": "Collection Type describes what type of value this parameter accepts (string, array, or map) and allows the UI to present a form to match that type. Default is `string`. This field must be present for non-string types. It will not be inferred from the presence of an `array` or `map` field.\n"
+                },
+                "itemType": {
+                    "type": "string",
+                    "description": "Item type tells the UI how to present the parameter's value (or, for arrays and maps, values). Default is `string`. Examples of other types which may be supported in the future are `boolean` or `number`. Even if the itemType is not `string`, the parameter value from the Application spec will be sent to the plugin as a string. It's up to the plugin to do the appropriate conversion.\n"
+                },
+                "map": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "This field communicates the parameter's default value to the UI if the parameter is a `map`.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Parameter name\n"
+                },
+                "required": {
+                    "type": "boolean",
+                    "description": "Whether the Parameter is required or not. If this field is set to true, the UI will indicate to the user that they must set the value. Default to false.\n"
+                },
+                "string": {
+                    "type": "string",
+                    "description": "This field communicates the parameter's default value to the UI if the parameter is a `string`.\n"
+                },
+                "title": {
+                    "type": "string",
+                    "description": "Title and description of the parameter\n"
+                },
+                "tooltip": {
+                    "type": "string",
+                    "description": "Tooltip of the Parameter, will be shown when hovering over the title\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "arrays",
+                "collectionType",
+                "itemType",
+                "map",
+                "name",
+                "required",
+                "string",
+                "title",
+                "tooltip"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        }
+    },
+    "provider": {
+        "description": "The provider type for the akp package. By default, resources use package-wide configuration\nsettings, however an explicit `Provider` instance may be created and passed during resource\nconstruction to achieve fine-grained programmatic control over provider settings. See the\n[documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.\n",
+        "properties": {
+            "apiKeyId": {
+                "type": "string",
+                "description": "API Key Id. Use environment variable `AKUITY_API_KEY_ID`\n",
+                "secret": true
+            },
+            "apiKeySecret": {
+                "type": "string",
+                "description": "API Key Secret, Use environment variable `AKUITY_API_KEY_SECRET`\n",
+                "secret": true
+            },
+            "orgName": {
+                "type": "string",
+                "description": "Organization Name\n"
+            },
+            "serverUrl": {
+                "type": "string",
+                "description": "Akuity Platform API URL, default: `https://akuity.cloud`. You can use environment variable `AKUITY_SERVER_URL` instead\n"
+            },
+            "skipTlsVerify": {
+                "type": "boolean",
+                "description": "Skip TLS Verify. Only use for testing self-hosted version\n"
+            }
+        },
+        "required": [
+            "orgName"
+        ],
+        "inputProperties": {
+            "apiKeyId": {
+                "type": "string",
+                "description": "API Key Id. Use environment variable `AKUITY_API_KEY_ID`\n",
+                "defaultInfo": {
+                    "environment": [
+                        "AKUITY_API_KEY_ID"
+                    ]
+                },
+                "secret": true
+            },
+            "apiKeySecret": {
+                "type": "string",
+                "description": "API Key Secret, Use environment variable `AKUITY_API_KEY_SECRET`\n",
+                "defaultInfo": {
+                    "environment": [
+                        "AKUITY_API_KEY_SECRET"
+                    ]
+                },
+                "secret": true
+            },
+            "orgName": {
+                "type": "string",
+                "description": "Organization Name\n"
+            },
+            "serverUrl": {
+                "type": "string",
+                "description": "Akuity Platform API URL, default: `https://akuity.cloud`. You can use environment variable `AKUITY_SERVER_URL` instead\n",
+                "defaultInfo": {
+                    "environment": [
+                        "AKUITY_SERVER_URL"
+                    ]
+                }
+            },
+            "skipTlsVerify": {
+                "type": "boolean",
+                "description": "Skip TLS Verify. Only use for testing self-hosted version\n"
+            }
+        },
+        "requiredInputs": [
+            "orgName"
+        ]
+    },
+    "resources": {
+        "akp:index/cluster:Cluster": {
+            "description": "Manages a cluster attached to an Argo CD instance.\n\n## Example Usage\n\n### Exhaustive)\n\u003c!--Start PulumiCodeChooser --\u003e\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.akp.AkpFunctions;\nimport com.pulumi.akp.inputs.GetInstanceArgs;\nimport com.pulumi.akp.Cluster;\nimport com.pulumi.akp.ClusterArgs;\nimport com.pulumi.akp.inputs.ClusterSpecArgs;\nimport com.pulumi.akp.inputs.ClusterSpecDataArgs;\nimport com.pulumi.akp.inputs.ClusterKubeConfigArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var exampleInstance = AkpFunctions.getInstance(GetInstanceArgs.builder()\n            .name(\"test\")\n            .build());\n\n        var exampleCluster = new Cluster(\"exampleCluster\", ClusterArgs.builder()        \n            .instanceId(exampleInstance.applyValue(getInstanceResult -\u003e getInstanceResult.id()))\n            .namespace(\"test\")\n            .labels(Map.of(\"test-label\", true))\n            .annotations(Map.of(\"test-annotation\", false))\n            .spec(ClusterSpecArgs.builder()\n                .namespace_scoped(true)\n                .description(\"test-description\")\n                .data(ClusterSpecDataArgs.builder()\n                    .size(\"small\")\n                    .autoUpgradeDisabled(true)\n                    .targetVersion(\"0.4.0\")\n                    .kustomization(\"\"\"\n  apiVersion: kustomize.config.k8s.io/v1beta1\n  kind: Kustomization\n  patches:\n    - patch: |-\n        apiVersion: apps/v1\n        kind: Deployment\n        metadata:\n          name: argocd-repo-server\n        spec:\n          template:\n            spec:\n              containers:\n              - name: argocd-repo-server\n                resources:\n                  limits:\n                    memory: 2Gi\n                  requests:\n                    cpu: 750m\n                    memory: 1Gi\n      target:\n        kind: Deployment\n        name: argocd-repo-server\n                    \"\"\")\n                    .build())\n                .build())\n            .kubeConfig(ClusterKubeConfigArgs.builder()\n                .config_path(\"test.kubeconfig\")\n                .token(\"YOUR TOKEN\")\n                .build())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  exampleCluster:\n    type: akp:Cluster\n    properties:\n      instanceId: ${exampleInstance.id}\n      namespace: test\n      labels:\n        test-label: true\n      annotations:\n        test-annotation: false\n      spec:\n        namespace_scoped: true\n        description: test-description\n        data:\n          size: small\n          autoUpgradeDisabled: true\n          targetVersion: 0.4.0\n          kustomization: |2\n              apiVersion: kustomize.config.k8s.io/v1beta1\n              kind: Kustomization\n              patches:\n                - patch: |-\n                    apiVersion: apps/v1\n                    kind: Deployment\n                    metadata:\n                      name: argocd-repo-server\n                    spec:\n                      template:\n                        spec:\n                          containers:\n                          - name: argocd-repo-server\n                            resources:\n                              limits:\n                                memory: 2Gi\n                              requests:\n                                cpu: 750m\n                                memory: 1Gi\n                  target:\n                    kind: Deployment\n                    name: argocd-repo-server\n      kubeConfig:\n        config_path: test.kubeconfig\n        token: YOUR TOKEN\nvariables:\n  exampleInstance:\n    fn::invoke:\n      Function: akp:getInstance\n      Arguments:\n        name: test\n```\n\u003c!--End PulumiCodeChooser --\u003e\n\n## Import\n\nUsing `pulumi import`, import AKP cluster using `instance_id` and `name` separated by a forward slash (`/`). For example:\n\n```sh\n$ pulumi import akp:index/cluster:Cluster example 6pzhawvy4echbd8x/test-cluster\n```\n\n",
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Annotations\n"
+                },
+                "instanceId": {
+                    "type": "string",
+                    "description": "Argo CD instance ID\n"
+                },
+                "kubeConfig": {
+                    "$ref": "#/types/akp:index/ClusterKubeConfig:ClusterKubeConfig",
+                    "description": "Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent\n"
+                },
+                "labels": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Labels\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Cluster name\n"
+                },
+                "namespace": {
+                    "type": "string",
+                    "description": "Agent installation namespace\n"
+                },
+                "removeAgentResourcesOnDestroy": {
+                    "type": "boolean",
+                    "description": "Remove agent Kubernetes resources from the managed cluster when destroying cluster, default to `true`\n"
+                },
+                "spec": {
+                    "$ref": "#/types/akp:index/ClusterSpec:ClusterSpec",
+                    "description": "Cluster spec\n"
+                }
+            },
+            "required": [
+                "annotations",
+                "instanceId",
+                "labels",
+                "name",
+                "namespace",
+                "removeAgentResourcesOnDestroy",
+                "spec"
+            ],
+            "inputProperties": {
+                "annotations": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Annotations\n"
+                },
+                "instanceId": {
+                    "type": "string",
+                    "description": "Argo CD instance ID\n"
+                },
+                "kubeConfig": {
+                    "$ref": "#/types/akp:index/ClusterKubeConfig:ClusterKubeConfig",
+                    "description": "Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent\n"
+                },
+                "labels": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Labels\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Cluster name\n"
+                },
+                "namespace": {
+                    "type": "string",
+                    "description": "Agent installation namespace\n"
+                },
+                "removeAgentResourcesOnDestroy": {
+                    "type": "boolean",
+                    "description": "Remove agent Kubernetes resources from the managed cluster when destroying cluster, default to `true`\n"
+                },
+                "spec": {
+                    "$ref": "#/types/akp:index/ClusterSpec:ClusterSpec",
+                    "description": "Cluster spec\n"
+                }
+            },
+            "requiredInputs": [
+                "instanceId",
+                "namespace",
+                "spec"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Cluster resources.\n",
+                "properties": {
+                    "annotations": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "Annotations\n"
+                    },
+                    "instanceId": {
+                        "type": "string",
+                        "description": "Argo CD instance ID\n"
+                    },
+                    "kubeConfig": {
+                        "$ref": "#/types/akp:index/ClusterKubeConfig:ClusterKubeConfig",
+                        "description": "Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent\n"
+                    },
+                    "labels": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "Labels\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Cluster name\n"
+                    },
+                    "namespace": {
+                        "type": "string",
+                        "description": "Agent installation namespace\n"
+                    },
+                    "removeAgentResourcesOnDestroy": {
+                        "type": "boolean",
+                        "description": "Remove agent Kubernetes resources from the managed cluster when destroying cluster, default to `true`\n"
+                    },
+                    "spec": {
+                        "$ref": "#/types/akp:index/ClusterSpec:ClusterSpec",
+                        "description": "Cluster spec\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "akp:index/instance:Instance": {
+            "description": "Manages an Argo CD instance\n\n## Example Usage\n\n### Basic)\n\u003c!--Start PulumiCodeChooser --\u003e\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as akp from \"@ediri/akp\";\n\nconst argocd = new akp.Instance(\"argocd\", {argocd: {\n    spec: {\n        instanceSpec: {\n            declarativeManagementEnabled: true,\n        },\n        version: \"v2.8.4\",\n    },\n}});\n```\n```python\nimport pulumi\nimport ediri_akp as akp\n\nargocd = akp.Instance(\"argocd\", argocd=akp.InstanceArgocdArgs(\n    spec=akp.InstanceArgocdSpecArgs(\n        instance_spec=akp.InstanceArgocdSpecInstanceSpecArgs(\n            declarative_management_enabled=True,\n        ),\n        version=\"v2.8.4\",\n    ),\n))\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Akp = ediri.Akp;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var argocd = new Akp.Instance(\"argocd\", new()\n    {\n        Argocd = new Akp.Inputs.InstanceArgocdArgs\n        {\n            Spec = new Akp.Inputs.InstanceArgocdSpecArgs\n            {\n                InstanceSpec = new Akp.Inputs.InstanceArgocdSpecInstanceSpecArgs\n                {\n                    DeclarativeManagementEnabled = true,\n                },\n                Version = \"v2.8.4\",\n            },\n        },\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/dirien/pulumi-akp/sdk/go/akp\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := akp.NewInstance(ctx, \"argocd\", \u0026akp.InstanceArgs{\n\t\t\tArgocd: \u0026akp.InstanceArgocdArgs{\n\t\t\t\tSpec: \u0026akp.InstanceArgocdSpecArgs{\n\t\t\t\t\tInstanceSpec: \u0026akp.InstanceArgocdSpecInstanceSpecArgs{\n\t\t\t\t\t\tDeclarativeManagementEnabled: pulumi.Bool(true),\n\t\t\t\t\t},\n\t\t\t\t\tVersion: pulumi.String(\"v2.8.4\"),\n\t\t\t\t},\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.akp.Instance;\nimport com.pulumi.akp.InstanceArgs;\nimport com.pulumi.akp.inputs.InstanceArgocdArgs;\nimport com.pulumi.akp.inputs.InstanceArgocdSpecArgs;\nimport com.pulumi.akp.inputs.InstanceArgocdSpecInstanceSpecArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var argocd = new Instance(\"argocd\", InstanceArgs.builder()        \n            .argocd(InstanceArgocdArgs.builder()\n                .spec(InstanceArgocdSpecArgs.builder()\n                    .instanceSpec(InstanceArgocdSpecInstanceSpecArgs.builder()\n                        .declarativeManagementEnabled(true)\n                        .build())\n                    .version(\"v2.8.4\")\n                    .build())\n                .build())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  argocd:\n    type: akp:Instance\n    properties:\n      argocd:\n        spec:\n          instanceSpec:\n            declarativeManagementEnabled: true\n          version: v2.8.4\n```\n\u003c!--End PulumiCodeChooser --\u003e\n\n\n### Config Management Plugins)\n\nPlease read the Managing Config Management Plugins Guide before you start.\n\n\u003c!--Start PulumiCodeChooser --\u003e\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.akp.Instance;\nimport com.pulumi.akp.InstanceArgs;\nimport com.pulumi.akp.inputs.InstanceArgocdArgs;\nimport com.pulumi.akp.inputs.InstanceArgocdSpecArgs;\nimport com.pulumi.akp.inputs.InstanceArgocdSpecInstanceSpecArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var argocd = new Instance(\"argocd\", InstanceArgs.builder()        \n            .argocd(InstanceArgocdArgs.builder()\n                .spec(InstanceArgocdSpecArgs.builder()\n                    .instanceSpec(InstanceArgocdSpecInstanceSpecArgs.builder()\n                        .declarativeManagementEnabled(true)\n                        .build())\n                    .version(\"v2.8.4\")\n                    .build())\n                .build())\n            .configManagementPlugins(Map.ofEntries(\n                Map.entry(\"kasane\", Map.ofEntries(\n                    Map.entry(\"enabled\", false),\n                    Map.entry(\"image\", \"gcr.io/kasaneapp/kasane\"),\n                    Map.entry(\"spec\", Map.ofEntries(\n                        Map.entry(\"generate\", Map.of(\"command\",                         \n                            \"kasane\",\n                            \"show\")),\n                        Map.entry(\"init\", Map.of(\"command\",                         \n                            \"kasane\",\n                            \"update\"))\n                    ))\n                )),\n                Map.entry(\"tanka\", Map.ofEntries(\n                    Map.entry(\"enabled\", true),\n                    Map.entry(\"image\", \"grafana/tanka:0.25.0\"),\n                    Map.entry(\"spec\", Map.ofEntries(\n                        Map.entry(\"discover\", Map.of(\"fileName\", \"jsonnetfile.json\")),\n                        Map.entry(\"generate\", Map.ofEntries(\n                            Map.entry(\"args\", \"tk show environments/$PARAM_ENV --dangerous-allow-redirect\"),\n                            Map.entry(\"command\",                             \n                                \"sh\",\n                                \"-c\")\n                        )),\n                        Map.entry(\"init\", Map.of(\"command\",                         \n                            \"jb\",\n                            \"update\")),\n                        Map.entry(\"parameters\", Map.of(\"static\", Map.ofEntries(\n                            Map.entry(\"name\", \"env\"),\n                            Map.entry(\"required\", true),\n                            Map.entry(\"string\", \"default\")\n                        ))),\n                        Map.entry(\"preserveFileMode\", false),\n                        Map.entry(\"version\", \"v1.0\")\n                    ))\n                ))\n            ))\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  argocd:\n    type: akp:Instance\n    properties:\n      argocd:\n        spec:\n          instanceSpec:\n            declarativeManagementEnabled: true\n          version: v2.8.4\n      configManagementPlugins:\n        kasane:\n          - enabled: false\n            image: gcr.io/kasaneapp/kasane\n            spec:\n              - generate:\n                  - command:\n                      - kasane\n                      - show\n                init:\n                  - command:\n                      - kasane\n                      - update\n        tanka:\n          - enabled: true\n            image: grafana/tanka:0.25.0\n            spec:\n              - discover:\n                  - fileName: jsonnetfile.json\n                generate:\n                  - args:\n                      - tk show environments/$PARAM_ENV --dangerous-allow-redirect\n                    command:\n                      - sh\n                      - -c\n                init:\n                  - command:\n                      - jb\n                      - update\n                parameters:\n                  - static:\n                      - name: env\n                        required: true\n                        string: default\n                preserveFileMode: false\n                version: v1.0\n```\n\u003c!--End PulumiCodeChooser --\u003e\n\n\n### Exhaustive)\n\u003c!--Start PulumiCodeChooser --\u003e\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.akp.Instance;\nimport com.pulumi.akp.InstanceArgs;\nimport com.pulumi.akp.inputs.InstanceArgocdArgs;\nimport com.pulumi.akp.inputs.InstanceArgocdSpecArgs;\nimport com.pulumi.akp.inputs.InstanceArgocdSpecInstanceSpecArgs;\nimport com.pulumi.akp.inputs.InstanceArgocdSpecInstanceSpecAppsetPolicyArgs;\nimport com.pulumi.akp.inputs.InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var example = new Instance(\"example\", InstanceArgs.builder()        \n            .applicationSetSecret(Map.of(\"my-appset-secret\", \"xyz456\"))\n            .argocd(InstanceArgocdArgs.builder()\n                .spec(InstanceArgocdSpecArgs.builder()\n                    .description(\"test-inst\")\n                    .instanceSpec(InstanceArgocdSpecInstanceSpecArgs.builder()\n                        .appsetPolicy(InstanceArgocdSpecInstanceSpecAppsetPolicyArgs.builder()\n                            .overridePolicy(true)\n                            .policy(\"create-only\")\n                            .build())\n                        .backendIpAllowListEnabled(true)\n                        .clusterCustomizationDefaults(InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsArgs.builder()\n                            .autoUpgradeDisabled(true)\n                            .build())\n                        .declarativeManagementEnabled(false)\n                        .hostAliases(InstanceArgocdSpecInstanceSpecHostAliasArgs.builder()\n                            .hostnames(\"test.example.com\")\n                            .ip(\"1.2.3.4\")\n                            .build())\n                        .imageUpdaterEnabled(true)\n                        .ipAllowList(%!v(PANIC=Format method: runtime error: invalid memory address or nil pointer dereference))\n                        .build())\n                    .version(\"v2.6.4\")\n                    .build())\n                .build())\n            .argocdCm(Map.ofEntries(\n                Map.entry(\"accounts.alice\", \"login\"),\n                Map.entry(\"admin.enabled\", false),\n                Map.entry(\"dex.config\", \"\"\"\nconnectors:\n  # GitHub example\n  - type: github\n    id: github\n    name: GitHub\n    config:\n      clientID: aabbccddeeff00112233\n      clientSecret: $dex.github.clientSecret\n      orgs:\n      - name: your-github-org\n\n                \"\"\"),\n                Map.entry(\"exec.enabled\", true),\n                Map.entry(\"ga.anonymizeusers\", false),\n                Map.entry(\"helm.enabled\", true),\n                Map.entry(\"kustomize.buildOptions\", \"--load_restrictor none\"),\n                Map.entry(\"kustomize.enabled\", true),\n                Map.entry(\"server.rbac.log.enforce.enable\", false),\n                Map.entry(\"statusbadge.enabled\", false),\n                Map.entry(\"ui.bannerpermanent\", false),\n                Map.entry(\"users.anonymous.enabled\", true)\n            ))\n            .argocdImageUpdaterConfig(Map.ofEntries(\n                Map.entry(\"git.email\", \"akuitybot@akuity.io\"),\n                Map.entry(\"git.user\", \"akuitybot\"),\n                Map.entry(\"registries.conf\", \"\"\"\n  registries:\n    - prefix: docker.io\n      name: Docker2\n      api_url: https://registry-1.docker.io\n      credentials: secret:argocd/argocd-image-updater-secret#my-docker-credentials\n\n                \"\"\")\n            ))\n            .argocdImageUpdaterSecret(Map.of(\"my-docker-credentials\", \"abcd1234\"))\n            .argocdImageUpdaterSshConfig(Map.of(\"config\", \"\"\"\n  Host *\n        PubkeyAcceptedAlgorithms +ssh-rsa\n        HostkeyAlgorithms +ssh-rsa\n        HostkeyAlgorithms2 +ssh-rsa\n\n            \"\"\"))\n            .argocdNotificationsCm(Map.ofEntries(\n                Map.entry(\"defaultTriggers\", \"\"\"\n  - on-sync-status-unknown\n\n                \"\"\"),\n                Map.entry(\"template.my-custom-template\", \"\"\"\n  message: |\n    Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.\n\n                \"\"\"),\n                Map.entry(\"trigger.on-sync-status-unknown\", \"\"\"\n  - when: app.status.sync.status == 'Unknown'\n    send: [my-custom-template]\n\n                \"\"\")\n            ))\n            .argocdNotificationsSecret(Map.ofEntries(\n                Map.entry(\"email-password\", \"password\"),\n                Map.entry(\"email-username\", \"test@argoproj.io\")\n            ))\n            .argocdRbacCm(Map.ofEntries(\n                Map.entry(\"policy.csv\", \"\"\"\np, role:org-admin, applications, *, */*, allow\np, role:org-admin, clusters, get, *, allow\ng, your-github-org:your-team, role:org-admin\n\n                \"\"\"),\n                Map.entry(\"policy.default\", \"role:readonly\")\n            ))\n            .argocdSecret(Map.ofEntries(\n                Map.entry(\"dex.github.clientSecret\", \"my-github-oidc-secret\"),\n                Map.entry(\"webhook.github.secret\", \"shhhh! it'   s a github secret\")\n            ))\n            .argocdSshKnownHostsCm(Map.of(\"ssh_known_hosts\", \"\"\"\n[ssh.github.com]:443 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=\n[ssh.github.com]:443 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl\n[ssh.github.com]:443 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=\nbitbucket.org ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBPIQmuzMBuKdWeF4+a2sjSSpBK0iqitSQ+5BM9KhpexuGt20JpTVM7u5BDZngncgrqDMbWdxMWWOGtZ9UgbqgZE=\nbitbucket.org ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIazEu89wgQZ4bqs3d63QSMzYVa0MuJ2e2gKTKqu+UUO\nbitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQeJzhupRu0u0cdegZIa8e86EG2qOCsIsD1Xw0xSeiPDlCr7kq97NLmMbpKTX6Esc30NuoqEEHCuc7yWtwp8dI76EEEB1VqY9QJq6vk+aySyboD5QF61I/1WeTwu+deCbgKMGbUijeXhtfbxSxm6JwGrXrhBdofTsbKRUsrN1WoNgUa8uqN1Vx6WAJw1JHPhglEGGHea6QICwJOAr/6mrui/oB7pkaWKHj3z7d1IC4KWLtY47elvjbaTlkN04Kc/5LFEirorGYVbt15kAUlqGM65pk6ZBxtaO3+30LVlORZkxOh+LKL/BvbZ/iRNhItLqNyieoQj/uh/7Iv4uyH/cV/0b4WDSd3DptigWq84lJubb9t/DnZlrJazxyDCulTmKdOR7vs9gMTo+uoIrPSb8ScTtvw65+odKAlBj59dhnVp9zd7QUojOpXlL62Aw56U4oO+FALuevvMjiWeavKhJqlR7i5n9srYcrNV7ttmDw7kf/97P5zauIhxcjX+xHv4M=\ngithub.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=\ngithub.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl\ngithub.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=\ngitlab.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY=\ngitlab.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfuCHKVTjquxvt6CM6tdG4SLp1Btn/nOeHHE5UOzRdf\ngitlab.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bNKTBSpIYDEGk9KxsGh3mySTRgMtXL583qmBpzeQ+jqCMRgBqB98u3z++J1sKlXHWfM9dyhSevkMwSbhoR8XIq/U0tCNyokEi/ueaBMCvbcTHhO7FcwzY92WK4Yt0aGROY5qX2UKSeOvuP4D6TPqKF1onrSzH9bx9XUf2lEdWT/ia1NEKjunUqu1xOB/StKDHMoX4/OKyIzuS0q/T1zOATthvasJFoPrAjkohTyaDUz2LN5JoH839hViyEG82yB+MjcFV5MU3N1l1QL3cVUCh93xSaua1N85qivl+siMkPGbO5xR/En4iEY6K2XPASUEMaieWVNTRCtJ4S8H+9\nssh.dev.azure.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H\nvs-ssh.visualstudio.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H\n      \n            \"\"\"))\n            .argocdTlsCertsCm(Map.of(\"server.example.com\", \"\"\"\n          -----BEGIN CERTIFICATE-----\n          ......\n          -----END CERTIFICATE-----\n      \n            \"\"\"))\n            .configManagementPlugins(Map.ofEntries(\n                Map.entry(\"kasane\", Map.ofEntries(\n                    Map.entry(\"enabled\", true),\n                    Map.entry(\"image\", \"gcr.io/kasaneapp/kasane\"),\n                    Map.entry(\"spec\", Map.ofEntries(\n                        Map.entry(\"generate\", Map.of(\"command\",                         \n                            \"kasane\",\n                            \"show\")),\n                        Map.entry(\"init\", Map.of(\"command\",                         \n                            \"kasane\",\n                            \"update\"))\n                    ))\n                )),\n                Map.entry(\"tanka\", Map.ofEntries(\n                    Map.entry(\"enabled\", true),\n                    Map.entry(\"image\", \"grafana/tanka:0.25.0\"),\n                    Map.entry(\"spec\", Map.ofEntries(\n                        Map.entry(\"discover\", Map.of(\"fileName\", \"jsonnetfile.json\")),\n                        Map.entry(\"generate\", Map.ofEntries(\n                            Map.entry(\"args\", \"tk show environments/$PARAM_ENV --dangerous-allow-redirect\"),\n                            Map.entry(\"command\",                             \n                                \"sh\",\n                                \"-c\")\n                        )),\n                        Map.entry(\"init\", Map.of(\"command\",                         \n                            \"jb\",\n                            \"update\")),\n                        Map.entry(\"parameters\", Map.of(\"static\", Map.ofEntries(\n                            Map.entry(\"name\", \"env\"),\n                            Map.entry(\"required\", true),\n                            Map.entry(\"string\", \"default\")\n                        ))),\n                        Map.entry(\"preserveFileMode\", false),\n                        Map.entry(\"version\", \"v1.0\")\n                    ))\n                ))\n            ))\n            .repoCredentialSecrets(Map.ofEntries(\n                Map.entry(\"repo-my-private-https-repo\", Map.ofEntries(\n                    Map.entry(\"enableLfs\", true),\n                    Map.entry(\"forceHttpBasicAuth\", true),\n                    Map.entry(\"insecure\", true),\n                    Map.entry(\"password\", \"my-ppassword\"),\n                    Map.entry(\"url\", \"https://github.com/argoproj/argocd-example-apps\"),\n                    Map.entry(\"username\", \"my-username\")\n                )),\n                Map.entry(\"repo-my-private-ssh-repo\", Map.ofEntries(\n                    Map.entry(\"enableLfs\", true),\n                    Map.entry(\"insecure\", true),\n                    Map.entry(\"sshPrivateKey\", \"\"\"\n      # paste the sshPrivateKey data here\n      \n                    \"\"\"),\n                    Map.entry(\"url\", \"ssh://git@github.com/argoproj/argocd-example-apps\")\n                ))\n            ))\n            .repoTemplateCredentialSecrets(Map.of(\"repo-argoproj-https-creds\", Map.ofEntries(\n                Map.entry(\"password\", \"my-password\"),\n                Map.entry(\"type\", \"helm\"),\n                Map.entry(\"url\", \"https://github.com/argoproj\"),\n                Map.entry(\"username\", \"my-username\")\n            )))\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  example:\n    type: akp:Instance\n    properties:\n      applicationSetSecret:\n        my-appset-secret: xyz456\n      argocd:\n        spec:\n          description: test-inst\n          instanceSpec:\n            appsetPolicy:\n              overridePolicy: true\n              policy: create-only\n            backendIpAllowListEnabled: true\n            clusterCustomizationDefaults:\n              autoUpgradeDisabled: true\n            declarativeManagementEnabled: false\n            hostAliases:\n              - hostnames:\n                  - test.example.com\n                ip: 1.2.3.4\n            imageUpdaterEnabled: true\n            ipAllowList:\n              - description: dummy entry2\n                ip: 1.2.3.4\n          version: v2.6.4\n      argocdCm:\n        accounts.alice: login\n        admin.enabled: false\n        dex.config: |+\n          connectors:\n            # GitHub example\n            - type: github\n              id: github\n              name: GitHub\n              config:\n                clientID: aabbccddeeff00112233\n                clientSecret: $dex.github.clientSecret\n                orgs:\n                - name: your-github-org\n\n        exec.enabled: true\n        ga.anonymizeusers: false\n        helm.enabled: true\n        kustomize.buildOptions: --load_restrictor none\n        kustomize.enabled: true\n        server.rbac.log.enforce.enable: false\n        statusbadge.enabled: false\n        ui.bannerpermanent: false\n        users.anonymous.enabled: true\n      argocdImageUpdaterConfig:\n        git.email: akuitybot@akuity.io\n        git.user: akuitybot\n        registries.conf: |2+\n            registries:\n              - prefix: docker.io\n                name: Docker2\n                api_url: https://registry-1.docker.io\n                credentials: secret:argocd/argocd-image-updater-secret#my-docker-credentials\n\n      argocdImageUpdaterSecret:\n        my-docker-credentials: abcd1234\n      argocdImageUpdaterSshConfig:\n        config: |2+\n            Host *\n                  PubkeyAcceptedAlgorithms +ssh-rsa\n                  HostkeyAlgorithms +ssh-rsa\n                  HostkeyAlgorithms2 +ssh-rsa\n\n      argocdNotificationsCm:\n        defaultTriggers: |2+\n            - on-sync-status-unknown\n\n        template.my-custom-template: |2+\n            message: |\n              Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.\n\n        trigger.on-sync-status-unknown: |2+\n            - when: app.status.sync.status == 'Unknown'\n              send: [my-custom-template]\n\n      argocdNotificationsSecret:\n        email-password: password\n        email-username: test@argoproj.io\n      argocdRbacCm:\n        policy.csv: |+\n          p, role:org-admin, applications, *, */*, allow\n          p, role:org-admin, clusters, get, *, allow\n          g, your-github-org:your-team, role:org-admin\n\n        policy.default: role:readonly\n      argocdSecret:\n        dex.github.clientSecret: my-github-oidc-secret\n        webhook.github.secret: shhhh! it'   s a github secret\n      argocdSshKnownHostsCm:\n        ssh_known_hosts: \"[ssh.github.com]:443 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=\\n[ssh.github.com]:443 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl\\n[ssh.github.com]:443 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=\\nbitbucket.org ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBPIQmuzMBuKdWeF4+a2sjSSpBK0iqitSQ+5BM9KhpexuGt20JpTVM7u5BDZngncgrqDMbWdxMWWOGtZ9UgbqgZE=\\nbitbucket.org ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIazEu89wgQZ4bqs3d63QSMzYVa0MuJ2e2gKTKqu+UUO\\nbitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQeJzhupRu0u0cdegZIa8e86EG2qOCsIsD1Xw0xSeiPDlCr7kq97NLmMbpKTX6Esc30NuoqEEHCuc7yWtwp8dI76EEEB1VqY9QJq6vk+aySyboD5QF61I/1WeTwu+deCbgKMGbUijeXhtfbxSxm6JwGrXrhBdofTsbKRUsrN1WoNgUa8uqN1Vx6WAJw1JHPhglEGGHea6QICwJOAr/6mrui/oB7pkaWKHj3z7d1IC4KWLtY47elvjbaTlkN04Kc/5LFEirorGYVbt15kAUlqGM65pk6ZBxtaO3+30LVlORZkxOh+LKL/BvbZ/iRNhItLqNyieoQj/uh/7Iv4uyH/cV/0b4WDSd3DptigWq84lJubb9t/DnZlrJazxyDCulTmKdOR7vs9gMTo+uoIrPSb8ScTtvw65+odKAlBj59dhnVp9zd7QUojOpXlL62Aw56U4oO+FALuevvMjiWeavKhJqlR7i5n9srYcrNV7ttmDw7kf/97P5zauIhxcjX+xHv4M=\\ngithub.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=\\ngithub.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl\\ngithub.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=\\ngitlab.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY=\\ngitlab.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfuCHKVTjquxvt6CM6tdG4SLp1Btn/nOeHHE5UOzRdf\\ngitlab.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bNKTBSpIYDEGk9KxsGh3mySTRgMtXL583qmBpzeQ+jqCMRgBqB98u3z++J1sKlXHWfM9dyhSevkMwSbhoR8XIq/U0tCNyokEi/ueaBMCvbcTHhO7FcwzY92WK4Yt0aGROY5qX2UKSeOvuP4D6TPqKF1onrSzH9bx9XUf2lEdWT/ia1NEKjunUqu1xOB/StKDHMoX4/OKyIzuS0q/T1zOATthvasJFoPrAjkohTyaDUz2LN5JoH839hViyEG82yB+MjcFV5MU3N1l1QL3cVUCh93xSaua1N85qivl+siMkPGbO5xR/En4iEY6K2XPASUEMaieWVNTRCtJ4S8H+9\\nssh.dev.azure.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H\\nvs-ssh.visualstudio.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H\\n      \\n\"\n      argocdTlsCertsCm:\n        server.example.com: \"          -----BEGIN CERTIFICATE-----\\n          ......\\n          -----END CERTIFICATE-----\\n      \\n\"\n      configManagementPlugins:\n        kasane:\n          - enabled: true\n            image: gcr.io/kasaneapp/kasane\n            spec:\n              - generate:\n                  - command:\n                      - kasane\n                      - show\n                init:\n                  - command:\n                      - kasane\n                      - update\n        tanka:\n          - enabled: true\n            image: grafana/tanka:0.25.0\n            spec:\n              - discover:\n                  - fileName: jsonnetfile.json\n                generate:\n                  - args:\n                      - tk show environments/$PARAM_ENV --dangerous-allow-redirect\n                    command:\n                      - sh\n                      - -c\n                init:\n                  - command:\n                      - jb\n                      - update\n                parameters:\n                  - static:\n                      - name: env\n                        required: true\n                        string: default\n                preserveFileMode: false\n                version: v1.0\n      repoCredentialSecrets:\n        repo-my-private-https-repo:\n          - enableLfs: true\n            forceHttpBasicAuth: true\n            insecure: true\n            password: my-ppassword\n            url: https://github.com/argoproj/argocd-example-apps\n            username: my-username\n        repo-my-private-ssh-repo:\n          - enableLfs: true\n            insecure: true\n            sshPrivateKey: \"      # paste the sshPrivateKey data here\\n      \\n\"\n            url: ssh://git@github.com/argoproj/argocd-example-apps\n      repoTemplateCredentialSecrets:\n        repo-argoproj-https-creds:\n          - password: my-password\n            type: helm\n            url: https://github.com/argoproj\n            username: my-username\n```\n\u003c!--End PulumiCodeChooser --\u003e\n\n## Import\n\nUsing `pulumi import`, import AKP instance using its `name`. For example:\n\n```sh\n$ pulumi import akp:index/instance:Instance example test\n```\n\n",
+            "properties": {
+                "applicationSetSecret": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "stores secret key-value that will be used by `ApplicationSet`. For an example of how to use this in your\nApplicationSet's pull request generator, see\n[here](https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/applicationset/Generators-Pull-Request.md#github).\nIn this example, `tokenRef.secretName` would be application-set-secret.\n",
+                    "secret": true
+                },
+                "argocd": {
+                    "$ref": "#/types/akp:index/InstanceArgocd:InstanceArgocd",
+                    "description": "Argo CD instance configuration\n"
+                },
+                "argocdCm": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "is aligned with the options in `argocd-cm` ConfigMap as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-cm-yaml/).\n"
+                },
+                "argocdImageUpdaterConfig": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "configures Argo CD image updater, and it is aligned with `argocd-image-updater-config` ConfigMap of Argo CD, for\navailable options and examples, refer to [this documentation](https://argocd-image-updater.readthedocs.io/en/stable/).\n"
+                },
+                "argocdImageUpdaterSecret": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "contains sensitive data (e.g., credentials for image updater to access registries) of Argo CD image updater, for\navailable options and examples, refer to [this documentation](https://argocd-image-updater.readthedocs.io/en/stable/).\n",
+                    "secret": true
+                },
+                "argocdImageUpdaterSshConfig": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "contains the ssh configuration for Argo CD image updater, and it is aligned with `argocd-image-updater-ssh-config`\nConfigMap of Argo CD, for available options and examples, refer to [this\ndocumentation](https://argocd-image-updater.readthedocs.io/en/stable/).\n"
+                },
+                "argocdNotificationsCm": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "configures Argo CD notifications, and it is aligned with `argocd-notifications-cm` ConfigMap of Argo CD, for more\ndetails and examples, refer to [this documentation](https://argocd-notifications.readthedocs.io/en/stable/).\n"
+                },
+                "argocdNotificationsSecret": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "contains sensitive data of Argo CD notifications, and it is aligned with `argocd-notifications-secret` Secret of Argo\nCD, for more details and examples, refer to [this\ndocumentation](https://argocd-notifications.readthedocs.io/en/stable/services/overview/#sensitive-data).\n",
+                    "secret": true
+                },
+                "argocdRbacCm": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "is aligned with the options in `argocd-rbac-cm` ConfigMap as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-rbac-cm-yaml/).\n"
+                },
+                "argocdSecret": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "is aligned with the options in `argocd-secret` Secret as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-secret-yaml/).\n",
+                    "secret": true
+                },
+                "argocdSshKnownHostsCm": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "is aligned with the options in `argocd-ssh-known-hosts-cm` ConfigMap as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-ssh-known-hosts-cm-yaml/).\n"
+                },
+                "argocdTlsCertsCm": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "is aligned with the options in `argocd-tls-certs-cm` ConfigMap as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-tls-certs-cm-yaml/).\n"
+                },
+                "configManagementPlugins": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/types/akp:index/InstanceConfigManagementPlugins:InstanceConfigManagementPlugins"
+                    },
+                    "description": "is a map of [Config Management\nPlugins](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#config-management-plugins),\nthe key of map entry is the `name` of the plugin, and the value is the definition of the Config Management Plugin(v2).\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Instance name\n"
+                },
+                "repoCredentialSecrets": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "description": "is a map of repo credential secrets, the key of map entry is the `name` of the secret, and the value is the aligned with\noptions in `argocd-repositories.yaml.data` as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-repositories-yaml/).\n",
+                    "secret": true
+                },
+                "repoTemplateCredentialSecrets": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "description": "is a map of repository credential templates secrets, the key of map entry is the `name` of the secret, and the value is\nthe aligned with options in `argocd-repo-creds.yaml.data` as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-repo-creds.yaml/).\n",
+                    "secret": true
+                }
+            },
+            "required": [
+                "argocd",
+                "argocdCm",
+                "argocdImageUpdaterConfig",
+                "argocdImageUpdaterSshConfig",
+                "argocdNotificationsCm",
+                "argocdRbacCm",
+                "argocdSshKnownHostsCm",
+                "argocdTlsCertsCm",
+                "name"
+            ],
+            "inputProperties": {
+                "applicationSetSecret": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "stores secret key-value that will be used by `ApplicationSet`. For an example of how to use this in your\nApplicationSet's pull request generator, see\n[here](https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/applicationset/Generators-Pull-Request.md#github).\nIn this example, `tokenRef.secretName` would be application-set-secret.\n",
+                    "secret": true
+                },
+                "argocd": {
+                    "$ref": "#/types/akp:index/InstanceArgocd:InstanceArgocd",
+                    "description": "Argo CD instance configuration\n"
+                },
+                "argocdCm": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "is aligned with the options in `argocd-cm` ConfigMap as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-cm-yaml/).\n"
+                },
+                "argocdImageUpdaterConfig": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "configures Argo CD image updater, and it is aligned with `argocd-image-updater-config` ConfigMap of Argo CD, for\navailable options and examples, refer to [this documentation](https://argocd-image-updater.readthedocs.io/en/stable/).\n"
+                },
+                "argocdImageUpdaterSecret": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "contains sensitive data (e.g., credentials for image updater to access registries) of Argo CD image updater, for\navailable options and examples, refer to [this documentation](https://argocd-image-updater.readthedocs.io/en/stable/).\n",
+                    "secret": true
+                },
+                "argocdImageUpdaterSshConfig": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "contains the ssh configuration for Argo CD image updater, and it is aligned with `argocd-image-updater-ssh-config`\nConfigMap of Argo CD, for available options and examples, refer to [this\ndocumentation](https://argocd-image-updater.readthedocs.io/en/stable/).\n"
+                },
+                "argocdNotificationsCm": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "configures Argo CD notifications, and it is aligned with `argocd-notifications-cm` ConfigMap of Argo CD, for more\ndetails and examples, refer to [this documentation](https://argocd-notifications.readthedocs.io/en/stable/).\n"
+                },
+                "argocdNotificationsSecret": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "contains sensitive data of Argo CD notifications, and it is aligned with `argocd-notifications-secret` Secret of Argo\nCD, for more details and examples, refer to [this\ndocumentation](https://argocd-notifications.readthedocs.io/en/stable/services/overview/#sensitive-data).\n",
+                    "secret": true
+                },
+                "argocdRbacCm": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "is aligned with the options in `argocd-rbac-cm` ConfigMap as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-rbac-cm-yaml/).\n"
+                },
+                "argocdSecret": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "is aligned with the options in `argocd-secret` Secret as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-secret-yaml/).\n",
+                    "secret": true
+                },
+                "argocdSshKnownHostsCm": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "is aligned with the options in `argocd-ssh-known-hosts-cm` ConfigMap as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-ssh-known-hosts-cm-yaml/).\n"
+                },
+                "argocdTlsCertsCm": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "is aligned with the options in `argocd-tls-certs-cm` ConfigMap as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-tls-certs-cm-yaml/).\n"
+                },
+                "configManagementPlugins": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/types/akp:index/InstanceConfigManagementPlugins:InstanceConfigManagementPlugins"
+                    },
+                    "description": "is a map of [Config Management\nPlugins](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#config-management-plugins),\nthe key of map entry is the `name` of the plugin, and the value is the definition of the Config Management Plugin(v2).\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Instance name\n"
+                },
+                "repoCredentialSecrets": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "description": "is a map of repo credential secrets, the key of map entry is the `name` of the secret, and the value is the aligned with\noptions in `argocd-repositories.yaml.data` as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-repositories-yaml/).\n",
+                    "secret": true
+                },
+                "repoTemplateCredentialSecrets": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "description": "is a map of repository credential templates secrets, the key of map entry is the `name` of the secret, and the value is\nthe aligned with options in `argocd-repo-creds.yaml.data` as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-repo-creds.yaml/).\n",
+                    "secret": true
+                }
+            },
+            "requiredInputs": [
+                "argocd"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Instance resources.\n",
+                "properties": {
+                    "applicationSetSecret": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "stores secret key-value that will be used by `ApplicationSet`. For an example of how to use this in your\nApplicationSet's pull request generator, see\n[here](https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/applicationset/Generators-Pull-Request.md#github).\nIn this example, `tokenRef.secretName` would be application-set-secret.\n",
+                        "secret": true
+                    },
+                    "argocd": {
+                        "$ref": "#/types/akp:index/InstanceArgocd:InstanceArgocd",
+                        "description": "Argo CD instance configuration\n"
+                    },
+                    "argocdCm": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "is aligned with the options in `argocd-cm` ConfigMap as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-cm-yaml/).\n"
+                    },
+                    "argocdImageUpdaterConfig": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "configures Argo CD image updater, and it is aligned with `argocd-image-updater-config` ConfigMap of Argo CD, for\navailable options and examples, refer to [this documentation](https://argocd-image-updater.readthedocs.io/en/stable/).\n"
+                    },
+                    "argocdImageUpdaterSecret": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "contains sensitive data (e.g., credentials for image updater to access registries) of Argo CD image updater, for\navailable options and examples, refer to [this documentation](https://argocd-image-updater.readthedocs.io/en/stable/).\n",
+                        "secret": true
+                    },
+                    "argocdImageUpdaterSshConfig": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "contains the ssh configuration for Argo CD image updater, and it is aligned with `argocd-image-updater-ssh-config`\nConfigMap of Argo CD, for available options and examples, refer to [this\ndocumentation](https://argocd-image-updater.readthedocs.io/en/stable/).\n"
+                    },
+                    "argocdNotificationsCm": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "configures Argo CD notifications, and it is aligned with `argocd-notifications-cm` ConfigMap of Argo CD, for more\ndetails and examples, refer to [this documentation](https://argocd-notifications.readthedocs.io/en/stable/).\n"
+                    },
+                    "argocdNotificationsSecret": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "contains sensitive data of Argo CD notifications, and it is aligned with `argocd-notifications-secret` Secret of Argo\nCD, for more details and examples, refer to [this\ndocumentation](https://argocd-notifications.readthedocs.io/en/stable/services/overview/#sensitive-data).\n",
+                        "secret": true
+                    },
+                    "argocdRbacCm": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "is aligned with the options in `argocd-rbac-cm` ConfigMap as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-rbac-cm-yaml/).\n"
+                    },
+                    "argocdSecret": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "is aligned with the options in `argocd-secret` Secret as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-secret-yaml/).\n",
+                        "secret": true
+                    },
+                    "argocdSshKnownHostsCm": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "is aligned with the options in `argocd-ssh-known-hosts-cm` ConfigMap as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-ssh-known-hosts-cm-yaml/).\n"
+                    },
+                    "argocdTlsCertsCm": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "is aligned with the options in `argocd-tls-certs-cm` ConfigMap as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-tls-certs-cm-yaml/).\n"
+                    },
+                    "configManagementPlugins": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/types/akp:index/InstanceConfigManagementPlugins:InstanceConfigManagementPlugins"
+                        },
+                        "description": "is a map of [Config Management\nPlugins](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#config-management-plugins),\nthe key of map entry is the `name` of the plugin, and the value is the definition of the Config Management Plugin(v2).\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Instance name\n"
+                    },
+                    "repoCredentialSecrets": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "is a map of repo credential secrets, the key of map entry is the `name` of the secret, and the value is the aligned with\noptions in `argocd-repositories.yaml.data` as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-repositories-yaml/).\n",
+                        "secret": true
+                    },
+                    "repoTemplateCredentialSecrets": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "is a map of repository credential templates secrets, the key of map entry is the `name` of the secret, and the value is\nthe aligned with options in `argocd-repo-creds.yaml.data` as described in the [ArgoCD Atomic\nConfiguration](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#atomic-configuration). For a\nconcrete example, refer to [this\ndocumentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-repo-creds.yaml/).\n",
+                        "secret": true
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "functions": {
+        "akp:index/getCluster:getCluster": {
+            "description": "Gets information about a cluster by its name and Argo CD instance ID\n\n## Example Usage\n\n\u003c!--Start PulumiCodeChooser --\u003e\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as akp from \"@pulumi/akp\";\n\nconst exampleInstance = akp.getInstance({\n    name: \"test\",\n});\nconst exampleCluster = exampleInstance.then(exampleInstance =\u003e akp.getCluster({\n    instanceId: exampleInstance.id,\n    name: \"test\",\n}));\n```\n```python\nimport pulumi\nimport pulumi_akp as akp\n\nexample_instance = akp.get_instance(name=\"test\")\nexample_cluster = akp.get_cluster(instance_id=example_instance.id,\n    name=\"test\")\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Akp = Pulumi.Akp;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var exampleInstance = Akp.GetInstance.Invoke(new()\n    {\n        Name = \"test\",\n    });\n\n    var exampleCluster = Akp.GetCluster.Invoke(new()\n    {\n        InstanceId = exampleInstance.Apply(getInstanceResult =\u003e getInstanceResult.Id),\n        Name = \"test\",\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/dirien/pulumi-akp/sdk/go/akp\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\texampleInstance, err := akp.LookupInstance(ctx, \u0026akp.LookupInstanceArgs{\n\t\t\tName: \"test\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = akp.LookupCluster(ctx, \u0026akp.LookupClusterArgs{\n\t\t\tInstanceId: exampleInstance.Id,\n\t\t\tName:       \"test\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.akp.AkpFunctions;\nimport com.pulumi.akp.inputs.GetInstanceArgs;\nimport com.pulumi.akp.inputs.GetClusterArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var exampleInstance = AkpFunctions.getInstance(GetInstanceArgs.builder()\n            .name(\"test\")\n            .build());\n\n        final var exampleCluster = AkpFunctions.getCluster(GetClusterArgs.builder()\n            .instanceId(exampleInstance.applyValue(getInstanceResult -\u003e getInstanceResult.id()))\n            .name(\"test\")\n            .build());\n\n    }\n}\n```\n```yaml\nvariables:\n  exampleInstance:\n    fn::invoke:\n      Function: akp:getInstance\n      Arguments:\n        name: test\n  exampleCluster:\n    fn::invoke:\n      Function: akp:getCluster\n      Arguments:\n        instanceId: ${exampleInstance.id}\n        name: test\n```\n\u003c!--End PulumiCodeChooser --\u003e\n",
+            "inputs": {
+                "description": "A collection of arguments for invoking getCluster.\n",
+                "properties": {
+                    "instanceId": {
+                        "type": "string",
+                        "description": "Argo CD instance ID\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Cluster name\n"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "instanceId",
+                    "name"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getCluster.\n",
+                "properties": {
+                    "annotations": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "Annotations\n"
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "Cluster ID\n"
+                    },
+                    "instanceId": {
+                        "type": "string",
+                        "description": "Argo CD instance ID\n"
+                    },
+                    "kubeConfig": {
+                        "$ref": "#/types/akp:index/getClusterKubeConfig:getClusterKubeConfig"
+                    },
+                    "labels": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "Labels\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Cluster name\n"
+                    },
+                    "namespace": {
+                        "type": "string",
+                        "description": "Agent installation namespace\n"
+                    },
+                    "removeAgentResourcesOnDestroy": {
+                        "type": "boolean",
+                        "description": "Remove agent Kubernetes resources from the managed cluster when destroying cluster\n"
+                    },
+                    "spec": {
+                        "$ref": "#/types/akp:index/getClusterSpec:getClusterSpec",
+                        "description": "Cluster spec\n"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "annotations",
+                    "id",
+                    "instanceId",
+                    "kubeConfig",
+                    "labels",
+                    "name",
+                    "namespace",
+                    "removeAgentResourcesOnDestroy",
+                    "spec"
+                ]
+            }
+        },
+        "akp:index/getClusters:getClusters": {
+            "description": "Gets information about all clusters attached to an Argo CD instance\n\n## Example Usage\n\n\u003c!--Start PulumiCodeChooser --\u003e\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as akp from \"@pulumi/akp\";\n\nconst exampleInstance = akp.getInstance({\n    name: \"test\",\n});\nconst exampleClusters = exampleInstance.then(exampleInstance =\u003e akp.getClusters({\n    instanceId: exampleInstance.id,\n}));\n```\n```python\nimport pulumi\nimport pulumi_akp as akp\n\nexample_instance = akp.get_instance(name=\"test\")\nexample_clusters = akp.get_clusters(instance_id=example_instance.id)\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Akp = Pulumi.Akp;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var exampleInstance = Akp.GetInstance.Invoke(new()\n    {\n        Name = \"test\",\n    });\n\n    var exampleClusters = Akp.GetClusters.Invoke(new()\n    {\n        InstanceId = exampleInstance.Apply(getInstanceResult =\u003e getInstanceResult.Id),\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/dirien/pulumi-akp/sdk/go/akp\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\texampleInstance, err := akp.LookupInstance(ctx, \u0026akp.LookupInstanceArgs{\n\t\t\tName: \"test\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = akp.GetClusters(ctx, \u0026akp.GetClustersArgs{\n\t\t\tInstanceId: exampleInstance.Id,\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.akp.AkpFunctions;\nimport com.pulumi.akp.inputs.GetInstanceArgs;\nimport com.pulumi.akp.inputs.GetClustersArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var exampleInstance = AkpFunctions.getInstance(GetInstanceArgs.builder()\n            .name(\"test\")\n            .build());\n\n        final var exampleClusters = AkpFunctions.getClusters(GetClustersArgs.builder()\n            .instanceId(exampleInstance.applyValue(getInstanceResult -\u003e getInstanceResult.id()))\n            .build());\n\n    }\n}\n```\n```yaml\nvariables:\n  exampleInstance:\n    fn::invoke:\n      Function: akp:getInstance\n      Arguments:\n        name: test\n  exampleClusters:\n    fn::invoke:\n      Function: akp:getClusters\n      Arguments:\n        instanceId: ${exampleInstance.id}\n```\n\u003c!--End PulumiCodeChooser --\u003e\n",
+            "inputs": {
+                "description": "A collection of arguments for invoking getClusters.\n",
+                "properties": {
+                    "instanceId": {
+                        "type": "string",
+                        "description": "Argo CD instance ID\n"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "instanceId"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getClusters.\n",
+                "properties": {
+                    "clusters": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/akp:index/getClustersCluster:getClustersCluster"
+                        },
+                        "description": "List of clusters\n"
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "Argo CD instance ID\n"
+                    },
+                    "instanceId": {
+                        "type": "string",
+                        "description": "Argo CD instance ID\n"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "clusters",
+                    "id",
+                    "instanceId"
+                ]
+            }
+        },
+        "akp:index/getInstance:getInstance": {
+            "description": "Gets information about an Argo CD instance by its name\n\n## Example Usage\n\n\u003c!--Start PulumiCodeChooser --\u003e\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as akp from \"@pulumi/akp\";\n\nconst example = akp.getInstance({\n    name: \"test\",\n});\n```\n```python\nimport pulumi\nimport pulumi_akp as akp\n\nexample = akp.get_instance(name=\"test\")\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Akp = Pulumi.Akp;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var example = Akp.GetInstance.Invoke(new()\n    {\n        Name = \"test\",\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/dirien/pulumi-akp/sdk/go/akp\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := akp.LookupInstance(ctx, \u0026akp.LookupInstanceArgs{\n\t\t\tName: \"test\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.akp.AkpFunctions;\nimport com.pulumi.akp.inputs.GetInstanceArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var example = AkpFunctions.getInstance(GetInstanceArgs.builder()\n            .name(\"test\")\n            .build());\n\n    }\n}\n```\n```yaml\nvariables:\n  example:\n    fn::invoke:\n      Function: akp:getInstance\n      Arguments:\n        name: test\n```\n\u003c!--End PulumiCodeChooser --\u003e\n",
+            "inputs": {
+                "description": "A collection of arguments for invoking getInstance.\n",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getInstance.\n",
+                "properties": {
+                    "applicationSetSecret": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "argocd": {
+                        "$ref": "#/types/akp:index/getInstanceArgocd:getInstanceArgocd"
+                    },
+                    "argocdCm": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "argocdImageUpdaterConfig": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "argocdImageUpdaterSecret": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "argocdImageUpdaterSshConfig": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "argocdNotificationsCm": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "argocdNotificationsSecret": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "argocdRbacCm": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "argocdSecret": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "argocdSshKnownHostsCm": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "argocdTlsCertsCm": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "configManagementPlugins": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/types/akp:index/getInstanceConfigManagementPlugins:getInstanceConfigManagementPlugins"
+                        }
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "repoCredentialSecrets": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "repoTemplateCredentialSecrets": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "applicationSetSecret",
+                    "argocd",
+                    "argocdCm",
+                    "argocdImageUpdaterConfig",
+                    "argocdImageUpdaterSecret",
+                    "argocdImageUpdaterSshConfig",
+                    "argocdNotificationsCm",
+                    "argocdNotificationsSecret",
+                    "argocdRbacCm",
+                    "argocdSecret",
+                    "argocdSshKnownHostsCm",
+                    "argocdTlsCertsCm",
+                    "configManagementPlugins",
+                    "id",
+                    "name",
+                    "repoCredentialSecrets",
+                    "repoTemplateCredentialSecrets"
+                ]
+            }
+        }
+    }
+}
