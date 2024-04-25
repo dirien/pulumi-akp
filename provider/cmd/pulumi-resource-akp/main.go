@@ -26,7 +26,13 @@ import (
 //go:embed schema-embed.json
 var pulumiSchema []byte
 
+//go:embed bridge-metadata.json
+var bridgeMetadata []byte
+
 func main() {
-	// Modify the path to point to the new provider
-	tfbridge.MainWithMuxer(context.Background(), "akp", akp.Provider(), pulumiSchema)
+	meta := tfbridge.ProviderMetadata{
+		PackageSchema:  pulumiSchema,
+		BridgeMetadata: bridgeMetadata,
+	}
+	tfbridge.Main(context.Background(), "akp", akp.Provider(), meta)
 }

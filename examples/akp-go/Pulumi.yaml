@@ -1,0 +1,7 @@
+name: akp-go
+runtime: go
+description: A minimal Go Pulumi program
+plugins:
+  providers:
+  - name: akp
+    path: ../../bin
