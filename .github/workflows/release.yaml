@@ -45,7 +45,7 @@ jobs:
           cosign-release: 'v2.2.4'
       - uses: anchore/sbom-action/download-syft@b6a39da80722a2cb0ef5d197531764a89b5d48c3 # v0.15.8
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@7ec5c2b0c6cdda6e8bbb49444bc797dd33d74dd8 # tag=v5.0.0
+        uses: goreleaser/goreleaser-action@5742e2a039330cbb23ebf35f046f814d4c6ff811 # tag=v5.1.0
         with:
           args: -p 3 release --rm-dist
           version: latest
