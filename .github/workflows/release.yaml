@@ -45,10 +45,10 @@ jobs:
           cosign-release: 'v2.2.4'
       - uses: anchore/sbom-action/download-syft@b6a39da80722a2cb0ef5d197531764a89b5d48c3 # v0.15.8
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@5742e2a039330cbb23ebf35f046f814d4c6ff811 # tag=v5.1.0
+        uses: goreleaser/goreleaser-action@286f3b13b1b49da4ac219696163fb8c1c93e1200 # tag=v6.0.0
         with:
-          args: -p 3 release --rm-dist
-          version: latest
+          args: -p 3 release --clean
+          version: '~> v2'
       - name: Create tag
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # tag=v7.0.1
         with:
