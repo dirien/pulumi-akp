@@ -55,9 +55,6 @@ export class Cluster extends pulumi.CustomResource {
      * Argo CD instance ID
      */
     public readonly instanceId!: pulumi.Output<string>;
-    /**
-     * Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
-     */
     public readonly kubeConfig!: pulumi.Output<outputs.ClusterKubeConfig | undefined>;
     /**
      * Labels
@@ -138,9 +135,6 @@ export interface ClusterState {
      * Argo CD instance ID
      */
     instanceId?: pulumi.Input<string>;
-    /**
-     * Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
-     */
     kubeConfig?: pulumi.Input<inputs.ClusterKubeConfig>;
     /**
      * Labels
@@ -176,9 +170,6 @@ export interface ClusterArgs {
      * Argo CD instance ID
      */
     instanceId: pulumi.Input<string>;
-    /**
-     * Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
-     */
     kubeConfig?: pulumi.Input<inputs.ClusterKubeConfig>;
     /**
      * Labels

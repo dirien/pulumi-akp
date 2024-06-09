@@ -38,9 +38,6 @@ namespace ediri.Akp
         [Output("instanceId")]
         public Output<string> InstanceId { get; private set; } = null!;
 
-        /// <summary>
-        /// Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
-        /// </summary>
         [Output("kubeConfig")]
         public Output<Outputs.ClusterKubeConfig?> KubeConfig { get; private set; } = null!;
 
@@ -139,9 +136,6 @@ namespace ediri.Akp
         [Input("instanceId", required: true)]
         public Input<string> InstanceId { get; set; } = null!;
 
-        /// <summary>
-        /// Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
-        /// </summary>
         [Input("kubeConfig")]
         public Input<Inputs.ClusterKubeConfigArgs>? KubeConfig { get; set; }
 
@@ -207,9 +201,6 @@ namespace ediri.Akp
         [Input("instanceId")]
         public Input<string>? InstanceId { get; set; }
 
-        /// <summary>
-        /// Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
-        /// </summary>
         [Input("kubeConfig")]
         public Input<Inputs.ClusterKubeConfigGetArgs>? KubeConfig { get; set; }
 

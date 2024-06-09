@@ -30,7 +30,6 @@ class ClusterArgs:
         :param pulumi.Input[str] namespace: Agent installation namespace
         :param pulumi.Input['ClusterSpecArgs'] spec: Cluster spec
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] annotations: Annotations
-        :param pulumi.Input['ClusterKubeConfigArgs'] kube_config: Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] labels: Labels
         :param pulumi.Input[str] name: Cluster name
         :param pulumi.Input[bool] remove_agent_resources_on_destroy: Remove agent Kubernetes resources from the managed cluster when destroying cluster, default to `true`
@@ -100,9 +99,6 @@ class ClusterArgs:
     @property
     @pulumi.getter(name="kubeConfig")
     def kube_config(self) -> Optional[pulumi.Input['ClusterKubeConfigArgs']]:
-        """
-        Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
-        """
         return pulumi.get(self, "kube_config")
 
     @kube_config.setter
@@ -161,7 +157,6 @@ class _ClusterState:
         Input properties used for looking up and filtering Cluster resources.
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] annotations: Annotations
         :param pulumi.Input[str] instance_id: Argo CD instance ID
-        :param pulumi.Input['ClusterKubeConfigArgs'] kube_config: Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] labels: Labels
         :param pulumi.Input[str] name: Cluster name
         :param pulumi.Input[str] namespace: Agent installation namespace
@@ -212,9 +207,6 @@ class _ClusterState:
     @property
     @pulumi.getter(name="kubeConfig")
     def kube_config(self) -> Optional[pulumi.Input['ClusterKubeConfigArgs']]:
-        """
-        Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
-        """
         return pulumi.get(self, "kube_config")
 
     @kube_config.setter
@@ -313,7 +305,6 @@ class Cluster(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] annotations: Annotations
         :param pulumi.Input[str] instance_id: Argo CD instance ID
-        :param pulumi.Input[pulumi.InputType['ClusterKubeConfigArgs']] kube_config: Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] labels: Labels
         :param pulumi.Input[str] name: Cluster name
         :param pulumi.Input[str] namespace: Agent installation namespace
@@ -412,7 +403,6 @@ class Cluster(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] annotations: Annotations
         :param pulumi.Input[str] instance_id: Argo CD instance ID
-        :param pulumi.Input[pulumi.InputType['ClusterKubeConfigArgs']] kube_config: Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] labels: Labels
         :param pulumi.Input[str] name: Cluster name
         :param pulumi.Input[str] namespace: Agent installation namespace
@@ -452,9 +442,6 @@ class Cluster(pulumi.CustomResource):
     @property
     @pulumi.getter(name="kubeConfig")
     def kube_config(self) -> pulumi.Output[Optional['outputs.ClusterKubeConfig']]:
-        """
-        Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
-        """
         return pulumi.get(self, "kube_config")
 
     @property

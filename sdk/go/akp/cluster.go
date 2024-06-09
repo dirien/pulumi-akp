@@ -29,8 +29,7 @@ type Cluster struct {
 	// Annotations
 	Annotations pulumi.StringMapOutput `pulumi:"annotations"`
 	// Argo CD instance ID
-	InstanceId pulumi.StringOutput `pulumi:"instanceId"`
-	// Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
+	InstanceId pulumi.StringOutput        `pulumi:"instanceId"`
 	KubeConfig ClusterKubeConfigPtrOutput `pulumi:"kubeConfig"`
 	// Labels
 	Labels pulumi.StringMapOutput `pulumi:"labels"`
@@ -86,8 +85,7 @@ type clusterState struct {
 	// Annotations
 	Annotations map[string]string `pulumi:"annotations"`
 	// Argo CD instance ID
-	InstanceId *string `pulumi:"instanceId"`
-	// Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
+	InstanceId *string            `pulumi:"instanceId"`
 	KubeConfig *ClusterKubeConfig `pulumi:"kubeConfig"`
 	// Labels
 	Labels map[string]string `pulumi:"labels"`
@@ -106,7 +104,6 @@ type ClusterState struct {
 	Annotations pulumi.StringMapInput
 	// Argo CD instance ID
 	InstanceId pulumi.StringPtrInput
-	// Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
 	KubeConfig ClusterKubeConfigPtrInput
 	// Labels
 	Labels pulumi.StringMapInput
@@ -128,8 +125,7 @@ type clusterArgs struct {
 	// Annotations
 	Annotations map[string]string `pulumi:"annotations"`
 	// Argo CD instance ID
-	InstanceId string `pulumi:"instanceId"`
-	// Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
+	InstanceId string             `pulumi:"instanceId"`
 	KubeConfig *ClusterKubeConfig `pulumi:"kubeConfig"`
 	// Labels
 	Labels map[string]string `pulumi:"labels"`
@@ -149,7 +145,6 @@ type ClusterArgs struct {
 	Annotations pulumi.StringMapInput
 	// Argo CD instance ID
 	InstanceId pulumi.StringInput
-	// Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
 	KubeConfig ClusterKubeConfigPtrInput
 	// Labels
 	Labels pulumi.StringMapInput
@@ -260,7 +255,6 @@ func (o ClusterOutput) InstanceId() pulumi.StringOutput {
 	return o.ApplyT(func(v *Cluster) pulumi.StringOutput { return v.InstanceId }).(pulumi.StringOutput)
 }
 
-// Kubernetes connection settings. If configured, terraform will try to connect to the cluster and install the agent
 func (o ClusterOutput) KubeConfig() ClusterKubeConfigPtrOutput {
 	return o.ApplyT(func(v *Cluster) ClusterKubeConfigPtrOutput { return v.KubeConfig }).(ClusterKubeConfigPtrOutput)
 }
