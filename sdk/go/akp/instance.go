@@ -35,7 +35,7 @@ import (
 //						InstanceSpec: &akp.InstanceArgocdSpecInstanceSpecArgs{
 //							DeclarativeManagementEnabled: pulumi.Bool(true),
 //						},
-//						Version: pulumi.String("v2.8.4"),
+//						Version: pulumi.String("v2.11.4"),
 //					},
 //				},
 //			})

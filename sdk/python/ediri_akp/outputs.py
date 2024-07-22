@@ -14,13 +14,17 @@ __all__ = [
     'ClusterKubeConfig',
     'ClusterSpec',
     'ClusterSpecData',
+    'ClusterSpecDataManagedClusterConfig',
     'InstanceArgocd',
     'InstanceArgocdSpec',
     'InstanceArgocdSpecInstanceSpec',
+    'InstanceArgocdSpecInstanceSpecAgentPermissionsRule',
     'InstanceArgocdSpecInstanceSpecAppSetDelegate',
     'InstanceArgocdSpecInstanceSpecAppSetDelegateManagedCluster',
     'InstanceArgocdSpecInstanceSpecAppsetPolicy',
     'InstanceArgocdSpecInstanceSpecClusterCustomizationDefaults',
+    'InstanceArgocdSpecInstanceSpecCrossplaneExtension',
+    'InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource',
     'InstanceArgocdSpecInstanceSpecExtension',
     'InstanceArgocdSpecInstanceSpecHostAlias',
     'InstanceArgocdSpecInstanceSpecImageUpdaterDelegate',
@@ -40,17 +44,22 @@ __all__ = [
     'GetClusterKubeConfigResult',
     'GetClusterSpecResult',
     'GetClusterSpecDataResult',
+    'GetClusterSpecDataManagedClusterConfigResult',
     'GetClustersClusterResult',
     'GetClustersClusterKubeConfigResult',
     'GetClustersClusterSpecResult',
     'GetClustersClusterSpecDataResult',
+    'GetClustersClusterSpecDataManagedClusterConfigResult',
     'GetInstanceArgocdResult',
     'GetInstanceArgocdSpecResult',
     'GetInstanceArgocdSpecInstanceSpecResult',
+    'GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleResult',
     'GetInstanceArgocdSpecInstanceSpecAppSetDelegateResult',
     'GetInstanceArgocdSpecInstanceSpecAppSetDelegateManagedClusterResult',
     'GetInstanceArgocdSpecInstanceSpecAppsetPolicyResult',
     'GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsResult',
+    'GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResult',
+    'GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceResult',
     'GetInstanceArgocdSpecInstanceSpecExtensionResult',
     'GetInstanceArgocdSpecInstanceSpecHostAliasResult',
     'GetInstanceArgocdSpecInstanceSpecImageUpdaterDelegateResult',
@@ -337,6 +346,12 @@ class ClusterSpecData(dict):
             suggest = "app_replication"
         elif key == "autoUpgradeDisabled":
             suggest = "auto_upgrade_disabled"
+        elif key == "datadogAnnotationsEnabled":
+            suggest = "datadog_annotations_enabled"
+        elif key == "eksAddonEnabled":
+            suggest = "eks_addon_enabled"
+        elif key == "managedClusterConfig":
+            suggest = "managed_cluster_config"
         elif key == "redisTunneling":
             suggest = "redis_tunneling"
         elif key == "targetVersion":
@@ -357,13 +372,19 @@ class ClusterSpecData(dict):
                  size: str,
                  app_replication: Optional[bool] = None,
                  auto_upgrade_disabled: Optional[bool] = None,
+                 datadog_annotations_enabled: Optional[bool] = None,
+                 eks_addon_enabled: Optional[bool] = None,
                  kustomization: Optional[str] = None,
+                 managed_cluster_config: Optional['outputs.ClusterSpecDataManagedClusterConfig'] = None,
                  redis_tunneling: Optional[bool] = None,
                  target_version: Optional[str] = None):
         """
         :param str size: Cluster Size. One of `small`, `medium` or `large`
         :param bool app_replication: Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features
+        :param bool datadog_annotations_enabled: Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+        :param bool eks_addon_enabled: Enable this if you are installing this cluster on EKS.
         :param str kustomization: Kustomize configuration that will be applied to generated agent installation manifests
+        :param 'ClusterSpecDataManagedClusterConfigArgs' managed_cluster_config: The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
         :param bool redis_tunneling: Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
         :param str target_version: The version of the agent to install on your cluster
         """
@@ -372,8 +393,14 @@ class ClusterSpecData(dict):
             pulumi.set(__self__, "app_replication", app_replication)
         if auto_upgrade_disabled is not None:
             pulumi.set(__self__, "auto_upgrade_disabled", auto_upgrade_disabled)
+        if datadog_annotations_enabled is not None:
+            pulumi.set(__self__, "datadog_annotations_enabled", datadog_annotations_enabled)
+        if eks_addon_enabled is not None:
+            pulumi.set(__self__, "eks_addon_enabled", eks_addon_enabled)
         if kustomization is not None:
             pulumi.set(__self__, "kustomization", kustomization)
+        if managed_cluster_config is not None:
+            pulumi.set(__self__, "managed_cluster_config", managed_cluster_config)
         if redis_tunneling is not None:
             pulumi.set(__self__, "redis_tunneling", redis_tunneling)
         if target_version is not None:
@@ -401,12 +428,36 @@ class ClusterSpecData(dict):
         return pulumi.get(self, "auto_upgrade_disabled")
 
     @property
+    @pulumi.getter(name="datadogAnnotationsEnabled")
+    def datadog_annotations_enabled(self) -> Optional[bool]:
+        """
+        Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+        """
+        return pulumi.get(self, "datadog_annotations_enabled")
+
+    @property
+    @pulumi.getter(name="eksAddonEnabled")
+    def eks_addon_enabled(self) -> Optional[bool]:
+        """
+        Enable this if you are installing this cluster on EKS.
+        """
+        return pulumi.get(self, "eks_addon_enabled")
+
+    @property
     @pulumi.getter
     def kustomization(self) -> Optional[str]:
         """
         Kustomize configuration that will be applied to generated agent installation manifests
         """
         return pulumi.get(self, "kustomization")
+
+    @property
+    @pulumi.getter(name="managedClusterConfig")
+    def managed_cluster_config(self) -> Optional['outputs.ClusterSpecDataManagedClusterConfig']:
+        """
+        The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+        """
+        return pulumi.get(self, "managed_cluster_config")
 
     @property
     @pulumi.getter(name="redisTunneling")
@@ -423,6 +474,55 @@ class ClusterSpecData(dict):
         The version of the agent to install on your cluster
         """
         return pulumi.get(self, "target_version")
+
+
+@pulumi.output_type
+class ClusterSpecDataManagedClusterConfig(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "secretName":
+            suggest = "secret_name"
+        elif key == "secretKey":
+            suggest = "secret_key"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ClusterSpecDataManagedClusterConfig. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ClusterSpecDataManagedClusterConfig.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ClusterSpecDataManagedClusterConfig.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 secret_name: str,
+                 secret_key: Optional[str] = None):
+        """
+        :param str secret_name: The name of the secret for the managed cluster config
+        :param str secret_key: The key in the secret for the managed cluster config
+        """
+        pulumi.set(__self__, "secret_name", secret_name)
+        if secret_key is not None:
+            pulumi.set(__self__, "secret_key", secret_key)
+
+    @property
+    @pulumi.getter(name="secretName")
+    def secret_name(self) -> str:
+        """
+        The name of the secret for the managed cluster config
+        """
+        return pulumi.get(self, "secret_name")
+
+    @property
+    @pulumi.getter(name="secretKey")
+    def secret_key(self) -> Optional[str]:
+        """
+        The key in the secret for the managed cluster config
+        """
+        return pulumi.get(self, "secret_key")
 
 
 @pulumi.output_type
@@ -506,7 +606,9 @@ class InstanceArgocdSpecInstanceSpec(dict):
     @staticmethod
     def __key_warning(key: str):
         suggest = None
-        if key == "appSetDelegate":
+        if key == "agentPermissionsRules":
+            suggest = "agent_permissions_rules"
+        elif key == "appSetDelegate":
             suggest = "app_set_delegate"
         elif key == "appsetPolicy":
             suggest = "appset_policy"
@@ -518,6 +620,8 @@ class InstanceArgocdSpecInstanceSpec(dict):
             suggest = "backend_ip_allow_list_enabled"
         elif key == "clusterCustomizationDefaults":
             suggest = "cluster_customization_defaults"
+        elif key == "crossplaneExtension":
+            suggest = "crossplane_extension"
         elif key == "declarativeManagementEnabled":
             suggest = "declarative_management_enabled"
         elif key == "hostAliases":
@@ -545,14 +649,17 @@ class InstanceArgocdSpecInstanceSpec(dict):
         return super().get(key, default)
 
     def __init__(__self__, *,
+                 agent_permissions_rules: Optional[Sequence['outputs.InstanceArgocdSpecInstanceSpecAgentPermissionsRule']] = None,
                  app_set_delegate: Optional['outputs.InstanceArgocdSpecInstanceSpecAppSetDelegate'] = None,
                  appset_policy: Optional['outputs.InstanceArgocdSpecInstanceSpecAppsetPolicy'] = None,
                  assistant_extension_enabled: Optional[bool] = None,
                  audit_extension_enabled: Optional[bool] = None,
                  backend_ip_allow_list_enabled: Optional[bool] = None,
                  cluster_customization_defaults: Optional['outputs.InstanceArgocdSpecInstanceSpecClusterCustomizationDefaults'] = None,
+                 crossplane_extension: Optional['outputs.InstanceArgocdSpecInstanceSpecCrossplaneExtension'] = None,
                  declarative_management_enabled: Optional[bool] = None,
                  extensions: Optional[Sequence['outputs.InstanceArgocdSpecInstanceSpecExtension']] = None,
+                 fqdn: Optional[str] = None,
                  host_aliases: Optional[Sequence['outputs.InstanceArgocdSpecInstanceSpecHostAlias']] = None,
                  image_updater_delegate: Optional['outputs.InstanceArgocdSpecInstanceSpecImageUpdaterDelegate'] = None,
                  image_updater_enabled: Optional[bool] = None,
@@ -561,14 +668,17 @@ class InstanceArgocdSpecInstanceSpec(dict):
                  subdomain: Optional[str] = None,
                  sync_history_extension_enabled: Optional[bool] = None):
         """
+        :param Sequence['InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs'] agent_permissions_rules: The ability to configure agent permissions rules.
         :param 'InstanceArgocdSpecInstanceSpecAppSetDelegateArgs' app_set_delegate: Select cluster in which you want to Install Application Set controller
         :param 'InstanceArgocdSpecInstanceSpecAppsetPolicyArgs' appset_policy: Configures Application Set policy settings.
         :param bool assistant_extension_enabled: Enable Powerful AI-powered assistant Extension. It helps analyze Kubernetes resources behavior and provides suggestions about resolving issues.
         :param bool audit_extension_enabled: Enable Audit Extension. Set this to `true` to install Audit Extension to Argo CD instance.
         :param bool backend_ip_allow_list_enabled: Enable ip allow list for cluster agents
         :param 'InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsArgs' cluster_customization_defaults: Default values for cluster agents
+        :param 'InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs' crossplane_extension: Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
         :param bool declarative_management_enabled: Enable Declarative Management
         :param Sequence['InstanceArgocdSpecInstanceSpecExtensionArgs'] extensions: Extensions
+        :param str fqdn: Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
         :param Sequence['InstanceArgocdSpecInstanceSpecHostAliasArgs'] host_aliases: Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.
         :param 'InstanceArgocdSpecInstanceSpecImageUpdaterDelegateArgs' image_updater_delegate: Select cluster in which you want to Install Image Updater
         :param bool image_updater_enabled: Enable Image Updater
@@ -577,6 +687,8 @@ class InstanceArgocdSpecInstanceSpec(dict):
         :param str subdomain: Instance subdomain. By default equals to instance id
         :param bool sync_history_extension_enabled: Enable Sync History Extension. Sync count and duration graphs as well as event details table on Argo CD application details page.
         """
+        if agent_permissions_rules is not None:
+            pulumi.set(__self__, "agent_permissions_rules", agent_permissions_rules)
         if app_set_delegate is not None:
             pulumi.set(__self__, "app_set_delegate", app_set_delegate)
         if appset_policy is not None:
@@ -589,10 +701,14 @@ class InstanceArgocdSpecInstanceSpec(dict):
             pulumi.set(__self__, "backend_ip_allow_list_enabled", backend_ip_allow_list_enabled)
         if cluster_customization_defaults is not None:
             pulumi.set(__self__, "cluster_customization_defaults", cluster_customization_defaults)
+        if crossplane_extension is not None:
+            pulumi.set(__self__, "crossplane_extension", crossplane_extension)
         if declarative_management_enabled is not None:
             pulumi.set(__self__, "declarative_management_enabled", declarative_management_enabled)
         if extensions is not None:
             pulumi.set(__self__, "extensions", extensions)
+        if fqdn is not None:
+            pulumi.set(__self__, "fqdn", fqdn)
         if host_aliases is not None:
             pulumi.set(__self__, "host_aliases", host_aliases)
         if image_updater_delegate is not None:
@@ -607,6 +723,14 @@ class InstanceArgocdSpecInstanceSpec(dict):
             pulumi.set(__self__, "subdomain", subdomain)
         if sync_history_extension_enabled is not None:
             pulumi.set(__self__, "sync_history_extension_enabled", sync_history_extension_enabled)
+
+    @property
+    @pulumi.getter(name="agentPermissionsRules")
+    def agent_permissions_rules(self) -> Optional[Sequence['outputs.InstanceArgocdSpecInstanceSpecAgentPermissionsRule']]:
+        """
+        The ability to configure agent permissions rules.
+        """
+        return pulumi.get(self, "agent_permissions_rules")
 
     @property
     @pulumi.getter(name="appSetDelegate")
@@ -657,6 +781,14 @@ class InstanceArgocdSpecInstanceSpec(dict):
         return pulumi.get(self, "cluster_customization_defaults")
 
     @property
+    @pulumi.getter(name="crossplaneExtension")
+    def crossplane_extension(self) -> Optional['outputs.InstanceArgocdSpecInstanceSpecCrossplaneExtension']:
+        """
+        Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+        """
+        return pulumi.get(self, "crossplane_extension")
+
+    @property
     @pulumi.getter(name="declarativeManagementEnabled")
     def declarative_management_enabled(self) -> Optional[bool]:
         """
@@ -671,6 +803,14 @@ class InstanceArgocdSpecInstanceSpec(dict):
         Extensions
         """
         return pulumi.get(self, "extensions")
+
+    @property
+    @pulumi.getter
+    def fqdn(self) -> Optional[str]:
+        """
+        Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+        """
+        return pulumi.get(self, "fqdn")
 
     @property
     @pulumi.getter(name="hostAliases")
@@ -727,6 +867,66 @@ class InstanceArgocdSpecInstanceSpec(dict):
         Enable Sync History Extension. Sync count and duration graphs as well as event details table on Argo CD application details page.
         """
         return pulumi.get(self, "sync_history_extension_enabled")
+
+
+@pulumi.output_type
+class InstanceArgocdSpecInstanceSpecAgentPermissionsRule(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "apiGroups":
+            suggest = "api_groups"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in InstanceArgocdSpecInstanceSpecAgentPermissionsRule. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        InstanceArgocdSpecInstanceSpecAgentPermissionsRule.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        InstanceArgocdSpecInstanceSpecAgentPermissionsRule.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 api_groups: Optional[Sequence[str]] = None,
+                 resources: Optional[Sequence[str]] = None,
+                 verbs: Optional[Sequence[str]] = None):
+        """
+        :param Sequence[str] api_groups: API groups of the rule.
+        :param Sequence[str] resources: Resources of the rule.
+        :param Sequence[str] verbs: Verbs of the rule.
+        """
+        if api_groups is not None:
+            pulumi.set(__self__, "api_groups", api_groups)
+        if resources is not None:
+            pulumi.set(__self__, "resources", resources)
+        if verbs is not None:
+            pulumi.set(__self__, "verbs", verbs)
+
+    @property
+    @pulumi.getter(name="apiGroups")
+    def api_groups(self) -> Optional[Sequence[str]]:
+        """
+        API groups of the rule.
+        """
+        return pulumi.get(self, "api_groups")
+
+    @property
+    @pulumi.getter
+    def resources(self) -> Optional[Sequence[str]]:
+        """
+        Resources of the rule.
+        """
+        return pulumi.get(self, "resources")
+
+    @property
+    @pulumi.getter
+    def verbs(self) -> Optional[Sequence[str]]:
+        """
+        Verbs of the rule.
+        """
+        return pulumi.get(self, "verbs")
 
 
 @pulumi.output_type
@@ -928,6 +1128,44 @@ class InstanceArgocdSpecInstanceSpecClusterCustomizationDefaults(dict):
         Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
         """
         return pulumi.get(self, "redis_tunneling")
+
+
+@pulumi.output_type
+class InstanceArgocdSpecInstanceSpecCrossplaneExtension(dict):
+    def __init__(__self__, *,
+                 resources: Optional[Sequence['outputs.InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource']] = None):
+        """
+        :param Sequence['InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs'] resources: Glob patterns of the resources to match.
+        """
+        if resources is not None:
+            pulumi.set(__self__, "resources", resources)
+
+    @property
+    @pulumi.getter
+    def resources(self) -> Optional[Sequence['outputs.InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource']]:
+        """
+        Glob patterns of the resources to match.
+        """
+        return pulumi.get(self, "resources")
+
+
+@pulumi.output_type
+class InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource(dict):
+    def __init__(__self__, *,
+                 group: Optional[str] = None):
+        """
+        :param str group: Glob pattern of the group to match.
+        """
+        if group is not None:
+            pulumi.set(__self__, "group", group)
+
+    @property
+    @pulumi.getter
+    def group(self) -> Optional[str]:
+        """
+        Glob pattern of the group to match.
+        """
+        return pulumi.get(self, "group")
 
 
 @pulumi.output_type
@@ -1868,20 +2106,29 @@ class GetClusterSpecDataResult(dict):
     def __init__(__self__, *,
                  app_replication: bool,
                  auto_upgrade_disabled: bool,
+                 datadog_annotations_enabled: bool,
+                 eks_addon_enabled: bool,
                  kustomization: str,
+                 managed_cluster_config: 'outputs.GetClusterSpecDataManagedClusterConfigResult',
                  redis_tunneling: bool,
                  size: str,
                  target_version: str):
         """
         :param bool app_replication: Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features
+        :param bool datadog_annotations_enabled: Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+        :param bool eks_addon_enabled: Enable this if you are installing this cluster on EKS.
         :param str kustomization: Kustomize configuration that will be applied to generated agent installation manifests
+        :param 'GetClusterSpecDataManagedClusterConfigArgs' managed_cluster_config: The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
         :param bool redis_tunneling: Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
         :param str size: Cluster Size. One of `small`, `medium` or `large`
         :param str target_version: The version of the agent to install on your cluster
         """
         pulumi.set(__self__, "app_replication", app_replication)
         pulumi.set(__self__, "auto_upgrade_disabled", auto_upgrade_disabled)
+        pulumi.set(__self__, "datadog_annotations_enabled", datadog_annotations_enabled)
+        pulumi.set(__self__, "eks_addon_enabled", eks_addon_enabled)
         pulumi.set(__self__, "kustomization", kustomization)
+        pulumi.set(__self__, "managed_cluster_config", managed_cluster_config)
         pulumi.set(__self__, "redis_tunneling", redis_tunneling)
         pulumi.set(__self__, "size", size)
         pulumi.set(__self__, "target_version", target_version)
@@ -1900,12 +2147,36 @@ class GetClusterSpecDataResult(dict):
         return pulumi.get(self, "auto_upgrade_disabled")
 
     @property
+    @pulumi.getter(name="datadogAnnotationsEnabled")
+    def datadog_annotations_enabled(self) -> bool:
+        """
+        Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+        """
+        return pulumi.get(self, "datadog_annotations_enabled")
+
+    @property
+    @pulumi.getter(name="eksAddonEnabled")
+    def eks_addon_enabled(self) -> bool:
+        """
+        Enable this if you are installing this cluster on EKS.
+        """
+        return pulumi.get(self, "eks_addon_enabled")
+
+    @property
     @pulumi.getter
     def kustomization(self) -> str:
         """
         Kustomize configuration that will be applied to generated agent installation manifests
         """
         return pulumi.get(self, "kustomization")
+
+    @property
+    @pulumi.getter(name="managedClusterConfig")
+    def managed_cluster_config(self) -> 'outputs.GetClusterSpecDataManagedClusterConfigResult':
+        """
+        The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+        """
+        return pulumi.get(self, "managed_cluster_config")
 
     @property
     @pulumi.getter(name="redisTunneling")
@@ -1930,6 +2201,35 @@ class GetClusterSpecDataResult(dict):
         The version of the agent to install on your cluster
         """
         return pulumi.get(self, "target_version")
+
+
+@pulumi.output_type
+class GetClusterSpecDataManagedClusterConfigResult(dict):
+    def __init__(__self__, *,
+                 secret_key: str,
+                 secret_name: str):
+        """
+        :param str secret_key: The key in the secret for the managed cluster config
+        :param str secret_name: The name of the secret for the managed cluster config
+        """
+        pulumi.set(__self__, "secret_key", secret_key)
+        pulumi.set(__self__, "secret_name", secret_name)
+
+    @property
+    @pulumi.getter(name="secretKey")
+    def secret_key(self) -> str:
+        """
+        The key in the secret for the managed cluster config
+        """
+        return pulumi.get(self, "secret_key")
+
+    @property
+    @pulumi.getter(name="secretName")
+    def secret_name(self) -> str:
+        """
+        The name of the secret for the managed cluster config
+        """
+        return pulumi.get(self, "secret_name")
 
 
 @pulumi.output_type
@@ -2232,20 +2532,29 @@ class GetClustersClusterSpecDataResult(dict):
     def __init__(__self__, *,
                  app_replication: bool,
                  auto_upgrade_disabled: bool,
+                 datadog_annotations_enabled: bool,
+                 eks_addon_enabled: bool,
                  kustomization: str,
+                 managed_cluster_config: 'outputs.GetClustersClusterSpecDataManagedClusterConfigResult',
                  redis_tunneling: bool,
                  size: str,
                  target_version: str):
         """
         :param bool app_replication: Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features
+        :param bool datadog_annotations_enabled: Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+        :param bool eks_addon_enabled: Enable this if you are installing this cluster on EKS.
         :param str kustomization: Kustomize configuration that will be applied to generated agent installation manifests
+        :param 'GetClustersClusterSpecDataManagedClusterConfigArgs' managed_cluster_config: The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
         :param bool redis_tunneling: Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
         :param str size: Cluster Size. One of `small`, `medium` or `large`
         :param str target_version: The version of the agent to install on your cluster
         """
         pulumi.set(__self__, "app_replication", app_replication)
         pulumi.set(__self__, "auto_upgrade_disabled", auto_upgrade_disabled)
+        pulumi.set(__self__, "datadog_annotations_enabled", datadog_annotations_enabled)
+        pulumi.set(__self__, "eks_addon_enabled", eks_addon_enabled)
         pulumi.set(__self__, "kustomization", kustomization)
+        pulumi.set(__self__, "managed_cluster_config", managed_cluster_config)
         pulumi.set(__self__, "redis_tunneling", redis_tunneling)
         pulumi.set(__self__, "size", size)
         pulumi.set(__self__, "target_version", target_version)
@@ -2264,12 +2573,36 @@ class GetClustersClusterSpecDataResult(dict):
         return pulumi.get(self, "auto_upgrade_disabled")
 
     @property
+    @pulumi.getter(name="datadogAnnotationsEnabled")
+    def datadog_annotations_enabled(self) -> bool:
+        """
+        Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+        """
+        return pulumi.get(self, "datadog_annotations_enabled")
+
+    @property
+    @pulumi.getter(name="eksAddonEnabled")
+    def eks_addon_enabled(self) -> bool:
+        """
+        Enable this if you are installing this cluster on EKS.
+        """
+        return pulumi.get(self, "eks_addon_enabled")
+
+    @property
     @pulumi.getter
     def kustomization(self) -> str:
         """
         Kustomize configuration that will be applied to generated agent installation manifests
         """
         return pulumi.get(self, "kustomization")
+
+    @property
+    @pulumi.getter(name="managedClusterConfig")
+    def managed_cluster_config(self) -> 'outputs.GetClustersClusterSpecDataManagedClusterConfigResult':
+        """
+        The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+        """
+        return pulumi.get(self, "managed_cluster_config")
 
     @property
     @pulumi.getter(name="redisTunneling")
@@ -2294,6 +2627,35 @@ class GetClustersClusterSpecDataResult(dict):
         The version of the agent to install on your cluster
         """
         return pulumi.get(self, "target_version")
+
+
+@pulumi.output_type
+class GetClustersClusterSpecDataManagedClusterConfigResult(dict):
+    def __init__(__self__, *,
+                 secret_key: str,
+                 secret_name: str):
+        """
+        :param str secret_key: The key in the secret for the managed cluster config
+        :param str secret_name: The name of the secret for the managed cluster config
+        """
+        pulumi.set(__self__, "secret_key", secret_key)
+        pulumi.set(__self__, "secret_name", secret_name)
+
+    @property
+    @pulumi.getter(name="secretKey")
+    def secret_key(self) -> str:
+        """
+        The key in the secret for the managed cluster config
+        """
+        return pulumi.get(self, "secret_key")
+
+    @property
+    @pulumi.getter(name="secretName")
+    def secret_name(self) -> str:
+        """
+        The name of the secret for the managed cluster config
+        """
+        return pulumi.get(self, "secret_name")
 
 
 @pulumi.output_type
@@ -2357,14 +2719,17 @@ class GetInstanceArgocdSpecResult(dict):
 @pulumi.output_type
 class GetInstanceArgocdSpecInstanceSpecResult(dict):
     def __init__(__self__, *,
+                 agent_permissions_rules: Sequence['outputs.GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleResult'],
                  app_set_delegate: 'outputs.GetInstanceArgocdSpecInstanceSpecAppSetDelegateResult',
                  appset_policy: 'outputs.GetInstanceArgocdSpecInstanceSpecAppsetPolicyResult',
                  assistant_extension_enabled: bool,
                  audit_extension_enabled: bool,
                  backend_ip_allow_list_enabled: bool,
                  cluster_customization_defaults: 'outputs.GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsResult',
+                 crossplane_extension: 'outputs.GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResult',
                  declarative_management_enabled: bool,
                  extensions: Sequence['outputs.GetInstanceArgocdSpecInstanceSpecExtensionResult'],
+                 fqdn: str,
                  host_aliases: Sequence['outputs.GetInstanceArgocdSpecInstanceSpecHostAliasResult'],
                  image_updater_delegate: 'outputs.GetInstanceArgocdSpecInstanceSpecImageUpdaterDelegateResult',
                  image_updater_enabled: bool,
@@ -2373,14 +2738,17 @@ class GetInstanceArgocdSpecInstanceSpecResult(dict):
                  subdomain: str,
                  sync_history_extension_enabled: bool):
         """
+        :param Sequence['GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs'] agent_permissions_rules: The ability to configure agent permissions rules.
         :param 'GetInstanceArgocdSpecInstanceSpecAppSetDelegateArgs' app_set_delegate: Select cluster in which you want to Install Application Set controller
         :param 'GetInstanceArgocdSpecInstanceSpecAppsetPolicyArgs' appset_policy: Configures Application Set policy settings.
         :param bool assistant_extension_enabled: Enable Powerful AI-powered assistant Extension. It helps analyze Kubernetes resources behavior and provides suggestions about resolving issues.
         :param bool audit_extension_enabled: Enable Audit Extension. Set this to `true` to install Audit Extension to Argo CD instance.
         :param bool backend_ip_allow_list_enabled: Enable ip allow list for cluster agents
         :param 'GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsArgs' cluster_customization_defaults: Default values for cluster agents
+        :param 'GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs' crossplane_extension: Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
         :param bool declarative_management_enabled: Enable Declarative Management
         :param Sequence['GetInstanceArgocdSpecInstanceSpecExtensionArgs'] extensions: Extensions
+        :param str fqdn: Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
         :param Sequence['GetInstanceArgocdSpecInstanceSpecHostAliasArgs'] host_aliases: Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.
         :param 'GetInstanceArgocdSpecInstanceSpecImageUpdaterDelegateArgs' image_updater_delegate: Select cluster in which you want to Install Image Updater
         :param bool image_updater_enabled: Enable Image Updater
@@ -2389,14 +2757,17 @@ class GetInstanceArgocdSpecInstanceSpecResult(dict):
         :param str subdomain: Instance subdomain. By default equals to instance id
         :param bool sync_history_extension_enabled: Enable Sync History Extension. Sync count and duration graphs as well as event details table on Argo CD application details page.
         """
+        pulumi.set(__self__, "agent_permissions_rules", agent_permissions_rules)
         pulumi.set(__self__, "app_set_delegate", app_set_delegate)
         pulumi.set(__self__, "appset_policy", appset_policy)
         pulumi.set(__self__, "assistant_extension_enabled", assistant_extension_enabled)
         pulumi.set(__self__, "audit_extension_enabled", audit_extension_enabled)
         pulumi.set(__self__, "backend_ip_allow_list_enabled", backend_ip_allow_list_enabled)
         pulumi.set(__self__, "cluster_customization_defaults", cluster_customization_defaults)
+        pulumi.set(__self__, "crossplane_extension", crossplane_extension)
         pulumi.set(__self__, "declarative_management_enabled", declarative_management_enabled)
         pulumi.set(__self__, "extensions", extensions)
+        pulumi.set(__self__, "fqdn", fqdn)
         pulumi.set(__self__, "host_aliases", host_aliases)
         pulumi.set(__self__, "image_updater_delegate", image_updater_delegate)
         pulumi.set(__self__, "image_updater_enabled", image_updater_enabled)
@@ -2404,6 +2775,14 @@ class GetInstanceArgocdSpecInstanceSpecResult(dict):
         pulumi.set(__self__, "repo_server_delegate", repo_server_delegate)
         pulumi.set(__self__, "subdomain", subdomain)
         pulumi.set(__self__, "sync_history_extension_enabled", sync_history_extension_enabled)
+
+    @property
+    @pulumi.getter(name="agentPermissionsRules")
+    def agent_permissions_rules(self) -> Sequence['outputs.GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleResult']:
+        """
+        The ability to configure agent permissions rules.
+        """
+        return pulumi.get(self, "agent_permissions_rules")
 
     @property
     @pulumi.getter(name="appSetDelegate")
@@ -2454,6 +2833,14 @@ class GetInstanceArgocdSpecInstanceSpecResult(dict):
         return pulumi.get(self, "cluster_customization_defaults")
 
     @property
+    @pulumi.getter(name="crossplaneExtension")
+    def crossplane_extension(self) -> 'outputs.GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResult':
+        """
+        Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+        """
+        return pulumi.get(self, "crossplane_extension")
+
+    @property
     @pulumi.getter(name="declarativeManagementEnabled")
     def declarative_management_enabled(self) -> bool:
         """
@@ -2468,6 +2855,14 @@ class GetInstanceArgocdSpecInstanceSpecResult(dict):
         Extensions
         """
         return pulumi.get(self, "extensions")
+
+    @property
+    @pulumi.getter
+    def fqdn(self) -> str:
+        """
+        Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+        """
+        return pulumi.get(self, "fqdn")
 
     @property
     @pulumi.getter(name="hostAliases")
@@ -2524,6 +2919,46 @@ class GetInstanceArgocdSpecInstanceSpecResult(dict):
         Enable Sync History Extension. Sync count and duration graphs as well as event details table on Argo CD application details page.
         """
         return pulumi.get(self, "sync_history_extension_enabled")
+
+
+@pulumi.output_type
+class GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleResult(dict):
+    def __init__(__self__, *,
+                 api_groups: Sequence[str],
+                 resources: Sequence[str],
+                 verbs: Sequence[str]):
+        """
+        :param Sequence[str] api_groups: API groups of the rule.
+        :param Sequence[str] resources: Resources of the rule.
+        :param Sequence[str] verbs: Verbs of the rule.
+        """
+        pulumi.set(__self__, "api_groups", api_groups)
+        pulumi.set(__self__, "resources", resources)
+        pulumi.set(__self__, "verbs", verbs)
+
+    @property
+    @pulumi.getter(name="apiGroups")
+    def api_groups(self) -> Sequence[str]:
+        """
+        API groups of the rule.
+        """
+        return pulumi.get(self, "api_groups")
+
+    @property
+    @pulumi.getter
+    def resources(self) -> Sequence[str]:
+        """
+        Resources of the rule.
+        """
+        return pulumi.get(self, "resources")
+
+    @property
+    @pulumi.getter
+    def verbs(self) -> Sequence[str]:
+        """
+        Verbs of the rule.
+        """
+        return pulumi.get(self, "verbs")
 
 
 @pulumi.output_type
@@ -2646,6 +3081,42 @@ class GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsResult(dict):
         Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
         """
         return pulumi.get(self, "redis_tunneling")
+
+
+@pulumi.output_type
+class GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResult(dict):
+    def __init__(__self__, *,
+                 resources: Sequence['outputs.GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceResult']):
+        """
+        :param Sequence['GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs'] resources: Glob patterns of the resources to match.
+        """
+        pulumi.set(__self__, "resources", resources)
+
+    @property
+    @pulumi.getter
+    def resources(self) -> Sequence['outputs.GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceResult']:
+        """
+        Glob patterns of the resources to match.
+        """
+        return pulumi.get(self, "resources")
+
+
+@pulumi.output_type
+class GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceResult(dict):
+    def __init__(__self__, *,
+                 group: str):
+        """
+        :param str group: Glob pattern of the group to match.
+        """
+        pulumi.set(__self__, "group", group)
+
+    @property
+    @pulumi.getter
+    def group(self) -> str:
+        """
+        Glob pattern of the group to match.
+        """
+        return pulumi.get(self, "group")
 
 
 @pulumi.output_type

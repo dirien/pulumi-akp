@@ -34,7 +34,7 @@ namespace ediri.Akp
     ///                 {
     ///                     DeclarativeManagementEnabled = true,
     ///                 },
-    ///                 Version = "v2.8.4",
+    ///                 Version = "v2.11.4",
     ///             },
     ///         },
     ///     });

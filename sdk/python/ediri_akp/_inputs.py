@@ -13,13 +13,17 @@ __all__ = [
     'ClusterKubeConfigArgs',
     'ClusterSpecArgs',
     'ClusterSpecDataArgs',
+    'ClusterSpecDataManagedClusterConfigArgs',
     'InstanceArgocdArgs',
     'InstanceArgocdSpecArgs',
     'InstanceArgocdSpecInstanceSpecArgs',
+    'InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs',
     'InstanceArgocdSpecInstanceSpecAppSetDelegateArgs',
     'InstanceArgocdSpecInstanceSpecAppSetDelegateManagedClusterArgs',
     'InstanceArgocdSpecInstanceSpecAppsetPolicyArgs',
     'InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsArgs',
+    'InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs',
+    'InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs',
     'InstanceArgocdSpecInstanceSpecExtensionArgs',
     'InstanceArgocdSpecInstanceSpecHostAliasArgs',
     'InstanceArgocdSpecInstanceSpecImageUpdaterDelegateArgs',
@@ -321,13 +325,19 @@ class ClusterSpecDataArgs:
                  size: pulumi.Input[str],
                  app_replication: Optional[pulumi.Input[bool]] = None,
                  auto_upgrade_disabled: Optional[pulumi.Input[bool]] = None,
+                 datadog_annotations_enabled: Optional[pulumi.Input[bool]] = None,
+                 eks_addon_enabled: Optional[pulumi.Input[bool]] = None,
                  kustomization: Optional[pulumi.Input[str]] = None,
+                 managed_cluster_config: Optional[pulumi.Input['ClusterSpecDataManagedClusterConfigArgs']] = None,
                  redis_tunneling: Optional[pulumi.Input[bool]] = None,
                  target_version: Optional[pulumi.Input[str]] = None):
         """
         :param pulumi.Input[str] size: Cluster Size. One of `small`, `medium` or `large`
         :param pulumi.Input[bool] app_replication: Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features
+        :param pulumi.Input[bool] datadog_annotations_enabled: Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+        :param pulumi.Input[bool] eks_addon_enabled: Enable this if you are installing this cluster on EKS.
         :param pulumi.Input[str] kustomization: Kustomize configuration that will be applied to generated agent installation manifests
+        :param pulumi.Input['ClusterSpecDataManagedClusterConfigArgs'] managed_cluster_config: The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
         :param pulumi.Input[bool] redis_tunneling: Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
         :param pulumi.Input[str] target_version: The version of the agent to install on your cluster
         """
@@ -336,8 +346,14 @@ class ClusterSpecDataArgs:
             pulumi.set(__self__, "app_replication", app_replication)
         if auto_upgrade_disabled is not None:
             pulumi.set(__self__, "auto_upgrade_disabled", auto_upgrade_disabled)
+        if datadog_annotations_enabled is not None:
+            pulumi.set(__self__, "datadog_annotations_enabled", datadog_annotations_enabled)
+        if eks_addon_enabled is not None:
+            pulumi.set(__self__, "eks_addon_enabled", eks_addon_enabled)
         if kustomization is not None:
             pulumi.set(__self__, "kustomization", kustomization)
+        if managed_cluster_config is not None:
+            pulumi.set(__self__, "managed_cluster_config", managed_cluster_config)
         if redis_tunneling is not None:
             pulumi.set(__self__, "redis_tunneling", redis_tunneling)
         if target_version is not None:
@@ -377,6 +393,30 @@ class ClusterSpecDataArgs:
         pulumi.set(self, "auto_upgrade_disabled", value)
 
     @property
+    @pulumi.getter(name="datadogAnnotationsEnabled")
+    def datadog_annotations_enabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+        """
+        return pulumi.get(self, "datadog_annotations_enabled")
+
+    @datadog_annotations_enabled.setter
+    def datadog_annotations_enabled(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "datadog_annotations_enabled", value)
+
+    @property
+    @pulumi.getter(name="eksAddonEnabled")
+    def eks_addon_enabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Enable this if you are installing this cluster on EKS.
+        """
+        return pulumi.get(self, "eks_addon_enabled")
+
+    @eks_addon_enabled.setter
+    def eks_addon_enabled(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "eks_addon_enabled", value)
+
+    @property
     @pulumi.getter
     def kustomization(self) -> Optional[pulumi.Input[str]]:
         """
@@ -387,6 +427,18 @@ class ClusterSpecDataArgs:
     @kustomization.setter
     def kustomization(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "kustomization", value)
+
+    @property
+    @pulumi.getter(name="managedClusterConfig")
+    def managed_cluster_config(self) -> Optional[pulumi.Input['ClusterSpecDataManagedClusterConfigArgs']]:
+        """
+        The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+        """
+        return pulumi.get(self, "managed_cluster_config")
+
+    @managed_cluster_config.setter
+    def managed_cluster_config(self, value: Optional[pulumi.Input['ClusterSpecDataManagedClusterConfigArgs']]):
+        pulumi.set(self, "managed_cluster_config", value)
 
     @property
     @pulumi.getter(name="redisTunneling")
@@ -411,6 +463,44 @@ class ClusterSpecDataArgs:
     @target_version.setter
     def target_version(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "target_version", value)
+
+
+@pulumi.input_type
+class ClusterSpecDataManagedClusterConfigArgs:
+    def __init__(__self__, *,
+                 secret_name: pulumi.Input[str],
+                 secret_key: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] secret_name: The name of the secret for the managed cluster config
+        :param pulumi.Input[str] secret_key: The key in the secret for the managed cluster config
+        """
+        pulumi.set(__self__, "secret_name", secret_name)
+        if secret_key is not None:
+            pulumi.set(__self__, "secret_key", secret_key)
+
+    @property
+    @pulumi.getter(name="secretName")
+    def secret_name(self) -> pulumi.Input[str]:
+        """
+        The name of the secret for the managed cluster config
+        """
+        return pulumi.get(self, "secret_name")
+
+    @secret_name.setter
+    def secret_name(self, value: pulumi.Input[str]):
+        pulumi.set(self, "secret_name", value)
+
+    @property
+    @pulumi.getter(name="secretKey")
+    def secret_key(self) -> Optional[pulumi.Input[str]]:
+        """
+        The key in the secret for the managed cluster config
+        """
+        return pulumi.get(self, "secret_key")
+
+    @secret_key.setter
+    def secret_key(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "secret_key", value)
 
 
 @pulumi.input_type
@@ -491,14 +581,17 @@ class InstanceArgocdSpecArgs:
 @pulumi.input_type
 class InstanceArgocdSpecInstanceSpecArgs:
     def __init__(__self__, *,
+                 agent_permissions_rules: Optional[pulumi.Input[Sequence[pulumi.Input['InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs']]]] = None,
                  app_set_delegate: Optional[pulumi.Input['InstanceArgocdSpecInstanceSpecAppSetDelegateArgs']] = None,
                  appset_policy: Optional[pulumi.Input['InstanceArgocdSpecInstanceSpecAppsetPolicyArgs']] = None,
                  assistant_extension_enabled: Optional[pulumi.Input[bool]] = None,
                  audit_extension_enabled: Optional[pulumi.Input[bool]] = None,
                  backend_ip_allow_list_enabled: Optional[pulumi.Input[bool]] = None,
                  cluster_customization_defaults: Optional[pulumi.Input['InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsArgs']] = None,
+                 crossplane_extension: Optional[pulumi.Input['InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs']] = None,
                  declarative_management_enabled: Optional[pulumi.Input[bool]] = None,
                  extensions: Optional[pulumi.Input[Sequence[pulumi.Input['InstanceArgocdSpecInstanceSpecExtensionArgs']]]] = None,
+                 fqdn: Optional[pulumi.Input[str]] = None,
                  host_aliases: Optional[pulumi.Input[Sequence[pulumi.Input['InstanceArgocdSpecInstanceSpecHostAliasArgs']]]] = None,
                  image_updater_delegate: Optional[pulumi.Input['InstanceArgocdSpecInstanceSpecImageUpdaterDelegateArgs']] = None,
                  image_updater_enabled: Optional[pulumi.Input[bool]] = None,
@@ -507,14 +600,17 @@ class InstanceArgocdSpecInstanceSpecArgs:
                  subdomain: Optional[pulumi.Input[str]] = None,
                  sync_history_extension_enabled: Optional[pulumi.Input[bool]] = None):
         """
+        :param pulumi.Input[Sequence[pulumi.Input['InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs']]] agent_permissions_rules: The ability to configure agent permissions rules.
         :param pulumi.Input['InstanceArgocdSpecInstanceSpecAppSetDelegateArgs'] app_set_delegate: Select cluster in which you want to Install Application Set controller
         :param pulumi.Input['InstanceArgocdSpecInstanceSpecAppsetPolicyArgs'] appset_policy: Configures Application Set policy settings.
         :param pulumi.Input[bool] assistant_extension_enabled: Enable Powerful AI-powered assistant Extension. It helps analyze Kubernetes resources behavior and provides suggestions about resolving issues.
         :param pulumi.Input[bool] audit_extension_enabled: Enable Audit Extension. Set this to `true` to install Audit Extension to Argo CD instance.
         :param pulumi.Input[bool] backend_ip_allow_list_enabled: Enable ip allow list for cluster agents
         :param pulumi.Input['InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsArgs'] cluster_customization_defaults: Default values for cluster agents
+        :param pulumi.Input['InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs'] crossplane_extension: Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
         :param pulumi.Input[bool] declarative_management_enabled: Enable Declarative Management
         :param pulumi.Input[Sequence[pulumi.Input['InstanceArgocdSpecInstanceSpecExtensionArgs']]] extensions: Extensions
+        :param pulumi.Input[str] fqdn: Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
         :param pulumi.Input[Sequence[pulumi.Input['InstanceArgocdSpecInstanceSpecHostAliasArgs']]] host_aliases: Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.
         :param pulumi.Input['InstanceArgocdSpecInstanceSpecImageUpdaterDelegateArgs'] image_updater_delegate: Select cluster in which you want to Install Image Updater
         :param pulumi.Input[bool] image_updater_enabled: Enable Image Updater
@@ -523,6 +619,8 @@ class InstanceArgocdSpecInstanceSpecArgs:
         :param pulumi.Input[str] subdomain: Instance subdomain. By default equals to instance id
         :param pulumi.Input[bool] sync_history_extension_enabled: Enable Sync History Extension. Sync count and duration graphs as well as event details table on Argo CD application details page.
         """
+        if agent_permissions_rules is not None:
+            pulumi.set(__self__, "agent_permissions_rules", agent_permissions_rules)
         if app_set_delegate is not None:
             pulumi.set(__self__, "app_set_delegate", app_set_delegate)
         if appset_policy is not None:
@@ -535,10 +633,14 @@ class InstanceArgocdSpecInstanceSpecArgs:
             pulumi.set(__self__, "backend_ip_allow_list_enabled", backend_ip_allow_list_enabled)
         if cluster_customization_defaults is not None:
             pulumi.set(__self__, "cluster_customization_defaults", cluster_customization_defaults)
+        if crossplane_extension is not None:
+            pulumi.set(__self__, "crossplane_extension", crossplane_extension)
         if declarative_management_enabled is not None:
             pulumi.set(__self__, "declarative_management_enabled", declarative_management_enabled)
         if extensions is not None:
             pulumi.set(__self__, "extensions", extensions)
+        if fqdn is not None:
+            pulumi.set(__self__, "fqdn", fqdn)
         if host_aliases is not None:
             pulumi.set(__self__, "host_aliases", host_aliases)
         if image_updater_delegate is not None:
@@ -553,6 +655,18 @@ class InstanceArgocdSpecInstanceSpecArgs:
             pulumi.set(__self__, "subdomain", subdomain)
         if sync_history_extension_enabled is not None:
             pulumi.set(__self__, "sync_history_extension_enabled", sync_history_extension_enabled)
+
+    @property
+    @pulumi.getter(name="agentPermissionsRules")
+    def agent_permissions_rules(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs']]]]:
+        """
+        The ability to configure agent permissions rules.
+        """
+        return pulumi.get(self, "agent_permissions_rules")
+
+    @agent_permissions_rules.setter
+    def agent_permissions_rules(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs']]]]):
+        pulumi.set(self, "agent_permissions_rules", value)
 
     @property
     @pulumi.getter(name="appSetDelegate")
@@ -627,6 +741,18 @@ class InstanceArgocdSpecInstanceSpecArgs:
         pulumi.set(self, "cluster_customization_defaults", value)
 
     @property
+    @pulumi.getter(name="crossplaneExtension")
+    def crossplane_extension(self) -> Optional[pulumi.Input['InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs']]:
+        """
+        Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+        """
+        return pulumi.get(self, "crossplane_extension")
+
+    @crossplane_extension.setter
+    def crossplane_extension(self, value: Optional[pulumi.Input['InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs']]):
+        pulumi.set(self, "crossplane_extension", value)
+
+    @property
     @pulumi.getter(name="declarativeManagementEnabled")
     def declarative_management_enabled(self) -> Optional[pulumi.Input[bool]]:
         """
@@ -649,6 +775,18 @@ class InstanceArgocdSpecInstanceSpecArgs:
     @extensions.setter
     def extensions(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['InstanceArgocdSpecInstanceSpecExtensionArgs']]]]):
         pulumi.set(self, "extensions", value)
+
+    @property
+    @pulumi.getter
+    def fqdn(self) -> Optional[pulumi.Input[str]]:
+        """
+        Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+        """
+        return pulumi.get(self, "fqdn")
+
+    @fqdn.setter
+    def fqdn(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "fqdn", value)
 
     @property
     @pulumi.getter(name="hostAliases")
@@ -733,6 +871,61 @@ class InstanceArgocdSpecInstanceSpecArgs:
     @sync_history_extension_enabled.setter
     def sync_history_extension_enabled(self, value: Optional[pulumi.Input[bool]]):
         pulumi.set(self, "sync_history_extension_enabled", value)
+
+
+@pulumi.input_type
+class InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs:
+    def __init__(__self__, *,
+                 api_groups: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 resources: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 verbs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
+        """
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] api_groups: API groups of the rule.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] resources: Resources of the rule.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] verbs: Verbs of the rule.
+        """
+        if api_groups is not None:
+            pulumi.set(__self__, "api_groups", api_groups)
+        if resources is not None:
+            pulumi.set(__self__, "resources", resources)
+        if verbs is not None:
+            pulumi.set(__self__, "verbs", verbs)
+
+    @property
+    @pulumi.getter(name="apiGroups")
+    def api_groups(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        API groups of the rule.
+        """
+        return pulumi.get(self, "api_groups")
+
+    @api_groups.setter
+    def api_groups(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "api_groups", value)
+
+    @property
+    @pulumi.getter
+    def resources(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        Resources of the rule.
+        """
+        return pulumi.get(self, "resources")
+
+    @resources.setter
+    def resources(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "resources", value)
+
+    @property
+    @pulumi.getter
+    def verbs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        Verbs of the rule.
+        """
+        return pulumi.get(self, "verbs")
+
+    @verbs.setter
+    def verbs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "verbs", value)
 
 
 @pulumi.input_type
@@ -894,6 +1087,52 @@ class InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsArgs:
     @redis_tunneling.setter
     def redis_tunneling(self, value: Optional[pulumi.Input[bool]]):
         pulumi.set(self, "redis_tunneling", value)
+
+
+@pulumi.input_type
+class InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs:
+    def __init__(__self__, *,
+                 resources: Optional[pulumi.Input[Sequence[pulumi.Input['InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs']]]] = None):
+        """
+        :param pulumi.Input[Sequence[pulumi.Input['InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs']]] resources: Glob patterns of the resources to match.
+        """
+        if resources is not None:
+            pulumi.set(__self__, "resources", resources)
+
+    @property
+    @pulumi.getter
+    def resources(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs']]]]:
+        """
+        Glob patterns of the resources to match.
+        """
+        return pulumi.get(self, "resources")
+
+    @resources.setter
+    def resources(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs']]]]):
+        pulumi.set(self, "resources", value)
+
+
+@pulumi.input_type
+class InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs:
+    def __init__(__self__, *,
+                 group: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] group: Glob pattern of the group to match.
+        """
+        if group is not None:
+            pulumi.set(__self__, "group", group)
+
+    @property
+    @pulumi.getter
+    def group(self) -> Optional[pulumi.Input[str]]:
+        """
+        Glob pattern of the group to match.
+        """
+        return pulumi.get(self, "group")
+
+    @group.setter
+    def group(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "group", value)
 
 
 @pulumi.input_type
