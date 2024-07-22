@@ -20,9 +20,21 @@ namespace ediri.Akp.Outputs
         public readonly bool AppReplication;
         public readonly bool AutoUpgradeDisabled;
         /// <summary>
+        /// Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+        /// </summary>
+        public readonly bool DatadogAnnotationsEnabled;
+        /// <summary>
+        /// Enable this if you are installing this cluster on EKS.
+        /// </summary>
+        public readonly bool EksAddonEnabled;
+        /// <summary>
         /// Kustomize configuration that will be applied to generated agent installation manifests
         /// </summary>
         public readonly string Kustomization;
+        /// <summary>
+        /// The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+        /// </summary>
+        public readonly Outputs.GetClusterSpecDataManagedClusterConfigResult ManagedClusterConfig;
         /// <summary>
         /// Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
         /// </summary>
@@ -42,7 +54,13 @@ namespace ediri.Akp.Outputs
 
             bool autoUpgradeDisabled,
 
+            bool datadogAnnotationsEnabled,
+
+            bool eksAddonEnabled,
+
             string kustomization,
+
+            Outputs.GetClusterSpecDataManagedClusterConfigResult managedClusterConfig,
 
             bool redisTunneling,
 
@@ -52,7 +70,10 @@ namespace ediri.Akp.Outputs
         {
             AppReplication = appReplication;
             AutoUpgradeDisabled = autoUpgradeDisabled;
+            DatadogAnnotationsEnabled = datadogAnnotationsEnabled;
+            EksAddonEnabled = eksAddonEnabled;
             Kustomization = kustomization;
+            ManagedClusterConfig = managedClusterConfig;
             RedisTunneling = redisTunneling;
             Size = size;
             TargetVersion = targetVersion;

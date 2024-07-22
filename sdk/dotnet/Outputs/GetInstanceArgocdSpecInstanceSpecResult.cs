@@ -15,6 +15,10 @@ namespace ediri.Akp.Outputs
     public sealed class GetInstanceArgocdSpecInstanceSpecResult
     {
         /// <summary>
+        /// The ability to configure agent permissions rules.
+        /// </summary>
+        public readonly ImmutableArray<Outputs.GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleResult> AgentPermissionsRules;
+        /// <summary>
         /// Select cluster in which you want to Install Application Set controller
         /// </summary>
         public readonly Outputs.GetInstanceArgocdSpecInstanceSpecAppSetDelegateResult AppSetDelegate;
@@ -39,6 +43,10 @@ namespace ediri.Akp.Outputs
         /// </summary>
         public readonly Outputs.GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsResult ClusterCustomizationDefaults;
         /// <summary>
+        /// Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+        /// </summary>
+        public readonly Outputs.GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResult CrossplaneExtension;
+        /// <summary>
         /// Enable Declarative Management
         /// </summary>
         public readonly bool DeclarativeManagementEnabled;
@@ -46,6 +54,10 @@ namespace ediri.Akp.Outputs
         /// Extensions
         /// </summary>
         public readonly ImmutableArray<Outputs.GetInstanceArgocdSpecInstanceSpecExtensionResult> Extensions;
+        /// <summary>
+        /// Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+        /// </summary>
+        public readonly string Fqdn;
         /// <summary>
         /// Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.
         /// </summary>
@@ -77,6 +89,8 @@ namespace ediri.Akp.Outputs
 
         [OutputConstructor]
         private GetInstanceArgocdSpecInstanceSpecResult(
+            ImmutableArray<Outputs.GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleResult> agentPermissionsRules,
+
             Outputs.GetInstanceArgocdSpecInstanceSpecAppSetDelegateResult appSetDelegate,
 
             Outputs.GetInstanceArgocdSpecInstanceSpecAppsetPolicyResult appsetPolicy,
@@ -89,9 +103,13 @@ namespace ediri.Akp.Outputs
 
             Outputs.GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsResult clusterCustomizationDefaults,
 
+            Outputs.GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResult crossplaneExtension,
+
             bool declarativeManagementEnabled,
 
             ImmutableArray<Outputs.GetInstanceArgocdSpecInstanceSpecExtensionResult> extensions,
+
+            string fqdn,
 
             ImmutableArray<Outputs.GetInstanceArgocdSpecInstanceSpecHostAliasResult> hostAliases,
 
@@ -107,14 +125,17 @@ namespace ediri.Akp.Outputs
 
             bool syncHistoryExtensionEnabled)
         {
+            AgentPermissionsRules = agentPermissionsRules;
             AppSetDelegate = appSetDelegate;
             AppsetPolicy = appsetPolicy;
             AssistantExtensionEnabled = assistantExtensionEnabled;
             AuditExtensionEnabled = auditExtensionEnabled;
             BackendIpAllowListEnabled = backendIpAllowListEnabled;
             ClusterCustomizationDefaults = clusterCustomizationDefaults;
+            CrossplaneExtension = crossplaneExtension;
             DeclarativeManagementEnabled = declarativeManagementEnabled;
             Extensions = extensions;
+            Fqdn = fqdn;
             HostAliases = hostAliases;
             ImageUpdaterDelegate = imageUpdaterDelegate;
             ImageUpdaterEnabled = imageUpdaterEnabled;

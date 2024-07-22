@@ -21,7 +21,7 @@ import * as utilities from "./utilities";
  *         instanceSpec: {
  *             declarativeManagementEnabled: true,
  *         },
- *         version: "v2.8.4",
+ *         version: "v2.11.4",
  *     },
  * }});
  * ```

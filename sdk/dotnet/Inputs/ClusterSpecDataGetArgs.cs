@@ -23,10 +23,28 @@ namespace ediri.Akp.Inputs
         public Input<bool>? AutoUpgradeDisabled { get; set; }
 
         /// <summary>
+        /// Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+        /// </summary>
+        [Input("datadogAnnotationsEnabled")]
+        public Input<bool>? DatadogAnnotationsEnabled { get; set; }
+
+        /// <summary>
+        /// Enable this if you are installing this cluster on EKS.
+        /// </summary>
+        [Input("eksAddonEnabled")]
+        public Input<bool>? EksAddonEnabled { get; set; }
+
+        /// <summary>
         /// Kustomize configuration that will be applied to generated agent installation manifests
         /// </summary>
         [Input("kustomization")]
         public Input<string>? Kustomization { get; set; }
+
+        /// <summary>
+        /// The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+        /// </summary>
+        [Input("managedClusterConfig")]
+        public Input<Inputs.ClusterSpecDataManagedClusterConfigGetArgs>? ManagedClusterConfig { get; set; }
 
         /// <summary>
         /// Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy

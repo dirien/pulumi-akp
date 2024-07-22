@@ -80,9 +80,21 @@ export interface ClusterSpecData {
     appReplication?: pulumi.Input<boolean>;
     autoUpgradeDisabled?: pulumi.Input<boolean>;
     /**
+     * Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+     */
+    datadogAnnotationsEnabled?: pulumi.Input<boolean>;
+    /**
+     * Enable this if you are installing this cluster on EKS.
+     */
+    eksAddonEnabled?: pulumi.Input<boolean>;
+    /**
      * Kustomize configuration that will be applied to generated agent installation manifests
      */
     kustomization?: pulumi.Input<string>;
+    /**
+     * The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+     */
+    managedClusterConfig?: pulumi.Input<inputs.ClusterSpecDataManagedClusterConfig>;
     /**
      * Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
      */
@@ -95,6 +107,17 @@ export interface ClusterSpecData {
      * The version of the agent to install on your cluster
      */
     targetVersion?: pulumi.Input<string>;
+}
+
+export interface ClusterSpecDataManagedClusterConfig {
+    /**
+     * The key in the secret for the managed cluster config
+     */
+    secretKey?: pulumi.Input<string>;
+    /**
+     * The name of the secret for the managed cluster config
+     */
+    secretName: pulumi.Input<string>;
 }
 
 export interface InstanceArgocd {
@@ -121,6 +144,10 @@ export interface InstanceArgocdSpec {
 
 export interface InstanceArgocdSpecInstanceSpec {
     /**
+     * The ability to configure agent permissions rules.
+     */
+    agentPermissionsRules?: pulumi.Input<pulumi.Input<inputs.InstanceArgocdSpecInstanceSpecAgentPermissionsRule>[]>;
+    /**
      * Select cluster in which you want to Install Application Set controller
      */
     appSetDelegate?: pulumi.Input<inputs.InstanceArgocdSpecInstanceSpecAppSetDelegate>;
@@ -145,6 +172,10 @@ export interface InstanceArgocdSpecInstanceSpec {
      */
     clusterCustomizationDefaults?: pulumi.Input<inputs.InstanceArgocdSpecInstanceSpecClusterCustomizationDefaults>;
     /**
+     * Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+     */
+    crossplaneExtension?: pulumi.Input<inputs.InstanceArgocdSpecInstanceSpecCrossplaneExtension>;
+    /**
      * Enable Declarative Management
      */
     declarativeManagementEnabled?: pulumi.Input<boolean>;
@@ -152,6 +183,10 @@ export interface InstanceArgocdSpecInstanceSpec {
      * Extensions
      */
     extensions?: pulumi.Input<pulumi.Input<inputs.InstanceArgocdSpecInstanceSpecExtension>[]>;
+    /**
+     * Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+     */
+    fqdn?: pulumi.Input<string>;
     /**
      * Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.
      */
@@ -180,6 +215,21 @@ export interface InstanceArgocdSpecInstanceSpec {
      * Enable Sync History Extension. Sync count and duration graphs as well as event details table on Argo CD application details page.
      */
     syncHistoryExtensionEnabled?: pulumi.Input<boolean>;
+}
+
+export interface InstanceArgocdSpecInstanceSpecAgentPermissionsRule {
+    /**
+     * API groups of the rule.
+     */
+    apiGroups?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Resources of the rule.
+     */
+    resources?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Verbs of the rule.
+     */
+    verbs?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 export interface InstanceArgocdSpecInstanceSpecAppSetDelegate {
@@ -226,6 +276,20 @@ export interface InstanceArgocdSpecInstanceSpecClusterCustomizationDefaults {
      * Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
      */
     redisTunneling?: pulumi.Input<boolean>;
+}
+
+export interface InstanceArgocdSpecInstanceSpecCrossplaneExtension {
+    /**
+     * Glob patterns of the resources to match.
+     */
+    resources?: pulumi.Input<pulumi.Input<inputs.InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource>[]>;
+}
+
+export interface InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource {
+    /**
+     * Glob pattern of the group to match.
+     */
+    group?: pulumi.Input<string>;
 }
 
 export interface InstanceArgocdSpecInstanceSpecExtension {

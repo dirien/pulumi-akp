@@ -13,6 +13,18 @@ namespace ediri.Akp.Inputs
 
     public sealed class InstanceArgocdSpecInstanceSpecGetArgs : global::Pulumi.ResourceArgs
     {
+        [Input("agentPermissionsRules")]
+        private InputList<Inputs.InstanceArgocdSpecInstanceSpecAgentPermissionsRuleGetArgs>? _agentPermissionsRules;
+
+        /// <summary>
+        /// The ability to configure agent permissions rules.
+        /// </summary>
+        public InputList<Inputs.InstanceArgocdSpecInstanceSpecAgentPermissionsRuleGetArgs> AgentPermissionsRules
+        {
+            get => _agentPermissionsRules ?? (_agentPermissionsRules = new InputList<Inputs.InstanceArgocdSpecInstanceSpecAgentPermissionsRuleGetArgs>());
+            set => _agentPermissionsRules = value;
+        }
+
         /// <summary>
         /// Select cluster in which you want to Install Application Set controller
         /// </summary>
@@ -50,6 +62,12 @@ namespace ediri.Akp.Inputs
         public Input<Inputs.InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsGetArgs>? ClusterCustomizationDefaults { get; set; }
 
         /// <summary>
+        /// Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+        /// </summary>
+        [Input("crossplaneExtension")]
+        public Input<Inputs.InstanceArgocdSpecInstanceSpecCrossplaneExtensionGetArgs>? CrossplaneExtension { get; set; }
+
+        /// <summary>
         /// Enable Declarative Management
         /// </summary>
         [Input("declarativeManagementEnabled")]
@@ -66,6 +84,12 @@ namespace ediri.Akp.Inputs
             get => _extensions ?? (_extensions = new InputList<Inputs.InstanceArgocdSpecInstanceSpecExtensionGetArgs>());
             set => _extensions = value;
         }
+
+        /// <summary>
+        /// Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+        /// </summary>
+        [Input("fqdn")]
+        public Input<string>? Fqdn { get; set; }
 
         [Input("hostAliases")]
         private InputList<Inputs.InstanceArgocdSpecInstanceSpecHostAliasGetArgs>? _hostAliases;

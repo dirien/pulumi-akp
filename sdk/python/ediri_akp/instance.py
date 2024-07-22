@@ -717,7 +717,7 @@ class Instance(pulumi.CustomResource):
                 instance_spec=akp.InstanceArgocdSpecInstanceSpecArgs(
                     declarative_management_enabled=True,
                 ),
-                version="v2.8.4",
+                version="v2.11.4",
             ),
         ))
         ```
@@ -805,7 +805,7 @@ class Instance(pulumi.CustomResource):
                 instance_spec=akp.InstanceArgocdSpecInstanceSpecArgs(
                     declarative_management_enabled=True,
                 ),
-                version="v2.8.4",
+                version="v2.11.4",
             ),
         ))
         ```

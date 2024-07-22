@@ -80,9 +80,21 @@ export interface ClusterSpecData {
     appReplication: boolean;
     autoUpgradeDisabled: boolean;
     /**
+     * Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+     */
+    datadogAnnotationsEnabled: boolean;
+    /**
+     * Enable this if you are installing this cluster on EKS.
+     */
+    eksAddonEnabled: boolean;
+    /**
      * Kustomize configuration that will be applied to generated agent installation manifests
      */
     kustomization: string;
+    /**
+     * The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+     */
+    managedClusterConfig?: outputs.ClusterSpecDataManagedClusterConfig;
     /**
      * Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
      */
@@ -95,6 +107,17 @@ export interface ClusterSpecData {
      * The version of the agent to install on your cluster
      */
     targetVersion: string;
+}
+
+export interface ClusterSpecDataManagedClusterConfig {
+    /**
+     * The key in the secret for the managed cluster config
+     */
+    secretKey?: string;
+    /**
+     * The name of the secret for the managed cluster config
+     */
+    secretName: string;
 }
 
 export interface GetClusterKubeConfig {
@@ -172,9 +195,21 @@ export interface GetClusterSpecData {
     appReplication: boolean;
     autoUpgradeDisabled: boolean;
     /**
+     * Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+     */
+    datadogAnnotationsEnabled: boolean;
+    /**
+     * Enable this if you are installing this cluster on EKS.
+     */
+    eksAddonEnabled: boolean;
+    /**
      * Kustomize configuration that will be applied to generated agent installation manifests
      */
     kustomization: string;
+    /**
+     * The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+     */
+    managedClusterConfig: outputs.GetClusterSpecDataManagedClusterConfig;
     /**
      * Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
      */
@@ -187,6 +222,17 @@ export interface GetClusterSpecData {
      * The version of the agent to install on your cluster
      */
     targetVersion: string;
+}
+
+export interface GetClusterSpecDataManagedClusterConfig {
+    /**
+     * The key in the secret for the managed cluster config
+     */
+    secretKey: string;
+    /**
+     * The name of the secret for the managed cluster config
+     */
+    secretName: string;
 }
 
 export interface GetClustersCluster {
@@ -300,9 +346,21 @@ export interface GetClustersClusterSpecData {
     appReplication: boolean;
     autoUpgradeDisabled: boolean;
     /**
+     * Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+     */
+    datadogAnnotationsEnabled: boolean;
+    /**
+     * Enable this if you are installing this cluster on EKS.
+     */
+    eksAddonEnabled: boolean;
+    /**
      * Kustomize configuration that will be applied to generated agent installation manifests
      */
     kustomization: string;
+    /**
+     * The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+     */
+    managedClusterConfig: outputs.GetClustersClusterSpecDataManagedClusterConfig;
     /**
      * Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
      */
@@ -315,6 +373,17 @@ export interface GetClustersClusterSpecData {
      * The version of the agent to install on your cluster
      */
     targetVersion: string;
+}
+
+export interface GetClustersClusterSpecDataManagedClusterConfig {
+    /**
+     * The key in the secret for the managed cluster config
+     */
+    secretKey: string;
+    /**
+     * The name of the secret for the managed cluster config
+     */
+    secretName: string;
 }
 
 export interface GetInstanceArgocd {
@@ -341,6 +410,10 @@ export interface GetInstanceArgocdSpec {
 
 export interface GetInstanceArgocdSpecInstanceSpec {
     /**
+     * The ability to configure agent permissions rules.
+     */
+    agentPermissionsRules: outputs.GetInstanceArgocdSpecInstanceSpecAgentPermissionsRule[];
+    /**
      * Select cluster in which you want to Install Application Set controller
      */
     appSetDelegate: outputs.GetInstanceArgocdSpecInstanceSpecAppSetDelegate;
@@ -365,6 +438,10 @@ export interface GetInstanceArgocdSpecInstanceSpec {
      */
     clusterCustomizationDefaults: outputs.GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaults;
     /**
+     * Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+     */
+    crossplaneExtension: outputs.GetInstanceArgocdSpecInstanceSpecCrossplaneExtension;
+    /**
      * Enable Declarative Management
      */
     declarativeManagementEnabled: boolean;
@@ -372,6 +449,10 @@ export interface GetInstanceArgocdSpecInstanceSpec {
      * Extensions
      */
     extensions: outputs.GetInstanceArgocdSpecInstanceSpecExtension[];
+    /**
+     * Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+     */
+    fqdn: string;
     /**
      * Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.
      */
@@ -400,6 +481,21 @@ export interface GetInstanceArgocdSpecInstanceSpec {
      * Enable Sync History Extension. Sync count and duration graphs as well as event details table on Argo CD application details page.
      */
     syncHistoryExtensionEnabled: boolean;
+}
+
+export interface GetInstanceArgocdSpecInstanceSpecAgentPermissionsRule {
+    /**
+     * API groups of the rule.
+     */
+    apiGroups: string[];
+    /**
+     * Resources of the rule.
+     */
+    resources: string[];
+    /**
+     * Verbs of the rule.
+     */
+    verbs: string[];
 }
 
 export interface GetInstanceArgocdSpecInstanceSpecAppSetDelegate {
@@ -446,6 +542,20 @@ export interface GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaults {
      * Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
      */
     redisTunneling: boolean;
+}
+
+export interface GetInstanceArgocdSpecInstanceSpecCrossplaneExtension {
+    /**
+     * Glob patterns of the resources to match.
+     */
+    resources: outputs.GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResource[];
+}
+
+export interface GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResource {
+    /**
+     * Glob pattern of the group to match.
+     */
+    group: string;
 }
 
 export interface GetInstanceArgocdSpecInstanceSpecExtension {
@@ -692,6 +802,10 @@ export interface InstanceArgocdSpec {
 
 export interface InstanceArgocdSpecInstanceSpec {
     /**
+     * The ability to configure agent permissions rules.
+     */
+    agentPermissionsRules?: outputs.InstanceArgocdSpecInstanceSpecAgentPermissionsRule[];
+    /**
      * Select cluster in which you want to Install Application Set controller
      */
     appSetDelegate?: outputs.InstanceArgocdSpecInstanceSpecAppSetDelegate;
@@ -716,6 +830,10 @@ export interface InstanceArgocdSpecInstanceSpec {
      */
     clusterCustomizationDefaults: outputs.InstanceArgocdSpecInstanceSpecClusterCustomizationDefaults;
     /**
+     * Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+     */
+    crossplaneExtension?: outputs.InstanceArgocdSpecInstanceSpecCrossplaneExtension;
+    /**
      * Enable Declarative Management
      */
     declarativeManagementEnabled: boolean;
@@ -723,6 +841,10 @@ export interface InstanceArgocdSpecInstanceSpec {
      * Extensions
      */
     extensions?: outputs.InstanceArgocdSpecInstanceSpecExtension[];
+    /**
+     * Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+     */
+    fqdn: string;
     /**
      * Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.
      */
@@ -751,6 +873,21 @@ export interface InstanceArgocdSpecInstanceSpec {
      * Enable Sync History Extension. Sync count and duration graphs as well as event details table on Argo CD application details page.
      */
     syncHistoryExtensionEnabled: boolean;
+}
+
+export interface InstanceArgocdSpecInstanceSpecAgentPermissionsRule {
+    /**
+     * API groups of the rule.
+     */
+    apiGroups?: string[];
+    /**
+     * Resources of the rule.
+     */
+    resources?: string[];
+    /**
+     * Verbs of the rule.
+     */
+    verbs?: string[];
 }
 
 export interface InstanceArgocdSpecInstanceSpecAppSetDelegate {
@@ -797,6 +934,20 @@ export interface InstanceArgocdSpecInstanceSpecClusterCustomizationDefaults {
      * Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
      */
     redisTunneling: boolean;
+}
+
+export interface InstanceArgocdSpecInstanceSpecCrossplaneExtension {
+    /**
+     * Glob patterns of the resources to match.
+     */
+    resources?: outputs.InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource[];
+}
+
+export interface InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource {
+    /**
+     * Glob pattern of the group to match.
+     */
+    group?: string;
 }
 
 export interface InstanceArgocdSpecInstanceSpecExtension {

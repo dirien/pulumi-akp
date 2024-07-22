@@ -568,8 +568,14 @@ type ClusterSpecData struct {
 	// Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features
 	AppReplication      *bool `pulumi:"appReplication"`
 	AutoUpgradeDisabled *bool `pulumi:"autoUpgradeDisabled"`
+	// Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+	DatadogAnnotationsEnabled *bool `pulumi:"datadogAnnotationsEnabled"`
+	// Enable this if you are installing this cluster on EKS.
+	EksAddonEnabled *bool `pulumi:"eksAddonEnabled"`
 	// Kustomize configuration that will be applied to generated agent installation manifests
 	Kustomization *string `pulumi:"kustomization"`
+	// The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+	ManagedClusterConfig *ClusterSpecDataManagedClusterConfig `pulumi:"managedClusterConfig"`
 	// Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
 	RedisTunneling *bool `pulumi:"redisTunneling"`
 	// Cluster Size. One of `small`, `medium` or `large`
@@ -593,8 +599,14 @@ type ClusterSpecDataArgs struct {
 	// Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features
 	AppReplication      pulumi.BoolPtrInput `pulumi:"appReplication"`
 	AutoUpgradeDisabled pulumi.BoolPtrInput `pulumi:"autoUpgradeDisabled"`
+	// Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+	DatadogAnnotationsEnabled pulumi.BoolPtrInput `pulumi:"datadogAnnotationsEnabled"`
+	// Enable this if you are installing this cluster on EKS.
+	EksAddonEnabled pulumi.BoolPtrInput `pulumi:"eksAddonEnabled"`
 	// Kustomize configuration that will be applied to generated agent installation manifests
 	Kustomization pulumi.StringPtrInput `pulumi:"kustomization"`
+	// The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+	ManagedClusterConfig ClusterSpecDataManagedClusterConfigPtrInput `pulumi:"managedClusterConfig"`
 	// Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
 	RedisTunneling pulumi.BoolPtrInput `pulumi:"redisTunneling"`
 	// Cluster Size. One of `small`, `medium` or `large`
@@ -689,9 +701,24 @@ func (o ClusterSpecDataOutput) AutoUpgradeDisabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ClusterSpecData) *bool { return v.AutoUpgradeDisabled }).(pulumi.BoolPtrOutput)
 }
 
+// Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+func (o ClusterSpecDataOutput) DatadogAnnotationsEnabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ClusterSpecData) *bool { return v.DatadogAnnotationsEnabled }).(pulumi.BoolPtrOutput)
+}
+
+// Enable this if you are installing this cluster on EKS.
+func (o ClusterSpecDataOutput) EksAddonEnabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ClusterSpecData) *bool { return v.EksAddonEnabled }).(pulumi.BoolPtrOutput)
+}
+
 // Kustomize configuration that will be applied to generated agent installation manifests
 func (o ClusterSpecDataOutput) Kustomization() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ClusterSpecData) *string { return v.Kustomization }).(pulumi.StringPtrOutput)
+}
+
+// The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+func (o ClusterSpecDataOutput) ManagedClusterConfig() ClusterSpecDataManagedClusterConfigPtrOutput {
+	return o.ApplyT(func(v ClusterSpecData) *ClusterSpecDataManagedClusterConfig { return v.ManagedClusterConfig }).(ClusterSpecDataManagedClusterConfigPtrOutput)
 }
 
 // Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
@@ -752,6 +779,26 @@ func (o ClusterSpecDataPtrOutput) AutoUpgradeDisabled() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+func (o ClusterSpecDataPtrOutput) DatadogAnnotationsEnabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ClusterSpecData) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.DatadogAnnotationsEnabled
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Enable this if you are installing this cluster on EKS.
+func (o ClusterSpecDataPtrOutput) EksAddonEnabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ClusterSpecData) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.EksAddonEnabled
+	}).(pulumi.BoolPtrOutput)
+}
+
 // Kustomize configuration that will be applied to generated agent installation manifests
 func (o ClusterSpecDataPtrOutput) Kustomization() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ClusterSpecData) *string {
@@ -760,6 +807,16 @@ func (o ClusterSpecDataPtrOutput) Kustomization() pulumi.StringPtrOutput {
 		}
 		return v.Kustomization
 	}).(pulumi.StringPtrOutput)
+}
+
+// The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+func (o ClusterSpecDataPtrOutput) ManagedClusterConfig() ClusterSpecDataManagedClusterConfigPtrOutput {
+	return o.ApplyT(func(v *ClusterSpecData) *ClusterSpecDataManagedClusterConfig {
+		if v == nil {
+			return nil
+		}
+		return v.ManagedClusterConfig
+	}).(ClusterSpecDataManagedClusterConfigPtrOutput)
 }
 
 // Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
@@ -789,6 +846,162 @@ func (o ClusterSpecDataPtrOutput) TargetVersion() pulumi.StringPtrOutput {
 			return nil
 		}
 		return v.TargetVersion
+	}).(pulumi.StringPtrOutput)
+}
+
+type ClusterSpecDataManagedClusterConfig struct {
+	// The key in the secret for the managed cluster config
+	SecretKey *string `pulumi:"secretKey"`
+	// The name of the secret for the managed cluster config
+	SecretName string `pulumi:"secretName"`
+}
+
+// ClusterSpecDataManagedClusterConfigInput is an input type that accepts ClusterSpecDataManagedClusterConfigArgs and ClusterSpecDataManagedClusterConfigOutput values.
+// You can construct a concrete instance of `ClusterSpecDataManagedClusterConfigInput` via:
+//
+//	ClusterSpecDataManagedClusterConfigArgs{...}
+type ClusterSpecDataManagedClusterConfigInput interface {
+	pulumi.Input
+
+	ToClusterSpecDataManagedClusterConfigOutput() ClusterSpecDataManagedClusterConfigOutput
+	ToClusterSpecDataManagedClusterConfigOutputWithContext(context.Context) ClusterSpecDataManagedClusterConfigOutput
+}
+
+type ClusterSpecDataManagedClusterConfigArgs struct {
+	// The key in the secret for the managed cluster config
+	SecretKey pulumi.StringPtrInput `pulumi:"secretKey"`
+	// The name of the secret for the managed cluster config
+	SecretName pulumi.StringInput `pulumi:"secretName"`
+}
+
+func (ClusterSpecDataManagedClusterConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ClusterSpecDataManagedClusterConfig)(nil)).Elem()
+}
+
+func (i ClusterSpecDataManagedClusterConfigArgs) ToClusterSpecDataManagedClusterConfigOutput() ClusterSpecDataManagedClusterConfigOutput {
+	return i.ToClusterSpecDataManagedClusterConfigOutputWithContext(context.Background())
+}
+
+func (i ClusterSpecDataManagedClusterConfigArgs) ToClusterSpecDataManagedClusterConfigOutputWithContext(ctx context.Context) ClusterSpecDataManagedClusterConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ClusterSpecDataManagedClusterConfigOutput)
+}
+
+func (i ClusterSpecDataManagedClusterConfigArgs) ToClusterSpecDataManagedClusterConfigPtrOutput() ClusterSpecDataManagedClusterConfigPtrOutput {
+	return i.ToClusterSpecDataManagedClusterConfigPtrOutputWithContext(context.Background())
+}
+
+func (i ClusterSpecDataManagedClusterConfigArgs) ToClusterSpecDataManagedClusterConfigPtrOutputWithContext(ctx context.Context) ClusterSpecDataManagedClusterConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ClusterSpecDataManagedClusterConfigOutput).ToClusterSpecDataManagedClusterConfigPtrOutputWithContext(ctx)
+}
+
+// ClusterSpecDataManagedClusterConfigPtrInput is an input type that accepts ClusterSpecDataManagedClusterConfigArgs, ClusterSpecDataManagedClusterConfigPtr and ClusterSpecDataManagedClusterConfigPtrOutput values.
+// You can construct a concrete instance of `ClusterSpecDataManagedClusterConfigPtrInput` via:
+//
+//	        ClusterSpecDataManagedClusterConfigArgs{...}
+//
+//	or:
+//
+//	        nil
+type ClusterSpecDataManagedClusterConfigPtrInput interface {
+	pulumi.Input
+
+	ToClusterSpecDataManagedClusterConfigPtrOutput() ClusterSpecDataManagedClusterConfigPtrOutput
+	ToClusterSpecDataManagedClusterConfigPtrOutputWithContext(context.Context) ClusterSpecDataManagedClusterConfigPtrOutput
+}
+
+type clusterSpecDataManagedClusterConfigPtrType ClusterSpecDataManagedClusterConfigArgs
+
+func ClusterSpecDataManagedClusterConfigPtr(v *ClusterSpecDataManagedClusterConfigArgs) ClusterSpecDataManagedClusterConfigPtrInput {
+	return (*clusterSpecDataManagedClusterConfigPtrType)(v)
+}
+
+func (*clusterSpecDataManagedClusterConfigPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ClusterSpecDataManagedClusterConfig)(nil)).Elem()
+}
+
+func (i *clusterSpecDataManagedClusterConfigPtrType) ToClusterSpecDataManagedClusterConfigPtrOutput() ClusterSpecDataManagedClusterConfigPtrOutput {
+	return i.ToClusterSpecDataManagedClusterConfigPtrOutputWithContext(context.Background())
+}
+
+func (i *clusterSpecDataManagedClusterConfigPtrType) ToClusterSpecDataManagedClusterConfigPtrOutputWithContext(ctx context.Context) ClusterSpecDataManagedClusterConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ClusterSpecDataManagedClusterConfigPtrOutput)
+}
+
+type ClusterSpecDataManagedClusterConfigOutput struct{ *pulumi.OutputState }
+
+func (ClusterSpecDataManagedClusterConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ClusterSpecDataManagedClusterConfig)(nil)).Elem()
+}
+
+func (o ClusterSpecDataManagedClusterConfigOutput) ToClusterSpecDataManagedClusterConfigOutput() ClusterSpecDataManagedClusterConfigOutput {
+	return o
+}
+
+func (o ClusterSpecDataManagedClusterConfigOutput) ToClusterSpecDataManagedClusterConfigOutputWithContext(ctx context.Context) ClusterSpecDataManagedClusterConfigOutput {
+	return o
+}
+
+func (o ClusterSpecDataManagedClusterConfigOutput) ToClusterSpecDataManagedClusterConfigPtrOutput() ClusterSpecDataManagedClusterConfigPtrOutput {
+	return o.ToClusterSpecDataManagedClusterConfigPtrOutputWithContext(context.Background())
+}
+
+func (o ClusterSpecDataManagedClusterConfigOutput) ToClusterSpecDataManagedClusterConfigPtrOutputWithContext(ctx context.Context) ClusterSpecDataManagedClusterConfigPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v ClusterSpecDataManagedClusterConfig) *ClusterSpecDataManagedClusterConfig {
+		return &v
+	}).(ClusterSpecDataManagedClusterConfigPtrOutput)
+}
+
+// The key in the secret for the managed cluster config
+func (o ClusterSpecDataManagedClusterConfigOutput) SecretKey() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ClusterSpecDataManagedClusterConfig) *string { return v.SecretKey }).(pulumi.StringPtrOutput)
+}
+
+// The name of the secret for the managed cluster config
+func (o ClusterSpecDataManagedClusterConfigOutput) SecretName() pulumi.StringOutput {
+	return o.ApplyT(func(v ClusterSpecDataManagedClusterConfig) string { return v.SecretName }).(pulumi.StringOutput)
+}
+
+type ClusterSpecDataManagedClusterConfigPtrOutput struct{ *pulumi.OutputState }
+
+func (ClusterSpecDataManagedClusterConfigPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ClusterSpecDataManagedClusterConfig)(nil)).Elem()
+}
+
+func (o ClusterSpecDataManagedClusterConfigPtrOutput) ToClusterSpecDataManagedClusterConfigPtrOutput() ClusterSpecDataManagedClusterConfigPtrOutput {
+	return o
+}
+
+func (o ClusterSpecDataManagedClusterConfigPtrOutput) ToClusterSpecDataManagedClusterConfigPtrOutputWithContext(ctx context.Context) ClusterSpecDataManagedClusterConfigPtrOutput {
+	return o
+}
+
+func (o ClusterSpecDataManagedClusterConfigPtrOutput) Elem() ClusterSpecDataManagedClusterConfigOutput {
+	return o.ApplyT(func(v *ClusterSpecDataManagedClusterConfig) ClusterSpecDataManagedClusterConfig {
+		if v != nil {
+			return *v
+		}
+		var ret ClusterSpecDataManagedClusterConfig
+		return ret
+	}).(ClusterSpecDataManagedClusterConfigOutput)
+}
+
+// The key in the secret for the managed cluster config
+func (o ClusterSpecDataManagedClusterConfigPtrOutput) SecretKey() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ClusterSpecDataManagedClusterConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SecretKey
+	}).(pulumi.StringPtrOutput)
+}
+
+// The name of the secret for the managed cluster config
+func (o ClusterSpecDataManagedClusterConfigPtrOutput) SecretName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ClusterSpecDataManagedClusterConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.SecretName
 	}).(pulumi.StringPtrOutput)
 }
 
@@ -1105,6 +1318,8 @@ func (o InstanceArgocdSpecPtrOutput) Version() pulumi.StringPtrOutput {
 }
 
 type InstanceArgocdSpecInstanceSpec struct {
+	// The ability to configure agent permissions rules.
+	AgentPermissionsRules []InstanceArgocdSpecInstanceSpecAgentPermissionsRule `pulumi:"agentPermissionsRules"`
 	// Select cluster in which you want to Install Application Set controller
 	AppSetDelegate *InstanceArgocdSpecInstanceSpecAppSetDelegate `pulumi:"appSetDelegate"`
 	// Configures Application Set policy settings.
@@ -1117,10 +1332,14 @@ type InstanceArgocdSpecInstanceSpec struct {
 	BackendIpAllowListEnabled *bool `pulumi:"backendIpAllowListEnabled"`
 	// Default values for cluster agents
 	ClusterCustomizationDefaults *InstanceArgocdSpecInstanceSpecClusterCustomizationDefaults `pulumi:"clusterCustomizationDefaults"`
+	// Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+	CrossplaneExtension *InstanceArgocdSpecInstanceSpecCrossplaneExtension `pulumi:"crossplaneExtension"`
 	// Enable Declarative Management
 	DeclarativeManagementEnabled *bool `pulumi:"declarativeManagementEnabled"`
 	// Extensions
 	Extensions []InstanceArgocdSpecInstanceSpecExtension `pulumi:"extensions"`
+	// Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+	Fqdn *string `pulumi:"fqdn"`
 	// Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.
 	HostAliases []InstanceArgocdSpecInstanceSpecHostAlias `pulumi:"hostAliases"`
 	// Select cluster in which you want to Install Image Updater
@@ -1149,6 +1368,8 @@ type InstanceArgocdSpecInstanceSpecInput interface {
 }
 
 type InstanceArgocdSpecInstanceSpecArgs struct {
+	// The ability to configure agent permissions rules.
+	AgentPermissionsRules InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayInput `pulumi:"agentPermissionsRules"`
 	// Select cluster in which you want to Install Application Set controller
 	AppSetDelegate InstanceArgocdSpecInstanceSpecAppSetDelegatePtrInput `pulumi:"appSetDelegate"`
 	// Configures Application Set policy settings.
@@ -1161,10 +1382,14 @@ type InstanceArgocdSpecInstanceSpecArgs struct {
 	BackendIpAllowListEnabled pulumi.BoolPtrInput `pulumi:"backendIpAllowListEnabled"`
 	// Default values for cluster agents
 	ClusterCustomizationDefaults InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsPtrInput `pulumi:"clusterCustomizationDefaults"`
+	// Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+	CrossplaneExtension InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrInput `pulumi:"crossplaneExtension"`
 	// Enable Declarative Management
 	DeclarativeManagementEnabled pulumi.BoolPtrInput `pulumi:"declarativeManagementEnabled"`
 	// Extensions
 	Extensions InstanceArgocdSpecInstanceSpecExtensionArrayInput `pulumi:"extensions"`
+	// Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+	Fqdn pulumi.StringPtrInput `pulumi:"fqdn"`
 	// Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.
 	HostAliases InstanceArgocdSpecInstanceSpecHostAliasArrayInput `pulumi:"hostAliases"`
 	// Select cluster in which you want to Install Image Updater
@@ -1258,6 +1483,13 @@ func (o InstanceArgocdSpecInstanceSpecOutput) ToInstanceArgocdSpecInstanceSpecPt
 	}).(InstanceArgocdSpecInstanceSpecPtrOutput)
 }
 
+// The ability to configure agent permissions rules.
+func (o InstanceArgocdSpecInstanceSpecOutput) AgentPermissionsRules() InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput {
+	return o.ApplyT(func(v InstanceArgocdSpecInstanceSpec) []InstanceArgocdSpecInstanceSpecAgentPermissionsRule {
+		return v.AgentPermissionsRules
+	}).(InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput)
+}
+
 // Select cluster in which you want to Install Application Set controller
 func (o InstanceArgocdSpecInstanceSpecOutput) AppSetDelegate() InstanceArgocdSpecInstanceSpecAppSetDelegatePtrOutput {
 	return o.ApplyT(func(v InstanceArgocdSpecInstanceSpec) *InstanceArgocdSpecInstanceSpecAppSetDelegate {
@@ -1294,6 +1526,13 @@ func (o InstanceArgocdSpecInstanceSpecOutput) ClusterCustomizationDefaults() Ins
 	}).(InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsPtrOutput)
 }
 
+// Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+func (o InstanceArgocdSpecInstanceSpecOutput) CrossplaneExtension() InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput {
+	return o.ApplyT(func(v InstanceArgocdSpecInstanceSpec) *InstanceArgocdSpecInstanceSpecCrossplaneExtension {
+		return v.CrossplaneExtension
+	}).(InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput)
+}
+
 // Enable Declarative Management
 func (o InstanceArgocdSpecInstanceSpecOutput) DeclarativeManagementEnabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v InstanceArgocdSpecInstanceSpec) *bool { return v.DeclarativeManagementEnabled }).(pulumi.BoolPtrOutput)
@@ -1302,6 +1541,11 @@ func (o InstanceArgocdSpecInstanceSpecOutput) DeclarativeManagementEnabled() pul
 // Extensions
 func (o InstanceArgocdSpecInstanceSpecOutput) Extensions() InstanceArgocdSpecInstanceSpecExtensionArrayOutput {
 	return o.ApplyT(func(v InstanceArgocdSpecInstanceSpec) []InstanceArgocdSpecInstanceSpecExtension { return v.Extensions }).(InstanceArgocdSpecInstanceSpecExtensionArrayOutput)
+}
+
+// Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+func (o InstanceArgocdSpecInstanceSpecOutput) Fqdn() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v InstanceArgocdSpecInstanceSpec) *string { return v.Fqdn }).(pulumi.StringPtrOutput)
 }
 
 // Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.
@@ -1369,6 +1613,16 @@ func (o InstanceArgocdSpecInstanceSpecPtrOutput) Elem() InstanceArgocdSpecInstan
 	}).(InstanceArgocdSpecInstanceSpecOutput)
 }
 
+// The ability to configure agent permissions rules.
+func (o InstanceArgocdSpecInstanceSpecPtrOutput) AgentPermissionsRules() InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput {
+	return o.ApplyT(func(v *InstanceArgocdSpecInstanceSpec) []InstanceArgocdSpecInstanceSpecAgentPermissionsRule {
+		if v == nil {
+			return nil
+		}
+		return v.AgentPermissionsRules
+	}).(InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput)
+}
+
 // Select cluster in which you want to Install Application Set controller
 func (o InstanceArgocdSpecInstanceSpecPtrOutput) AppSetDelegate() InstanceArgocdSpecInstanceSpecAppSetDelegatePtrOutput {
 	return o.ApplyT(func(v *InstanceArgocdSpecInstanceSpec) *InstanceArgocdSpecInstanceSpecAppSetDelegate {
@@ -1429,6 +1683,16 @@ func (o InstanceArgocdSpecInstanceSpecPtrOutput) ClusterCustomizationDefaults() 
 	}).(InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsPtrOutput)
 }
 
+// Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+func (o InstanceArgocdSpecInstanceSpecPtrOutput) CrossplaneExtension() InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput {
+	return o.ApplyT(func(v *InstanceArgocdSpecInstanceSpec) *InstanceArgocdSpecInstanceSpecCrossplaneExtension {
+		if v == nil {
+			return nil
+		}
+		return v.CrossplaneExtension
+	}).(InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput)
+}
+
 // Enable Declarative Management
 func (o InstanceArgocdSpecInstanceSpecPtrOutput) DeclarativeManagementEnabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *InstanceArgocdSpecInstanceSpec) *bool {
@@ -1447,6 +1711,16 @@ func (o InstanceArgocdSpecInstanceSpecPtrOutput) Extensions() InstanceArgocdSpec
 		}
 		return v.Extensions
 	}).(InstanceArgocdSpecInstanceSpecExtensionArrayOutput)
+}
+
+// Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+func (o InstanceArgocdSpecInstanceSpecPtrOutput) Fqdn() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *InstanceArgocdSpecInstanceSpec) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Fqdn
+	}).(pulumi.StringPtrOutput)
 }
 
 // Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.
@@ -1517,6 +1791,121 @@ func (o InstanceArgocdSpecInstanceSpecPtrOutput) SyncHistoryExtensionEnabled() p
 		}
 		return v.SyncHistoryExtensionEnabled
 	}).(pulumi.BoolPtrOutput)
+}
+
+type InstanceArgocdSpecInstanceSpecAgentPermissionsRule struct {
+	// API groups of the rule.
+	ApiGroups []string `pulumi:"apiGroups"`
+	// Resources of the rule.
+	Resources []string `pulumi:"resources"`
+	// Verbs of the rule.
+	Verbs []string `pulumi:"verbs"`
+}
+
+// InstanceArgocdSpecInstanceSpecAgentPermissionsRuleInput is an input type that accepts InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs and InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput values.
+// You can construct a concrete instance of `InstanceArgocdSpecInstanceSpecAgentPermissionsRuleInput` via:
+//
+//	InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs{...}
+type InstanceArgocdSpecInstanceSpecAgentPermissionsRuleInput interface {
+	pulumi.Input
+
+	ToInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput() InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput
+	ToInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutputWithContext(context.Context) InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput
+}
+
+type InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs struct {
+	// API groups of the rule.
+	ApiGroups pulumi.StringArrayInput `pulumi:"apiGroups"`
+	// Resources of the rule.
+	Resources pulumi.StringArrayInput `pulumi:"resources"`
+	// Verbs of the rule.
+	Verbs pulumi.StringArrayInput `pulumi:"verbs"`
+}
+
+func (InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*InstanceArgocdSpecInstanceSpecAgentPermissionsRule)(nil)).Elem()
+}
+
+func (i InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs) ToInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput() InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput {
+	return i.ToInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutputWithContext(context.Background())
+}
+
+func (i InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs) ToInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutputWithContext(ctx context.Context) InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput)
+}
+
+// InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayInput is an input type that accepts InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArray and InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput values.
+// You can construct a concrete instance of `InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayInput` via:
+//
+//	InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArray{ InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs{...} }
+type InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayInput interface {
+	pulumi.Input
+
+	ToInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput() InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput
+	ToInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutputWithContext(context.Context) InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput
+}
+
+type InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArray []InstanceArgocdSpecInstanceSpecAgentPermissionsRuleInput
+
+func (InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]InstanceArgocdSpecInstanceSpecAgentPermissionsRule)(nil)).Elem()
+}
+
+func (i InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArray) ToInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput() InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput {
+	return i.ToInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutputWithContext(context.Background())
+}
+
+func (i InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArray) ToInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutputWithContext(ctx context.Context) InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput)
+}
+
+type InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput struct{ *pulumi.OutputState }
+
+func (InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*InstanceArgocdSpecInstanceSpecAgentPermissionsRule)(nil)).Elem()
+}
+
+func (o InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput) ToInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput() InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput {
+	return o
+}
+
+func (o InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput) ToInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutputWithContext(ctx context.Context) InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput {
+	return o
+}
+
+// API groups of the rule.
+func (o InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput) ApiGroups() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v InstanceArgocdSpecInstanceSpecAgentPermissionsRule) []string { return v.ApiGroups }).(pulumi.StringArrayOutput)
+}
+
+// Resources of the rule.
+func (o InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput) Resources() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v InstanceArgocdSpecInstanceSpecAgentPermissionsRule) []string { return v.Resources }).(pulumi.StringArrayOutput)
+}
+
+// Verbs of the rule.
+func (o InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput) Verbs() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v InstanceArgocdSpecInstanceSpecAgentPermissionsRule) []string { return v.Verbs }).(pulumi.StringArrayOutput)
+}
+
+type InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput struct{ *pulumi.OutputState }
+
+func (InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]InstanceArgocdSpecInstanceSpecAgentPermissionsRule)(nil)).Elem()
+}
+
+func (o InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput) ToInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput() InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput {
+	return o
+}
+
+func (o InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput) ToInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutputWithContext(ctx context.Context) InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput {
+	return o
+}
+
+func (o InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput) Index(i pulumi.IntInput) InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) InstanceArgocdSpecInstanceSpecAgentPermissionsRule {
+		return vs[0].([]InstanceArgocdSpecInstanceSpecAgentPermissionsRule)[vs[1].(int)]
+	}).(InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput)
 }
 
 type InstanceArgocdSpecInstanceSpecAppSetDelegate struct {
@@ -2159,6 +2548,242 @@ func (o InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsPtrOutput) Red
 		}
 		return v.RedisTunneling
 	}).(pulumi.BoolPtrOutput)
+}
+
+type InstanceArgocdSpecInstanceSpecCrossplaneExtension struct {
+	// Glob patterns of the resources to match.
+	Resources []InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource `pulumi:"resources"`
+}
+
+// InstanceArgocdSpecInstanceSpecCrossplaneExtensionInput is an input type that accepts InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs and InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput values.
+// You can construct a concrete instance of `InstanceArgocdSpecInstanceSpecCrossplaneExtensionInput` via:
+//
+//	InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs{...}
+type InstanceArgocdSpecInstanceSpecCrossplaneExtensionInput interface {
+	pulumi.Input
+
+	ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput() InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput
+	ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutputWithContext(context.Context) InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput
+}
+
+type InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs struct {
+	// Glob patterns of the resources to match.
+	Resources InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayInput `pulumi:"resources"`
+}
+
+func (InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*InstanceArgocdSpecInstanceSpecCrossplaneExtension)(nil)).Elem()
+}
+
+func (i InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput() InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput {
+	return i.ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutputWithContext(context.Background())
+}
+
+func (i InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutputWithContext(ctx context.Context) InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput)
+}
+
+func (i InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput() InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput {
+	return i.ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutputWithContext(context.Background())
+}
+
+func (i InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutputWithContext(ctx context.Context) InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput).ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutputWithContext(ctx)
+}
+
+// InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrInput is an input type that accepts InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs, InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtr and InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput values.
+// You can construct a concrete instance of `InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrInput` via:
+//
+//	        InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs{...}
+//
+//	or:
+//
+//	        nil
+type InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrInput interface {
+	pulumi.Input
+
+	ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput() InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput
+	ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutputWithContext(context.Context) InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput
+}
+
+type instanceArgocdSpecInstanceSpecCrossplaneExtensionPtrType InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs
+
+func InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtr(v *InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs) InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrInput {
+	return (*instanceArgocdSpecInstanceSpecCrossplaneExtensionPtrType)(v)
+}
+
+func (*instanceArgocdSpecInstanceSpecCrossplaneExtensionPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**InstanceArgocdSpecInstanceSpecCrossplaneExtension)(nil)).Elem()
+}
+
+func (i *instanceArgocdSpecInstanceSpecCrossplaneExtensionPtrType) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput() InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput {
+	return i.ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutputWithContext(context.Background())
+}
+
+func (i *instanceArgocdSpecInstanceSpecCrossplaneExtensionPtrType) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutputWithContext(ctx context.Context) InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput)
+}
+
+type InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput struct{ *pulumi.OutputState }
+
+func (InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*InstanceArgocdSpecInstanceSpecCrossplaneExtension)(nil)).Elem()
+}
+
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput() InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput {
+	return o
+}
+
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutputWithContext(ctx context.Context) InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput {
+	return o
+}
+
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput() InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput {
+	return o.ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutputWithContext(context.Background())
+}
+
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutputWithContext(ctx context.Context) InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v InstanceArgocdSpecInstanceSpecCrossplaneExtension) *InstanceArgocdSpecInstanceSpecCrossplaneExtension {
+		return &v
+	}).(InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput)
+}
+
+// Glob patterns of the resources to match.
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput) Resources() InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput {
+	return o.ApplyT(func(v InstanceArgocdSpecInstanceSpecCrossplaneExtension) []InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource {
+		return v.Resources
+	}).(InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput)
+}
+
+type InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput struct{ *pulumi.OutputState }
+
+func (InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**InstanceArgocdSpecInstanceSpecCrossplaneExtension)(nil)).Elem()
+}
+
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput() InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput {
+	return o
+}
+
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutputWithContext(ctx context.Context) InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput {
+	return o
+}
+
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput) Elem() InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput {
+	return o.ApplyT(func(v *InstanceArgocdSpecInstanceSpecCrossplaneExtension) InstanceArgocdSpecInstanceSpecCrossplaneExtension {
+		if v != nil {
+			return *v
+		}
+		var ret InstanceArgocdSpecInstanceSpecCrossplaneExtension
+		return ret
+	}).(InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput)
+}
+
+// Glob patterns of the resources to match.
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput) Resources() InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput {
+	return o.ApplyT(func(v *InstanceArgocdSpecInstanceSpecCrossplaneExtension) []InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource {
+		if v == nil {
+			return nil
+		}
+		return v.Resources
+	}).(InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput)
+}
+
+type InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource struct {
+	// Glob pattern of the group to match.
+	Group *string `pulumi:"group"`
+}
+
+// InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceInput is an input type that accepts InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs and InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput values.
+// You can construct a concrete instance of `InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceInput` via:
+//
+//	InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs{...}
+type InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceInput interface {
+	pulumi.Input
+
+	ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput() InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput
+	ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutputWithContext(context.Context) InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput
+}
+
+type InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs struct {
+	// Glob pattern of the group to match.
+	Group pulumi.StringPtrInput `pulumi:"group"`
+}
+
+func (InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource)(nil)).Elem()
+}
+
+func (i InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput() InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput {
+	return i.ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutputWithContext(context.Background())
+}
+
+func (i InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutputWithContext(ctx context.Context) InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput)
+}
+
+// InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayInput is an input type that accepts InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArray and InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput values.
+// You can construct a concrete instance of `InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayInput` via:
+//
+//	InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArray{ InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs{...} }
+type InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayInput interface {
+	pulumi.Input
+
+	ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput() InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput
+	ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutputWithContext(context.Context) InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput
+}
+
+type InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArray []InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceInput
+
+func (InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource)(nil)).Elem()
+}
+
+func (i InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArray) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput() InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput {
+	return i.ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutputWithContext(context.Background())
+}
+
+func (i InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArray) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutputWithContext(ctx context.Context) InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput)
+}
+
+type InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput struct{ *pulumi.OutputState }
+
+func (InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource)(nil)).Elem()
+}
+
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput() InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput {
+	return o
+}
+
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutputWithContext(ctx context.Context) InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput {
+	return o
+}
+
+// Glob pattern of the group to match.
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput) Group() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource) *string { return v.Group }).(pulumi.StringPtrOutput)
+}
+
+type InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput struct{ *pulumi.OutputState }
+
+func (InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource)(nil)).Elem()
+}
+
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput() InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput {
+	return o
+}
+
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput) ToInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutputWithContext(ctx context.Context) InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput {
+	return o
+}
+
+func (o InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput) Index(i pulumi.IntInput) InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource {
+		return vs[0].([]InstanceArgocdSpecInstanceSpecCrossplaneExtensionResource)[vs[1].(int)]
+	}).(InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput)
 }
 
 type InstanceArgocdSpecInstanceSpecExtension struct {
@@ -4559,8 +5184,14 @@ type GetClusterSpecData struct {
 	// Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features
 	AppReplication      bool `pulumi:"appReplication"`
 	AutoUpgradeDisabled bool `pulumi:"autoUpgradeDisabled"`
+	// Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+	DatadogAnnotationsEnabled bool `pulumi:"datadogAnnotationsEnabled"`
+	// Enable this if you are installing this cluster on EKS.
+	EksAddonEnabled bool `pulumi:"eksAddonEnabled"`
 	// Kustomize configuration that will be applied to generated agent installation manifests
 	Kustomization string `pulumi:"kustomization"`
+	// The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+	ManagedClusterConfig GetClusterSpecDataManagedClusterConfig `pulumi:"managedClusterConfig"`
 	// Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
 	RedisTunneling bool `pulumi:"redisTunneling"`
 	// Cluster Size. One of `small`, `medium` or `large`
@@ -4584,8 +5215,14 @@ type GetClusterSpecDataArgs struct {
 	// Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features
 	AppReplication      pulumi.BoolInput `pulumi:"appReplication"`
 	AutoUpgradeDisabled pulumi.BoolInput `pulumi:"autoUpgradeDisabled"`
+	// Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+	DatadogAnnotationsEnabled pulumi.BoolInput `pulumi:"datadogAnnotationsEnabled"`
+	// Enable this if you are installing this cluster on EKS.
+	EksAddonEnabled pulumi.BoolInput `pulumi:"eksAddonEnabled"`
 	// Kustomize configuration that will be applied to generated agent installation manifests
 	Kustomization pulumi.StringInput `pulumi:"kustomization"`
+	// The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+	ManagedClusterConfig GetClusterSpecDataManagedClusterConfigInput `pulumi:"managedClusterConfig"`
 	// Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
 	RedisTunneling pulumi.BoolInput `pulumi:"redisTunneling"`
 	// Cluster Size. One of `small`, `medium` or `large`
@@ -4629,9 +5266,24 @@ func (o GetClusterSpecDataOutput) AutoUpgradeDisabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v GetClusterSpecData) bool { return v.AutoUpgradeDisabled }).(pulumi.BoolOutput)
 }
 
+// Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+func (o GetClusterSpecDataOutput) DatadogAnnotationsEnabled() pulumi.BoolOutput {
+	return o.ApplyT(func(v GetClusterSpecData) bool { return v.DatadogAnnotationsEnabled }).(pulumi.BoolOutput)
+}
+
+// Enable this if you are installing this cluster on EKS.
+func (o GetClusterSpecDataOutput) EksAddonEnabled() pulumi.BoolOutput {
+	return o.ApplyT(func(v GetClusterSpecData) bool { return v.EksAddonEnabled }).(pulumi.BoolOutput)
+}
+
 // Kustomize configuration that will be applied to generated agent installation manifests
 func (o GetClusterSpecDataOutput) Kustomization() pulumi.StringOutput {
 	return o.ApplyT(func(v GetClusterSpecData) string { return v.Kustomization }).(pulumi.StringOutput)
+}
+
+// The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+func (o GetClusterSpecDataOutput) ManagedClusterConfig() GetClusterSpecDataManagedClusterConfigOutput {
+	return o.ApplyT(func(v GetClusterSpecData) GetClusterSpecDataManagedClusterConfig { return v.ManagedClusterConfig }).(GetClusterSpecDataManagedClusterConfigOutput)
 }
 
 // Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
@@ -4647,6 +5299,67 @@ func (o GetClusterSpecDataOutput) Size() pulumi.StringOutput {
 // The version of the agent to install on your cluster
 func (o GetClusterSpecDataOutput) TargetVersion() pulumi.StringOutput {
 	return o.ApplyT(func(v GetClusterSpecData) string { return v.TargetVersion }).(pulumi.StringOutput)
+}
+
+type GetClusterSpecDataManagedClusterConfig struct {
+	// The key in the secret for the managed cluster config
+	SecretKey string `pulumi:"secretKey"`
+	// The name of the secret for the managed cluster config
+	SecretName string `pulumi:"secretName"`
+}
+
+// GetClusterSpecDataManagedClusterConfigInput is an input type that accepts GetClusterSpecDataManagedClusterConfigArgs and GetClusterSpecDataManagedClusterConfigOutput values.
+// You can construct a concrete instance of `GetClusterSpecDataManagedClusterConfigInput` via:
+//
+//	GetClusterSpecDataManagedClusterConfigArgs{...}
+type GetClusterSpecDataManagedClusterConfigInput interface {
+	pulumi.Input
+
+	ToGetClusterSpecDataManagedClusterConfigOutput() GetClusterSpecDataManagedClusterConfigOutput
+	ToGetClusterSpecDataManagedClusterConfigOutputWithContext(context.Context) GetClusterSpecDataManagedClusterConfigOutput
+}
+
+type GetClusterSpecDataManagedClusterConfigArgs struct {
+	// The key in the secret for the managed cluster config
+	SecretKey pulumi.StringInput `pulumi:"secretKey"`
+	// The name of the secret for the managed cluster config
+	SecretName pulumi.StringInput `pulumi:"secretName"`
+}
+
+func (GetClusterSpecDataManagedClusterConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetClusterSpecDataManagedClusterConfig)(nil)).Elem()
+}
+
+func (i GetClusterSpecDataManagedClusterConfigArgs) ToGetClusterSpecDataManagedClusterConfigOutput() GetClusterSpecDataManagedClusterConfigOutput {
+	return i.ToGetClusterSpecDataManagedClusterConfigOutputWithContext(context.Background())
+}
+
+func (i GetClusterSpecDataManagedClusterConfigArgs) ToGetClusterSpecDataManagedClusterConfigOutputWithContext(ctx context.Context) GetClusterSpecDataManagedClusterConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetClusterSpecDataManagedClusterConfigOutput)
+}
+
+type GetClusterSpecDataManagedClusterConfigOutput struct{ *pulumi.OutputState }
+
+func (GetClusterSpecDataManagedClusterConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetClusterSpecDataManagedClusterConfig)(nil)).Elem()
+}
+
+func (o GetClusterSpecDataManagedClusterConfigOutput) ToGetClusterSpecDataManagedClusterConfigOutput() GetClusterSpecDataManagedClusterConfigOutput {
+	return o
+}
+
+func (o GetClusterSpecDataManagedClusterConfigOutput) ToGetClusterSpecDataManagedClusterConfigOutputWithContext(ctx context.Context) GetClusterSpecDataManagedClusterConfigOutput {
+	return o
+}
+
+// The key in the secret for the managed cluster config
+func (o GetClusterSpecDataManagedClusterConfigOutput) SecretKey() pulumi.StringOutput {
+	return o.ApplyT(func(v GetClusterSpecDataManagedClusterConfig) string { return v.SecretKey }).(pulumi.StringOutput)
+}
+
+// The name of the secret for the managed cluster config
+func (o GetClusterSpecDataManagedClusterConfigOutput) SecretName() pulumi.StringOutput {
+	return o.ApplyT(func(v GetClusterSpecDataManagedClusterConfig) string { return v.SecretName }).(pulumi.StringOutput)
 }
 
 type GetClustersCluster struct {
@@ -5052,8 +5765,14 @@ type GetClustersClusterSpecData struct {
 	// Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features
 	AppReplication      bool `pulumi:"appReplication"`
 	AutoUpgradeDisabled bool `pulumi:"autoUpgradeDisabled"`
+	// Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+	DatadogAnnotationsEnabled bool `pulumi:"datadogAnnotationsEnabled"`
+	// Enable this if you are installing this cluster on EKS.
+	EksAddonEnabled bool `pulumi:"eksAddonEnabled"`
 	// Kustomize configuration that will be applied to generated agent installation manifests
 	Kustomization string `pulumi:"kustomization"`
+	// The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+	ManagedClusterConfig GetClustersClusterSpecDataManagedClusterConfig `pulumi:"managedClusterConfig"`
 	// Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
 	RedisTunneling bool `pulumi:"redisTunneling"`
 	// Cluster Size. One of `small`, `medium` or `large`
@@ -5077,8 +5796,14 @@ type GetClustersClusterSpecDataArgs struct {
 	// Enables Argo CD state replication to the managed cluster that allows disconnecting the cluster from Akuity Platform without losing core Argocd features
 	AppReplication      pulumi.BoolInput `pulumi:"appReplication"`
 	AutoUpgradeDisabled pulumi.BoolInput `pulumi:"autoUpgradeDisabled"`
+	// Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+	DatadogAnnotationsEnabled pulumi.BoolInput `pulumi:"datadogAnnotationsEnabled"`
+	// Enable this if you are installing this cluster on EKS.
+	EksAddonEnabled pulumi.BoolInput `pulumi:"eksAddonEnabled"`
 	// Kustomize configuration that will be applied to generated agent installation manifests
 	Kustomization pulumi.StringInput `pulumi:"kustomization"`
+	// The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+	ManagedClusterConfig GetClustersClusterSpecDataManagedClusterConfigInput `pulumi:"managedClusterConfig"`
 	// Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
 	RedisTunneling pulumi.BoolInput `pulumi:"redisTunneling"`
 	// Cluster Size. One of `small`, `medium` or `large`
@@ -5122,9 +5847,26 @@ func (o GetClustersClusterSpecDataOutput) AutoUpgradeDisabled() pulumi.BoolOutpu
 	return o.ApplyT(func(v GetClustersClusterSpecData) bool { return v.AutoUpgradeDisabled }).(pulumi.BoolOutput)
 }
 
+// Enable Datadog metrics collection of Application Controller and Repo Server. Make sure that you install Datadog agent in cluster.
+func (o GetClustersClusterSpecDataOutput) DatadogAnnotationsEnabled() pulumi.BoolOutput {
+	return o.ApplyT(func(v GetClustersClusterSpecData) bool { return v.DatadogAnnotationsEnabled }).(pulumi.BoolOutput)
+}
+
+// Enable this if you are installing this cluster on EKS.
+func (o GetClustersClusterSpecDataOutput) EksAddonEnabled() pulumi.BoolOutput {
+	return o.ApplyT(func(v GetClustersClusterSpecData) bool { return v.EksAddonEnabled }).(pulumi.BoolOutput)
+}
+
 // Kustomize configuration that will be applied to generated agent installation manifests
 func (o GetClustersClusterSpecDataOutput) Kustomization() pulumi.StringOutput {
 	return o.ApplyT(func(v GetClustersClusterSpecData) string { return v.Kustomization }).(pulumi.StringOutput)
+}
+
+// The config to access managed Kubernetes cluster. By default agent is using "in-cluster" config.
+func (o GetClustersClusterSpecDataOutput) ManagedClusterConfig() GetClustersClusterSpecDataManagedClusterConfigOutput {
+	return o.ApplyT(func(v GetClustersClusterSpecData) GetClustersClusterSpecDataManagedClusterConfig {
+		return v.ManagedClusterConfig
+	}).(GetClustersClusterSpecDataManagedClusterConfigOutput)
 }
 
 // Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
@@ -5140,6 +5882,67 @@ func (o GetClustersClusterSpecDataOutput) Size() pulumi.StringOutput {
 // The version of the agent to install on your cluster
 func (o GetClustersClusterSpecDataOutput) TargetVersion() pulumi.StringOutput {
 	return o.ApplyT(func(v GetClustersClusterSpecData) string { return v.TargetVersion }).(pulumi.StringOutput)
+}
+
+type GetClustersClusterSpecDataManagedClusterConfig struct {
+	// The key in the secret for the managed cluster config
+	SecretKey string `pulumi:"secretKey"`
+	// The name of the secret for the managed cluster config
+	SecretName string `pulumi:"secretName"`
+}
+
+// GetClustersClusterSpecDataManagedClusterConfigInput is an input type that accepts GetClustersClusterSpecDataManagedClusterConfigArgs and GetClustersClusterSpecDataManagedClusterConfigOutput values.
+// You can construct a concrete instance of `GetClustersClusterSpecDataManagedClusterConfigInput` via:
+//
+//	GetClustersClusterSpecDataManagedClusterConfigArgs{...}
+type GetClustersClusterSpecDataManagedClusterConfigInput interface {
+	pulumi.Input
+
+	ToGetClustersClusterSpecDataManagedClusterConfigOutput() GetClustersClusterSpecDataManagedClusterConfigOutput
+	ToGetClustersClusterSpecDataManagedClusterConfigOutputWithContext(context.Context) GetClustersClusterSpecDataManagedClusterConfigOutput
+}
+
+type GetClustersClusterSpecDataManagedClusterConfigArgs struct {
+	// The key in the secret for the managed cluster config
+	SecretKey pulumi.StringInput `pulumi:"secretKey"`
+	// The name of the secret for the managed cluster config
+	SecretName pulumi.StringInput `pulumi:"secretName"`
+}
+
+func (GetClustersClusterSpecDataManagedClusterConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetClustersClusterSpecDataManagedClusterConfig)(nil)).Elem()
+}
+
+func (i GetClustersClusterSpecDataManagedClusterConfigArgs) ToGetClustersClusterSpecDataManagedClusterConfigOutput() GetClustersClusterSpecDataManagedClusterConfigOutput {
+	return i.ToGetClustersClusterSpecDataManagedClusterConfigOutputWithContext(context.Background())
+}
+
+func (i GetClustersClusterSpecDataManagedClusterConfigArgs) ToGetClustersClusterSpecDataManagedClusterConfigOutputWithContext(ctx context.Context) GetClustersClusterSpecDataManagedClusterConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetClustersClusterSpecDataManagedClusterConfigOutput)
+}
+
+type GetClustersClusterSpecDataManagedClusterConfigOutput struct{ *pulumi.OutputState }
+
+func (GetClustersClusterSpecDataManagedClusterConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetClustersClusterSpecDataManagedClusterConfig)(nil)).Elem()
+}
+
+func (o GetClustersClusterSpecDataManagedClusterConfigOutput) ToGetClustersClusterSpecDataManagedClusterConfigOutput() GetClustersClusterSpecDataManagedClusterConfigOutput {
+	return o
+}
+
+func (o GetClustersClusterSpecDataManagedClusterConfigOutput) ToGetClustersClusterSpecDataManagedClusterConfigOutputWithContext(ctx context.Context) GetClustersClusterSpecDataManagedClusterConfigOutput {
+	return o
+}
+
+// The key in the secret for the managed cluster config
+func (o GetClustersClusterSpecDataManagedClusterConfigOutput) SecretKey() pulumi.StringOutput {
+	return o.ApplyT(func(v GetClustersClusterSpecDataManagedClusterConfig) string { return v.SecretKey }).(pulumi.StringOutput)
+}
+
+// The name of the secret for the managed cluster config
+func (o GetClustersClusterSpecDataManagedClusterConfigOutput) SecretName() pulumi.StringOutput {
+	return o.ApplyT(func(v GetClustersClusterSpecDataManagedClusterConfig) string { return v.SecretName }).(pulumi.StringOutput)
 }
 
 type GetInstanceArgocd struct {
@@ -5265,6 +6068,8 @@ func (o GetInstanceArgocdSpecOutput) Version() pulumi.StringOutput {
 }
 
 type GetInstanceArgocdSpecInstanceSpec struct {
+	// The ability to configure agent permissions rules.
+	AgentPermissionsRules []GetInstanceArgocdSpecInstanceSpecAgentPermissionsRule `pulumi:"agentPermissionsRules"`
 	// Select cluster in which you want to Install Application Set controller
 	AppSetDelegate GetInstanceArgocdSpecInstanceSpecAppSetDelegate `pulumi:"appSetDelegate"`
 	// Configures Application Set policy settings.
@@ -5277,10 +6082,14 @@ type GetInstanceArgocdSpecInstanceSpec struct {
 	BackendIpAllowListEnabled bool `pulumi:"backendIpAllowListEnabled"`
 	// Default values for cluster agents
 	ClusterCustomizationDefaults GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaults `pulumi:"clusterCustomizationDefaults"`
+	// Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+	CrossplaneExtension GetInstanceArgocdSpecInstanceSpecCrossplaneExtension `pulumi:"crossplaneExtension"`
 	// Enable Declarative Management
 	DeclarativeManagementEnabled bool `pulumi:"declarativeManagementEnabled"`
 	// Extensions
 	Extensions []GetInstanceArgocdSpecInstanceSpecExtension `pulumi:"extensions"`
+	// Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+	Fqdn string `pulumi:"fqdn"`
 	// Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.
 	HostAliases []GetInstanceArgocdSpecInstanceSpecHostAlias `pulumi:"hostAliases"`
 	// Select cluster in which you want to Install Image Updater
@@ -5309,6 +6118,8 @@ type GetInstanceArgocdSpecInstanceSpecInput interface {
 }
 
 type GetInstanceArgocdSpecInstanceSpecArgs struct {
+	// The ability to configure agent permissions rules.
+	AgentPermissionsRules GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayInput `pulumi:"agentPermissionsRules"`
 	// Select cluster in which you want to Install Application Set controller
 	AppSetDelegate GetInstanceArgocdSpecInstanceSpecAppSetDelegateInput `pulumi:"appSetDelegate"`
 	// Configures Application Set policy settings.
@@ -5321,10 +6132,14 @@ type GetInstanceArgocdSpecInstanceSpecArgs struct {
 	BackendIpAllowListEnabled pulumi.BoolInput `pulumi:"backendIpAllowListEnabled"`
 	// Default values for cluster agents
 	ClusterCustomizationDefaults GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsInput `pulumi:"clusterCustomizationDefaults"`
+	// Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+	CrossplaneExtension GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionInput `pulumi:"crossplaneExtension"`
 	// Enable Declarative Management
 	DeclarativeManagementEnabled pulumi.BoolInput `pulumi:"declarativeManagementEnabled"`
 	// Extensions
 	Extensions GetInstanceArgocdSpecInstanceSpecExtensionArrayInput `pulumi:"extensions"`
+	// Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+	Fqdn pulumi.StringInput `pulumi:"fqdn"`
 	// Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.
 	HostAliases GetInstanceArgocdSpecInstanceSpecHostAliasArrayInput `pulumi:"hostAliases"`
 	// Select cluster in which you want to Install Image Updater
@@ -5367,6 +6182,13 @@ func (o GetInstanceArgocdSpecInstanceSpecOutput) ToGetInstanceArgocdSpecInstance
 	return o
 }
 
+// The ability to configure agent permissions rules.
+func (o GetInstanceArgocdSpecInstanceSpecOutput) AgentPermissionsRules() GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput {
+	return o.ApplyT(func(v GetInstanceArgocdSpecInstanceSpec) []GetInstanceArgocdSpecInstanceSpecAgentPermissionsRule {
+		return v.AgentPermissionsRules
+	}).(GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput)
+}
+
 // Select cluster in which you want to Install Application Set controller
 func (o GetInstanceArgocdSpecInstanceSpecOutput) AppSetDelegate() GetInstanceArgocdSpecInstanceSpecAppSetDelegateOutput {
 	return o.ApplyT(func(v GetInstanceArgocdSpecInstanceSpec) GetInstanceArgocdSpecInstanceSpecAppSetDelegate {
@@ -5403,6 +6225,13 @@ func (o GetInstanceArgocdSpecInstanceSpecOutput) ClusterCustomizationDefaults() 
 	}).(GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsOutput)
 }
 
+// Custom Resource Definition group name that identifies the Crossplane resource in kubernetes. We will include built-in crossplane resources. Note that you can use glob pattern to match the group. ie. *.crossplane.io
+func (o GetInstanceArgocdSpecInstanceSpecOutput) CrossplaneExtension() GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput {
+	return o.ApplyT(func(v GetInstanceArgocdSpecInstanceSpec) GetInstanceArgocdSpecInstanceSpecCrossplaneExtension {
+		return v.CrossplaneExtension
+	}).(GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput)
+}
+
 // Enable Declarative Management
 func (o GetInstanceArgocdSpecInstanceSpecOutput) DeclarativeManagementEnabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v GetInstanceArgocdSpecInstanceSpec) bool { return v.DeclarativeManagementEnabled }).(pulumi.BoolOutput)
@@ -5413,6 +6242,11 @@ func (o GetInstanceArgocdSpecInstanceSpecOutput) Extensions() GetInstanceArgocdS
 	return o.ApplyT(func(v GetInstanceArgocdSpecInstanceSpec) []GetInstanceArgocdSpecInstanceSpecExtension {
 		return v.Extensions
 	}).(GetInstanceArgocdSpecInstanceSpecExtensionArrayOutput)
+}
+
+// Configures the FQDN for the argocd instance, for ingress URL, domain suffix, etc.
+func (o GetInstanceArgocdSpecInstanceSpecOutput) Fqdn() pulumi.StringOutput {
+	return o.ApplyT(func(v GetInstanceArgocdSpecInstanceSpec) string { return v.Fqdn }).(pulumi.StringOutput)
 }
 
 // Host Aliases that override the DNS entries for control plane Argo CD components such as API Server and Dex.
@@ -5456,6 +6290,121 @@ func (o GetInstanceArgocdSpecInstanceSpecOutput) Subdomain() pulumi.StringOutput
 // Enable Sync History Extension. Sync count and duration graphs as well as event details table on Argo CD application details page.
 func (o GetInstanceArgocdSpecInstanceSpecOutput) SyncHistoryExtensionEnabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v GetInstanceArgocdSpecInstanceSpec) bool { return v.SyncHistoryExtensionEnabled }).(pulumi.BoolOutput)
+}
+
+type GetInstanceArgocdSpecInstanceSpecAgentPermissionsRule struct {
+	// API groups of the rule.
+	ApiGroups []string `pulumi:"apiGroups"`
+	// Resources of the rule.
+	Resources []string `pulumi:"resources"`
+	// Verbs of the rule.
+	Verbs []string `pulumi:"verbs"`
+}
+
+// GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleInput is an input type that accepts GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs and GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput values.
+// You can construct a concrete instance of `GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleInput` via:
+//
+//	GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs{...}
+type GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleInput interface {
+	pulumi.Input
+
+	ToGetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput() GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput
+	ToGetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutputWithContext(context.Context) GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput
+}
+
+type GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs struct {
+	// API groups of the rule.
+	ApiGroups pulumi.StringArrayInput `pulumi:"apiGroups"`
+	// Resources of the rule.
+	Resources pulumi.StringArrayInput `pulumi:"resources"`
+	// Verbs of the rule.
+	Verbs pulumi.StringArrayInput `pulumi:"verbs"`
+}
+
+func (GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecAgentPermissionsRule)(nil)).Elem()
+}
+
+func (i GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs) ToGetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput() GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput {
+	return i.ToGetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutputWithContext(context.Background())
+}
+
+func (i GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs) ToGetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutputWithContext(ctx context.Context) GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput)
+}
+
+// GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayInput is an input type that accepts GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArray and GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput values.
+// You can construct a concrete instance of `GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayInput` via:
+//
+//	GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArray{ GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs{...} }
+type GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayInput interface {
+	pulumi.Input
+
+	ToGetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput() GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput
+	ToGetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutputWithContext(context.Context) GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput
+}
+
+type GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArray []GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleInput
+
+func (GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetInstanceArgocdSpecInstanceSpecAgentPermissionsRule)(nil)).Elem()
+}
+
+func (i GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArray) ToGetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput() GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput {
+	return i.ToGetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutputWithContext(context.Background())
+}
+
+func (i GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArray) ToGetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutputWithContext(ctx context.Context) GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput)
+}
+
+type GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput struct{ *pulumi.OutputState }
+
+func (GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecAgentPermissionsRule)(nil)).Elem()
+}
+
+func (o GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput) ToGetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput() GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput {
+	return o
+}
+
+func (o GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput) ToGetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutputWithContext(ctx context.Context) GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput {
+	return o
+}
+
+// API groups of the rule.
+func (o GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput) ApiGroups() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v GetInstanceArgocdSpecInstanceSpecAgentPermissionsRule) []string { return v.ApiGroups }).(pulumi.StringArrayOutput)
+}
+
+// Resources of the rule.
+func (o GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput) Resources() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v GetInstanceArgocdSpecInstanceSpecAgentPermissionsRule) []string { return v.Resources }).(pulumi.StringArrayOutput)
+}
+
+// Verbs of the rule.
+func (o GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput) Verbs() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v GetInstanceArgocdSpecInstanceSpecAgentPermissionsRule) []string { return v.Verbs }).(pulumi.StringArrayOutput)
+}
+
+type GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput struct{ *pulumi.OutputState }
+
+func (GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetInstanceArgocdSpecInstanceSpecAgentPermissionsRule)(nil)).Elem()
+}
+
+func (o GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput) ToGetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput() GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput {
+	return o
+}
+
+func (o GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput) ToGetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutputWithContext(ctx context.Context) GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput {
+	return o
+}
+
+func (o GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput) Index(i pulumi.IntInput) GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetInstanceArgocdSpecInstanceSpecAgentPermissionsRule {
+		return vs[0].([]GetInstanceArgocdSpecInstanceSpecAgentPermissionsRule)[vs[1].(int)]
+	}).(GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput)
 }
 
 type GetInstanceArgocdSpecInstanceSpecAppSetDelegate struct {
@@ -5716,6 +6665,157 @@ func (o GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsOutput) Kus
 // Enables the ability to connect to Redis over a web-socket tunnel that allows using Akuity agent behind HTTPS proxy
 func (o GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsOutput) RedisTunneling() pulumi.BoolOutput {
 	return o.ApplyT(func(v GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaults) bool { return v.RedisTunneling }).(pulumi.BoolOutput)
+}
+
+type GetInstanceArgocdSpecInstanceSpecCrossplaneExtension struct {
+	// Glob patterns of the resources to match.
+	Resources []GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResource `pulumi:"resources"`
+}
+
+// GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionInput is an input type that accepts GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs and GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput values.
+// You can construct a concrete instance of `GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionInput` via:
+//
+//	GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs{...}
+type GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionInput interface {
+	pulumi.Input
+
+	ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput() GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput
+	ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutputWithContext(context.Context) GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput
+}
+
+type GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs struct {
+	// Glob patterns of the resources to match.
+	Resources GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayInput `pulumi:"resources"`
+}
+
+func (GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecCrossplaneExtension)(nil)).Elem()
+}
+
+func (i GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs) ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput() GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput {
+	return i.ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutputWithContext(context.Background())
+}
+
+func (i GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs) ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutputWithContext(ctx context.Context) GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput)
+}
+
+type GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput struct{ *pulumi.OutputState }
+
+func (GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecCrossplaneExtension)(nil)).Elem()
+}
+
+func (o GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput) ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput() GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput {
+	return o
+}
+
+func (o GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput) ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutputWithContext(ctx context.Context) GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput {
+	return o
+}
+
+// Glob patterns of the resources to match.
+func (o GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput) Resources() GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput {
+	return o.ApplyT(func(v GetInstanceArgocdSpecInstanceSpecCrossplaneExtension) []GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResource {
+		return v.Resources
+	}).(GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput)
+}
+
+type GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResource struct {
+	// Glob pattern of the group to match.
+	Group string `pulumi:"group"`
+}
+
+// GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceInput is an input type that accepts GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs and GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput values.
+// You can construct a concrete instance of `GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceInput` via:
+//
+//	GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs{...}
+type GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceInput interface {
+	pulumi.Input
+
+	ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput() GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput
+	ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutputWithContext(context.Context) GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput
+}
+
+type GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs struct {
+	// Glob pattern of the group to match.
+	Group pulumi.StringInput `pulumi:"group"`
+}
+
+func (GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResource)(nil)).Elem()
+}
+
+func (i GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs) ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput() GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput {
+	return i.ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutputWithContext(context.Background())
+}
+
+func (i GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs) ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutputWithContext(ctx context.Context) GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput)
+}
+
+// GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayInput is an input type that accepts GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArray and GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput values.
+// You can construct a concrete instance of `GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayInput` via:
+//
+//	GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArray{ GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs{...} }
+type GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayInput interface {
+	pulumi.Input
+
+	ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput() GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput
+	ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutputWithContext(context.Context) GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput
+}
+
+type GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArray []GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceInput
+
+func (GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResource)(nil)).Elem()
+}
+
+func (i GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArray) ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput() GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput {
+	return i.ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutputWithContext(context.Background())
+}
+
+func (i GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArray) ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutputWithContext(ctx context.Context) GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput)
+}
+
+type GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput struct{ *pulumi.OutputState }
+
+func (GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResource)(nil)).Elem()
+}
+
+func (o GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput) ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput() GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput {
+	return o
+}
+
+func (o GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput) ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutputWithContext(ctx context.Context) GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput {
+	return o
+}
+
+// Glob pattern of the group to match.
+func (o GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput) Group() pulumi.StringOutput {
+	return o.ApplyT(func(v GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResource) string { return v.Group }).(pulumi.StringOutput)
+}
+
+type GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput struct{ *pulumi.OutputState }
+
+func (GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResource)(nil)).Elem()
+}
+
+func (o GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput) ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput() GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput {
+	return o
+}
+
+func (o GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput) ToGetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutputWithContext(ctx context.Context) GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput {
+	return o
+}
+
+func (o GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput) Index(i pulumi.IntInput) GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResource {
+		return vs[0].([]GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResource)[vs[1].(int)]
+	}).(GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput)
 }
 
 type GetInstanceArgocdSpecInstanceSpecExtension struct {
@@ -7045,12 +8145,16 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*ClusterSpecPtrInput)(nil)).Elem(), ClusterSpecArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ClusterSpecDataInput)(nil)).Elem(), ClusterSpecDataArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ClusterSpecDataPtrInput)(nil)).Elem(), ClusterSpecDataArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ClusterSpecDataManagedClusterConfigInput)(nil)).Elem(), ClusterSpecDataManagedClusterConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ClusterSpecDataManagedClusterConfigPtrInput)(nil)).Elem(), ClusterSpecDataManagedClusterConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdInput)(nil)).Elem(), InstanceArgocdArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdPtrInput)(nil)).Elem(), InstanceArgocdArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInput)(nil)).Elem(), InstanceArgocdSpecArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecPtrInput)(nil)).Elem(), InstanceArgocdSpecArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecPtrInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecAgentPermissionsRuleInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecAppSetDelegateInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecAppSetDelegateArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecAppSetDelegatePtrInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecAppSetDelegateArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecAppSetDelegateManagedClusterInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecAppSetDelegateManagedClusterArgs{})
@@ -7059,6 +8163,10 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecAppsetPolicyPtrInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecAppsetPolicyArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsPtrInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecCrossplaneExtensionInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecExtensionInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecExtensionArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecExtensionArrayInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecExtensionArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*InstanceArgocdSpecInstanceSpecHostAliasInput)(nil)).Elem(), InstanceArgocdSpecInstanceSpecHostAliasArgs{})
@@ -7092,18 +8200,25 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*GetClusterKubeConfigInput)(nil)).Elem(), GetClusterKubeConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetClusterSpecInput)(nil)).Elem(), GetClusterSpecArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetClusterSpecDataInput)(nil)).Elem(), GetClusterSpecDataArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetClusterSpecDataManagedClusterConfigInput)(nil)).Elem(), GetClusterSpecDataManagedClusterConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetClustersClusterInput)(nil)).Elem(), GetClustersClusterArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetClustersClusterArrayInput)(nil)).Elem(), GetClustersClusterArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetClustersClusterKubeConfigInput)(nil)).Elem(), GetClustersClusterKubeConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetClustersClusterSpecInput)(nil)).Elem(), GetClustersClusterSpecArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetClustersClusterSpecDataInput)(nil)).Elem(), GetClustersClusterSpecDataArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetClustersClusterSpecDataManagedClusterConfigInput)(nil)).Elem(), GetClustersClusterSpecDataManagedClusterConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdInput)(nil)).Elem(), GetInstanceArgocdArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdSpecInput)(nil)).Elem(), GetInstanceArgocdSpecArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecInput)(nil)).Elem(), GetInstanceArgocdSpecInstanceSpecArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleInput)(nil)).Elem(), GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayInput)(nil)).Elem(), GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecAppSetDelegateInput)(nil)).Elem(), GetInstanceArgocdSpecInstanceSpecAppSetDelegateArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecAppSetDelegateManagedClusterInput)(nil)).Elem(), GetInstanceArgocdSpecInstanceSpecAppSetDelegateManagedClusterArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecAppsetPolicyInput)(nil)).Elem(), GetInstanceArgocdSpecInstanceSpecAppsetPolicyArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsInput)(nil)).Elem(), GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionInput)(nil)).Elem(), GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceInput)(nil)).Elem(), GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayInput)(nil)).Elem(), GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecExtensionInput)(nil)).Elem(), GetInstanceArgocdSpecInstanceSpecExtensionArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecExtensionArrayInput)(nil)).Elem(), GetInstanceArgocdSpecInstanceSpecExtensionArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetInstanceArgocdSpecInstanceSpecHostAliasInput)(nil)).Elem(), GetInstanceArgocdSpecInstanceSpecHostAliasArgs{})
@@ -7131,12 +8246,16 @@ func init() {
 	pulumi.RegisterOutputType(ClusterSpecPtrOutput{})
 	pulumi.RegisterOutputType(ClusterSpecDataOutput{})
 	pulumi.RegisterOutputType(ClusterSpecDataPtrOutput{})
+	pulumi.RegisterOutputType(ClusterSpecDataManagedClusterConfigOutput{})
+	pulumi.RegisterOutputType(ClusterSpecDataManagedClusterConfigPtrOutput{})
 	pulumi.RegisterOutputType(InstanceArgocdOutput{})
 	pulumi.RegisterOutputType(InstanceArgocdPtrOutput{})
 	pulumi.RegisterOutputType(InstanceArgocdSpecOutput{})
 	pulumi.RegisterOutputType(InstanceArgocdSpecPtrOutput{})
 	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecOutput{})
 	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecPtrOutput{})
+	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput{})
+	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput{})
 	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecAppSetDelegateOutput{})
 	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecAppSetDelegatePtrOutput{})
 	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecAppSetDelegateManagedClusterOutput{})
@@ -7145,6 +8264,10 @@ func init() {
 	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecAppsetPolicyPtrOutput{})
 	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsOutput{})
 	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsPtrOutput{})
+	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput{})
+	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecCrossplaneExtensionPtrOutput{})
+	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput{})
+	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput{})
 	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecExtensionOutput{})
 	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecExtensionArrayOutput{})
 	pulumi.RegisterOutputType(InstanceArgocdSpecInstanceSpecHostAliasOutput{})
@@ -7178,18 +8301,25 @@ func init() {
 	pulumi.RegisterOutputType(GetClusterKubeConfigOutput{})
 	pulumi.RegisterOutputType(GetClusterSpecOutput{})
 	pulumi.RegisterOutputType(GetClusterSpecDataOutput{})
+	pulumi.RegisterOutputType(GetClusterSpecDataManagedClusterConfigOutput{})
 	pulumi.RegisterOutputType(GetClustersClusterOutput{})
 	pulumi.RegisterOutputType(GetClustersClusterArrayOutput{})
 	pulumi.RegisterOutputType(GetClustersClusterKubeConfigOutput{})
 	pulumi.RegisterOutputType(GetClustersClusterSpecOutput{})
 	pulumi.RegisterOutputType(GetClustersClusterSpecDataOutput{})
+	pulumi.RegisterOutputType(GetClustersClusterSpecDataManagedClusterConfigOutput{})
 	pulumi.RegisterOutputType(GetInstanceArgocdOutput{})
 	pulumi.RegisterOutputType(GetInstanceArgocdSpecOutput{})
 	pulumi.RegisterOutputType(GetInstanceArgocdSpecInstanceSpecOutput{})
+	pulumi.RegisterOutputType(GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleOutput{})
+	pulumi.RegisterOutputType(GetInstanceArgocdSpecInstanceSpecAgentPermissionsRuleArrayOutput{})
 	pulumi.RegisterOutputType(GetInstanceArgocdSpecInstanceSpecAppSetDelegateOutput{})
 	pulumi.RegisterOutputType(GetInstanceArgocdSpecInstanceSpecAppSetDelegateManagedClusterOutput{})
 	pulumi.RegisterOutputType(GetInstanceArgocdSpecInstanceSpecAppsetPolicyOutput{})
 	pulumi.RegisterOutputType(GetInstanceArgocdSpecInstanceSpecClusterCustomizationDefaultsOutput{})
+	pulumi.RegisterOutputType(GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionOutput{})
+	pulumi.RegisterOutputType(GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceOutput{})
+	pulumi.RegisterOutputType(GetInstanceArgocdSpecInstanceSpecCrossplaneExtensionResourceArrayOutput{})
 	pulumi.RegisterOutputType(GetInstanceArgocdSpecInstanceSpecExtensionOutput{})
 	pulumi.RegisterOutputType(GetInstanceArgocdSpecInstanceSpecExtensionArrayOutput{})
 	pulumi.RegisterOutputType(GetInstanceArgocdSpecInstanceSpecHostAliasOutput{})
