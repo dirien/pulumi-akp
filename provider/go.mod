@@ -10,7 +10,7 @@ require (
 	github.com/akuity/terraform-provider-akp v0.7.0
 	github.com/pulumi/pulumi-terraform-bridge/pf v0.40.0
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.87.0
-	github.com/pulumi/pulumi/sdk/v3 v3.125.0
+	github.com/pulumi/pulumi/sdk/v3 v3.132.0
 )
 
 require (
